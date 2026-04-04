@@ -576,79 +576,95 @@ section {
     }
 }
 
-/* Final Mobile Boutique Navigation */
+/* Total Brand Parity Transformation (Mobile mirrors Laptop) */
 @media (max-width: 768px) {
     nav {
-        position: relative; /* Sits above content, never blocks */
-        width: 100%;
-        background: transparent;
-        padding: 30px 0 20px 0;
+        position: fixed; /* FIXED NAV LIKE LAPTOP */
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 94%;
+        max-width: 500px;
+        background: rgba(5, 5, 5, 0.8);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--border-color);
+        border-radius: 40px;
+        padding: 12px 20px;
         display: flex;
-        flex-direction: column;
+        flex-direction: row; /* MATCH LAPTOP ROW */
+        justify-content: space-between;
         align-items: center;
         z-index: 1000;
-        border: none;
     }
 
     .nav-container {
         width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
-        gap: 15px;
     }
 
     .logo-text { 
         margin-right: 0; 
-        font-size: 0.9rem; 
-        font-family: 'Syncopate', sans-serif;
-        letter-spacing: 0.4em;
-        color: #fff;
+        font-size: 0.8rem; 
+        letter-spacing: 0.2em;
     }
 
     .nav-links {
         display: flex;
-        gap: 25px; /* Better tap targets */
-        opacity: 0.6;
-        font-size: 0.65rem;
-        width: 100%;
-        justify-content: center;
-        overflow-x: auto;
-        white-space: nowrap;
-        padding: 0 20px 10px 20px;
-        -ms-overflow-style: none; /* IE/Edge */
-        scrollbar-width: none;  /* Firefox */
+        gap: 12px;
+        font-size: 0.55rem;
+        opacity: 0.8;
     }
-    .nav-links::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+    .hero {
+        padding-top: 100px; /* SPACE FOR FIXED NAV */
+    }
 
     .cards-container {
-        padding-top: 40px; 
+        padding-top: 120px;
+        padding-bottom: 120px; 
     }
 
     .cards-stack {
         width: 96%;
-        height: 280px; 
+        height: 480px; /* RESTORE TALL CARDS FOR LAPTOP PARITY */
         margin: 0 auto;
     }
 
     .card {
-        height: 100%;
+        height: 480px;
         width: 100%;
         left: 0;
-        padding: 20px 15px;
+        padding: 40px 25px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        text-align: center;
     }
 
-    .card h3 { font-size: 1.1rem; margin-bottom: 8px; }
-    .card p { font-size: 0.8rem; max-width: 96%; line-height: 1.4; }
-    .card-icon { width: 35px; height: 35px; margin-bottom: 12px; }
+    .card h3 { font-size: 1.6rem; margin-bottom: 15px; }
+    .card p { font-size: 1rem; max-width: 96%; line-height: 1.5; }
+    .card-icon { width: 50px; height: 50px; margin-bottom: 25px; }
 
     .stat-number-wrapper {
-        margin-top: 50px; 
+        margin-top: 60px; 
+    }
+}
+
+@media (max-width: 480px) {
+    nav { width: 96%; padding: 10px 15px; }
+    .logo-text { font-size: 0.75rem; letter-spacing: 0.15em; }
+    .nav-links { gap: 8px; font-size: 0.5rem; }
+    
+    .cards-stack {
+        height: 440px;
+    }
+    .card {
+        height: 440px;
+        padding: 30px 20px;
     }
 }
 
