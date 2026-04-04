@@ -501,96 +501,24 @@ section {
 
 @media (max-width: 768px) {
     section {
-        padding: 60px 20px;
+        padding: 60px 4vw;
         text-align: center;
     }
 
-    .hero-title {
-        font-size: clamp(2.5rem, 10vw, 4rem);
-        letter-spacing: 0.1em;
-        margin-bottom: 20px;
-    }
-
-    .hero-tagline {
-        font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-        max-width: 100%;
-        padding: 0 10px;
-    }
-
-    .stats-container {
-        flex-direction: column;
-        gap: 50px;
-        padding: 0 20px;
-    }
-
-    .stat-item {
-        width: 100%;
-        text-align: center;
-    }
-
-    .stat-number-wrapper {
-        font-size: clamp(3rem, 12vw, 4.5rem);
-    }
-
-    .experience {
-        padding: 100px 20px;
-    }
-
-    .exp-content p {
-        font-size: 1.1rem;
-        margin-bottom: 30px;
-    }
-    
-    .cards-stack {
-        width: 96%;
-        height: 450px;
-    }
-    
-    .card {
-        left: 2%;
-        width: 96%;
-        padding: 40px 25px;
-    }
-
-    .card h3 { font-size: 1.6rem; }
-    .card p { font-size: 1rem; }
-    .card-icon { width: 45px; height: 45px; }
-}
-
-@media (max-width: 480px) {
-    .section-title { font-size: 1.8rem; }
-    .hero-title { font-size: clamp(2.2rem, 10vw, 3rem); }
-    
-    .cards-stack {
-        height: 420px;
-    }
-
-    .card {
-        padding: 30px 20px;
-    }
-    
-    .btn-primary {
-        padding: 14px 32px;
-        font-size: 0.75rem;
-        width: auto;
-    }
-}
-
-/* Absolute Literal Parity (Mobile = Laptop) */
-@media (max-width: 768px) {
+    /* Fixed Boutique Navigation Bar */
     nav {
         position: fixed; 
         top: 15px;
         left: 50%;
         transform: translateX(-50%);
-        width: 90%; /* IDENTICAL TO LAPTOP */
-        max-width: 800px;
+        width: 88%; /* Boutique Scale */
+        max-width: 500px;
         background: rgba(5, 5, 5, 0.85);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         border: 1px solid var(--border-color);
         border-radius: 40px;
-        padding: 10px 20px;
+        padding: 10px 18px;
         display: flex;
         flex-direction: row; 
         justify-content: space-between;
@@ -600,76 +528,75 @@ section {
 
     .nav-links {
         display: flex;
-        gap: 15px;
-        font-size: 0.55rem;
+        gap: 12px;
+        font-size: 0.5rem;
     }
 
-    .logo-text { font-size: 0.75rem; letter-spacing: 0.2em; }
+    .logo-text { font-size: 0.7rem; letter-spacing: 0.25em; }
 
     .hero {
-        padding: 120px 20px 60px; /* EXACTLY MATCH LAPTOP PROPORTIONS */
-        text-align: center;
+        padding: 110px 20px 50px; 
     }
 
+    /* Professional Horizontal Stats */
     .stats-container {
-        flex-direction: row; /* LITERAL PARITY: HORIZONTAL ON MOBILE */
+        flex-direction: row; 
         justify-content: center;
-        gap: 25px;
+        gap: 20px;
         padding: 0 10px;
     }
 
     .stat-item {
-        text-align: center;
         flex: 1;
+        text-align: center;
     }
 
-    .stat-number-wrapper { font-size: 1.8rem; }
-    .stat-label { font-size: 0.5rem; letter-spacing: 0.1em; }
+    .stat-number-wrapper { font-size: 1.6rem; }
+    .stat-label { font-size: 0.45rem; letter-spacing: 0.1em; }
 
+    /* Compact 'Masterpiece' Framed Deck */
     .cards-stack {
-        width: 80%; /* EXACT LAPTOP MATCH */
-        height: 500px; 
+        width: 75%; /* UNIQUE BOUTIQUE SCALE: PERFECTLY FRAMED */
+        height: 340px; 
         margin: 0 auto;
     }
 
     .card {
-        height: 500px;
+        height: 340px;
         width: 100%;
-        padding: 40px 25px;
+        left: 0;
+        padding: 25px 20px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
 
-    .card h3 { font-size: 1.5rem; margin-bottom: 12px; }
-    .card p { font-size: 0.95rem; max-width: 96%; }
-    .card-icon { width: 45px; height: 45px; margin-bottom: 20px; }
+    .card h3 { font-size: 1.15rem; margin-bottom: 8px; }
+    .card p { font-size: 0.8rem; max-width: 100%; line-height: 1.4; }
+    .card-icon { width: 35px; height: 35px; margin-bottom: 15px; }
+
+    .stat-number-wrapper {
+        margin-top: 50px; 
+    }
 }
 
+/* Micro-Mobile Polish (480px and below) */
 @media (max-width: 480px) {
-    nav { width: 94%; }
-    .stats-container { gap: 10px; padding: 0 5px; }
-    .stat-number-wrapper { font-size: 1.5rem; }
-    .stat-label { font-size: 0.4rem; }
+    nav { width: 92%; padding: 8px 14px; }
+    .stats-container { gap: 10px; }
+    .stat-number-wrapper { font-size: 1.4rem; }
     
     .cards-stack {
-        width: 85%;
-        height: 460px;
+        width: 80%;
+        height: 320px;
     }
     .card {
-        height: 460px;
-        padding: 30px 15px;
+        height: 320px;
+        padding: 20px 15px;
     }
-    .card h3 { font-size: 1.3rem; }
-    .card p { font-size: 0.85rem; }
-}
-
-@media (max-width: 480px) {
-    .hero-title { font-size: clamp(2rem, 10vw, 2.8rem); letter-spacing: 0.05em; }
-    .cards-stack { width: 94%; }
-    .card { padding: 20px; }
-    .card h3 { font-size: 1.2rem; }
+    .card h3 { font-size: 1.05rem; }
+    .card p { font-size: 0.75rem; }
 }
 
 .cards-stack {
