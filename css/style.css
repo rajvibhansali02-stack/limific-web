@@ -576,99 +576,96 @@ section {
     }
 }
 
-/* High-End Mobile Narrative Navigation & Refined Cards */
+/* Total Brand Parity Transformation (Mobile mirrors Laptop) */
 @media (max-width: 768px) {
     nav {
-        position: absolute; /* DOES NOT FOLLOW SCROLL - BLOCKS NOTHING */
-        top: 30px;
-        left: 0;
-        width: 100%;
-        background: transparent;
+        position: fixed; /* FIXED NAV LIKE LAPTOP */
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 94%;
+        max-width: 500px;
+        background: rgba(5, 5, 5, 0.8);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--border-color);
+        border-radius: 40px;
+        padding: 12px 20px;
         display: flex;
-        flex-direction: column;
+        flex-direction: row; /* MATCH LAPTOP ROW */
+        justify-content: space-between;
         align-items: center;
         z-index: 1000;
-        border: none;
-        padding: 0;
     }
 
     .nav-container {
+        width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
-        gap: 12px;
     }
 
     .logo-text { 
         margin-right: 0; 
-        font-size: 0.9rem; 
-        font-family: 'Syncopate', sans-serif;
-        letter-spacing: 0.35em;
-        margin-bottom: 5px;
+        font-size: 0.8rem; 
+        letter-spacing: 0.2em;
     }
 
     .nav-links {
         display: flex;
-        gap: 20px; 
-        opacity: 0.6;
-        font-size: 0.6rem;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
-        padding: 0 10px;
+        gap: 12px;
+        font-size: 0.55rem;
+        opacity: 0.8;
     }
 
     .hero {
-        padding-top: 130px; 
+        padding-top: 100px; /* SPACE FOR FIXED NAV */
     }
 
     .cards-container {
-        padding-top: 40px;
+        padding-top: 120px;
         padding-bottom: 120px; 
     }
 
     .cards-stack {
-        width: 94%;
-        height: 280px; /* REFINED BALANCED FRAME */
+        width: 96%;
+        height: 480px; /* RESTORE TALL CARDS FOR LAPTOP PARITY */
         margin: 0 auto;
     }
 
     .card {
-        height: 100%;
+        height: 480px;
         width: 100%;
         left: 0;
-        padding: 20px; 
+        padding: 40px 25px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        text-align: center;
     }
 
-    .card h3 { font-size: 1.15rem; margin-bottom: 10px; }
-    .card p { font-size: 0.82rem; max-width: 94%; line-height: 1.4; }
-    .card-icon { width: 35px; height: 35px; margin-bottom: 15px; }
+    .card h3 { font-size: 1.6rem; margin-bottom: 15px; }
+    .card p { font-size: 1rem; max-width: 96%; line-height: 1.5; }
+    .card-icon { width: 50px; height: 50px; margin-bottom: 25px; }
 
     .stat-number-wrapper {
-        margin-top: 50px; 
+        margin-top: 60px; 
     }
 }
 
 @media (max-width: 480px) {
-    .hero-title { font-size: clamp(2.2rem, 11vw, 2.8rem); margin-bottom: 15px; }
-    .hero-tagline { font-size: 0.95rem; }
+    nav { width: 96%; padding: 10px 15px; }
+    .logo-text { font-size: 0.75rem; letter-spacing: 0.15em; }
+    .nav-links { gap: 8px; font-size: 0.5rem; }
     
     .cards-stack {
-        height: 270px;
-        width: 96%;
+        height: 440px;
     }
-
     .card {
-        padding: 15px;
+        height: 440px;
+        padding: 30px 20px;
     }
-
-    .card h3 { font-size: 1.05rem; }
-    .card p { font-size: 0.78rem; }
 }
 
 @media (max-width: 480px) {
