@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,21 +12,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="loading">
-    
+
+    <!-- Background Gradients -->
+    <div class="bg-gradients">
+        <div class="gradient-orb orb-purple"></div>
+        <div class="gradient-orb orb-orange"></div>
+        <div class="gradient-orb orb-blue"></div>
+    </div>
+
     <!-- Page Transition Overlay -->
+
     <div class="transition-overlay"></div>
 
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
-            <a href="#" class="logo-text">LIMIFIC</a>
+
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#collections">Collections</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
+                <li><a href="#collections" class="glitch-link"
+                        data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
+                <li><a href="#experience" class="glitch-link"
+                        data-value="EXPERIENCE"><span>EXPERIENCE</span><span>EXPERIENCE</span></a></li>
+                <li><a href="#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a>
+                </li>
+                <li><a href="#contact" class="glitch-link"
+                        data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
             </ul>
         </div>
     </nav>
@@ -41,39 +55,49 @@
         <div class="hero-bg-wrapper">
             <div class="hero-bg" style="background-image: url('images/hero_bg.png')"></div>
         </div>
-        
+
         <div class="hero-content">
             <div class="hero-glow"></div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" fill="none" class="hero-logo">
                 <defs>
-                    <linearGradient id="luxeGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="luxeWhite" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#ffffff" />
-                        <stop offset="30%" stop-color="#fdfbf7" />
-                        <stop offset="100%" stop-color="#d4af37" />
+                        <stop offset="100%" stop-color="rgba(255,255,255,0.4)" />
                     </linearGradient>
                     <filter id="premiumGlow" x="-50%" y="-50%" width="200%" height="200%">
                         <feGaussianBlur stdDeviation="4" result="blur" />
                         <feMerge>
-                            <feMergeNode in="blur"/>
-                            <feMergeNode in="SourceGraphic"/>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
                         </feMerge>
                     </filter>
                 </defs>
+
                 <!-- Outer Prism -->
-                <path d="M 30 5 L 55 30 L 30 55 L 5 30 Z" stroke="url(#luxeGold)" stroke-width="1" stroke-dasharray="4 6" stroke-linecap="round" filter="url(#premiumGlow)" opacity="0.6"/>
+                <path d="M 30 5 L 55 30 L 30 55 L 5 30 Z" stroke="url(#luxeWhite)" stroke-width="1"
+                    stroke-dasharray="4 6" stroke-linecap="round" filter="url(#premiumGlow)" opacity="0.6" />
                 <!-- Inner Solid Prism -->
-                <path d="M 30 14 L 46 30 L 30 46 L 14 30 Z" stroke="url(#luxeGold)" stroke-width="1.5" stroke-linecap="round" filter="url(#premiumGlow)"/>
+                <path d="M 30 14 L 46 30 L 30 46 L 14 30 Z" stroke="url(#luxeWhite)" stroke-width="1.5"
+                    stroke-linecap="round" filter="url(#premiumGlow)" />
                 <!-- Central L Spark -->
-                <path d="M 26 22 L 26 36 L 36 36" stroke="#fff" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" filter="url(#premiumGlow)"/>
+                <path d="M 26 22 L 26 36 L 36 36" stroke="#fff" stroke-width="2" stroke-linecap="square"
+                    stroke-linejoin="miter" filter="url(#premiumGlow)" />
                 <!-- Floating Light Particles -->
-                <circle cx="30" cy="8" r="1.5" fill="url(#luxeGold)" filter="url(#premiumGlow)"/>
-                <circle cx="52" cy="30" r="1.5" fill="url(#luxeGold)" filter="url(#premiumGlow)"/>
-                <circle cx="30" cy="52" r="1.5" fill="url(#luxeGold)" filter="url(#premiumGlow)"/>
-                <circle cx="8" cy="30" r="1.5" fill="url(#luxeGold)" filter="url(#premiumGlow)"/>
+                <circle cx="30" cy="8" r="1.5" fill="url(#luxeWhite)" filter="url(#premiumGlow)" />
+                <circle cx="52" cy="30" r="1.5" fill="url(#luxeWhite)" filter="url(#premiumGlow)" />
+                <circle cx="30" cy="52" r="1.5" fill="url(#luxeWhite)" filter="url(#premiumGlow)" />
+                <circle cx="8" cy="30" r="1.5" fill="url(#luxeWhite)" filter="url(#premiumGlow)" />
+
             </svg>
-            <h1 class="hero-title">LIMIFIC</h1>
-            <p class="hero-tagline">Illuminate Beyond Ordinary</p>
+            <h1 class="hero-title">
+                <div class="text-mask"><span>LIMIFIC</span></div>
+            </h1>
+            <p class="hero-tagline reveal-tagline">
+            <div class="text-mask"><span>Architecting premium lighting identities for high-end spaces.</span></div>
+            <div class="text-mask"><span>Limific blends cutting-edge optics with timeless design.</span></div>
+            </p>
         </div>
+
         <div class="scroll-indicator">
             <span>Discover</span>
             <div class="line"></div>
@@ -82,58 +106,101 @@
 
     <!-- Product Collections -->
     <section id="collections" class="collections">
-        <div class="section-header reveal">
-            <h2 class="section-title">Masterpiece Collections</h2>
+        <div class="section-header">
+            <h2 class="section-title">
+                <div class="text-mask"><span>Masterpiece Collections</span></div>
+            </h2>
             <p class="section-subtitle">Sculpting modern spaces with visionary luminescence.</p>
         </div>
-        
-        <div class="grid">
-            <!-- Product Card 1 -->
-            <div class="card reveal delay-1">
-                <div class="card-glow"></div>
-                <div class="card-content">
-                    <div class="card-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v6m0 0a4 4 0 100 8m0-8a4 4 0 110 8m-6.5-6h13l1.5 6h-16l1.5-6z"/></svg>
+
+        <div class="cards-container">
+            <div class="cards-stack">
+                <!-- Product Card 1 -->
+                <div class="card card-1">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M12 2v6m0 0a4 4 0 100 8m0-8a4 4 0 110 8m-6.5-6h13l1.5 6h-16l1.5-6z" />
+                            </svg>
+                        </div>
+                        <h3>Ceiling</h3>
+                        <p>Elevate heights with suspended brilliance.</p>
                     </div>
-                    <h3>Ceiling</h3>
-                    <p>Elevate heights with suspended brilliance.</p>
                 </div>
+
+                <!-- Product Card 2 -->
+                <div class="card card-2">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M4 10h16M8 10V4m8 6V4M4 14h16m-12 0v6m8-6v6" />
+                            </svg>
+                        </div>
+                        <h3 class="text-mask"><span>Wall Sculptures</span></h3>
+                        <p class="text-mask"><span>Diffused brilliance for sophisticated interiors.</span></p>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="card card-3">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path
+                                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
+                                <path d="M12 12L12 16" />
+                                <path d="M12 9H12.01" />
+                            </svg>
+                        </div>
+                        <h3 class="text-mask"><span>Ceiling Masterpieces</span></h3>
+                        <p class="text-mask"><span>Luminous statement pieces for modern architectures.</span></p>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="card card-4">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-mask"><span>Smart Lighting</span></h3>
+                        <p class="text-mask"><span>Intuitive atmospheres, responsive elegance.</span></p>
+                    </div>
+                </div>
+            </div> <!-- cards-stack -->
+        </div> <!-- cards-container -->
+    </section>
+
+    <!-- Stats Section (Lumen Stats) -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number-wrapper">
+                    <span class="stat-number" data-target="500">0</span><span class="stat-plus">+</span>
+                </div>
+                <p class="stat-label">Architectural Projects</p>
             </div>
-            
-            <!-- Product Card 2 -->
-            <div class="card reveal delay-2">
-                <div class="card-glow"></div>
-                <div class="card-content">
-                    <div class="card-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10h16M8 10V4m8 6V4M4 14h16m-12 0v6m8-6v6"/></svg>
-                    </div>
-                    <h3>Wall</h3>
-                    <p>Sculpt shadows into an artform.</p>
+            <div class="stat-item">
+                <div class="stat-number-wrapper">
+                    <span class="stat-number" data-target="12">0</span><span class="stat-plus">+</span>
                 </div>
+                <p class="stat-label">Years of Innovation</p>
             </div>
-            
-            <!-- Product Card 3 -->
-            <div class="card reveal delay-3">
-                <div class="card-glow"></div>
-                <div class="card-content">
-                    <div class="card-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/><path d="M12 12L12 16"/><path d="M12 9H12.01"/></svg>
-                    </div>
-                    <h3>Decorative</h3>
-                    <p>Statement pieces that define luxury.</p>
+            <div class="stat-item">
+                <div class="stat-number-wrapper">
+                    <span class="stat-number" data-target="1000">0</span><span class="stat-plus">+</span>
                 </div>
-            </div>
-            
-            <!-- Product Card 4 -->
-            <div class="card reveal delay-4">
-                <div class="card-glow"></div>
-                <div class="card-content">
-                    <div class="card-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                    </div>
-                    <h3>Smart Lighting</h3>
-                    <p>Intuitive atmospheres, responsive elegance.</p>
-                </div>
+                <p class="stat-label">Global Clients</p>
             </div>
         </div>
     </section>
@@ -141,12 +208,15 @@
     <!-- Experience Section -->
     <section id="experience" class="experience">
         <div class="exp-bg-wrapper">
-             <div class="exp-bg" style="background-image: url('images/experience_bg.png')"></div>
+            <div class="exp-bg" style="background-image: url('images/experience_bg.png')"></div>
         </div>
         <div class="exp-overlay"></div>
         <div class="exp-content reveal">
-            <h2>Transform Your Space</h2>
-            <p>At Limific, we don't just sell lights. We engineer mood, architecture, and emotion. Watch the shadows recede as pure radiance takes over.</p>
+            <h2 class="section-title">
+                <div class="text-mask"><span>Transform Your Space</span></div>
+            </h2>
+            <p>At Limific, we don't just sell lights. We engineer mood, architecture, and emotion. Watch the shadows
+                recede as pure radiance takes over.</p>
             <button class="btn-primary">Experience the Glow</button>
         </div>
     </section>
@@ -154,29 +224,38 @@
     <!-- About Section -->
     <section id="about" class="about">
         <div class="about-container reveal">
-            <h2 class="section-title">The Limific Ethos</h2>
-            <p>Rooted in minimalism, crafted for the opulent. Our lighting fixtures are born from a desire to blend cutting-edge optical engineering with timeless artisanal design. Every curve, every facet is designed to diffuse light with absolute perfection.</p>
+            <h2 class="section-title">
+                <div class="text-mask"><span>The Limific Ethos</span></div>
+            </h2>
+            <p class="reveal-tagline">Rooted in minimalism, crafted for the opulent. Our lighting fixtures are born from
+                a desire to blend cutting-edge optical engineering with timeless artisanal design. Every curve, every
+                facet is designed to diffuse light with absolute perfection.</p>
         </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact" class="contact reveal">
         <div class="contact-container">
-             <h2 class="section-title">Become Luminous</h2>
-             <p>Consult with our lighting architects.</p>
-             <div class="contact-info" style="margin-bottom: 30px; margin-top: 20px;">
-                 <p style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">📞 +1 (800) 555-0199</p>
-                 <p style="font-size: 1.1rem; color: #fff;">✉️ hello@limific.com</p>
-             </div>
-             <form class="contact-form">
-                 <div class="input-group">
-                     <input type="text" placeholder="Your Name" required>
-                 </div>
-                 <div class="input-group">
-                     <input type="email" placeholder="Your Email" required>
-                 </div>
-                 <button type="button" class="btn-primary form-submit">Send Inquiry</button>
-             </form>
+            <div class="section-header">
+                <h2 class="section-title">
+                    <div class="text-mask"><span>Let's Illuminate Your World</span></div>
+                </h2>
+                <p class="text-mask"><span>Begin your transformation. Our designers are ready to curate a</span></p>
+                <p class="text-mask"><span>lighting identity that transcends ordinary architecture.</span></p>
+            </div>
+            <div class="contact-info" style="margin-bottom: 30px; margin-top: 20px;">
+                <p style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">📞 +1 (800) 555-0199</p>
+                <p style="font-size: 1.1rem; color: #fff;">✉️ hello@limific.com</p>
+            </div>
+            <form class="contact-form">
+                <div class="input-group">
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <button type="button" class="btn-primary form-submit">Send Inquiry</button>
+            </form>
         </div>
     </section>
 
@@ -186,9 +265,12 @@
         </div>
     </footer>
 
-    <!-- GSAP for Animations -->
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="js/script.js"></script>
+
 </body>
+
 </html>
