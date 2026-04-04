@@ -92,7 +92,7 @@ if (cards.length > 0) {
         scrollTrigger: {
             trigger: ".collections",
             start: "top top",
-            end: "+=600%", // MAX PERSISTENCE: Section stays pinned for longer
+            end: "+=300%", // Tightened track for faster transitions
             pin: true,
             scrub: 1.5,
             anticipatePin: 1,
@@ -131,11 +131,11 @@ if (cards.length > 0) {
 
             stackTl.fromTo(maskedSpans, { y: "105%", opacity: 0, filter: "blur(5px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, stagger: 0.1, ease: "back.out(1.2)" }, "<0.1");
         }
-        stackTl.to({}, { duration: 0.4 }); 
+        stackTl.to({}, { duration: 0.3 }); 
     });
 
-    // MASSIVE FINAL HOLD: Keep the last card visible until definitively done scrolling
-    stackTl.to({}, { duration: 5 }).addLabel("end");
+    // Snappier Final Hold: Still persistent but lets you move on much quicker
+    stackTl.to({}, { duration: 1.2 }).addLabel("end");
 }
 
 

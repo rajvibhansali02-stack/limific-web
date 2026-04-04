@@ -436,7 +436,7 @@ nav.scrolled {
 
 /* Sub-sections general */
 section {
-    padding: 120px 8vw; /* General reduction in section spacing */
+    padding: 80px 8vw; /* Tightened for better flow */
     max-width: 1600px;
     margin: 0 auto;
     position: relative;
@@ -444,7 +444,7 @@ section {
 }
 
 #collections {
-    padding-top: 60px; /* Specific tight spacing for collections */
+    padding-top: 40px; /* Specific tight spacing for collections */
     padding-bottom: 0;
 }
 
@@ -467,6 +467,25 @@ section {
     color: var(--text-secondary);
 }
 
+
+/* Stats Section */
+.stats-section {
+    padding: 60px 0; /* Significantly reduced for speed */
+    background: transparent;
+    position: relative;
+    z-index: 5;
+}
+
+.stats-container {
+    max-width: var(--container);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 0 60px;
+}
 
 /* Collections Stacking Deck */
 .cards-container {
@@ -740,28 +759,6 @@ section {
 /* Footer */
 footer {
     text-align: center;
-    padding: 60px 20px;
-    border-top: 1px solid var(--border-color);
-    margin-top: 100px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hero-title { font-size: 3rem; }
-    .nav-links { display: none; } /* Mobile menu needed for real build, hiding for minimalism here */
-    .section-title { font-size: 2.2rem; }
-}
-
-/* Initial States for Scroll Reveal Classes (Wait for GSAP to handle, but fallback if JS fails) */
-.reveal {
-    opacity: 0;
-    visibility: hidden;
-}
-
-/* Stats Section */
-.stats-section {
-    padding: clamp(80px, 15vw, 160px) 0;
-    background: transparent;
     position: relative;
     z-index: 5;
 }
