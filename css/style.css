@@ -499,6 +499,83 @@ section {
     align-items: center;
 }
 
+@media (max-width: 768px) {
+    section {
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+    }
+
+    .hero-tagline {
+        font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .stats-container {
+        flex-direction: column;
+        gap: 50px;
+        padding: 0 20px;
+    }
+
+    .stat-item {
+        width: 100%;
+        text-align: center;
+    }
+
+    .stat-number-wrapper {
+        font-size: clamp(3rem, 12vw, 4.5rem);
+    }
+
+    .experience {
+        padding: 100px 20px;
+    }
+
+    .exp-content p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    .cards-stack {
+        width: 96%;
+        height: 450px;
+    }
+    
+    .card {
+        left: 2%;
+        width: 96%;
+        padding: 40px 25px;
+    }
+
+    .card h3 { font-size: 1.6rem; }
+    .card p { font-size: 1rem; }
+    .card-icon { width: 45px; height: 45px; }
+}
+
+@media (max-width: 480px) {
+    .section-title { font-size: 1.8rem; }
+    .hero-title { font-size: clamp(2.2rem, 10vw, 3rem); }
+    
+    .cards-stack {
+        height: 420px;
+    }
+
+    .card {
+        padding: 30px 20px;
+    }
+    
+    .btn-primary {
+        padding: 14px 32px;
+        font-size: 0.75rem;
+        width: auto;
+    }
+}
+
 .cards-stack {
     position: relative;
     width: 90%;
