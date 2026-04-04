@@ -197,23 +197,49 @@ gsap.utils.toArray(".stat-number").forEach(num => {
 });
 
 
-// 8. Interactive & Visual Polish
-// Magnetic Elements
+// 8. Interactive & Visual Polish (High-End Tactile Interaction)
 const magneticElements = document.querySelectorAll('.nav-links li a, .btn-primary, .glitch-link, .hero-title');
+const heroSection = document.querySelector(".hero");
+const ambientGlow = document.getElementById("ambientGlow");
+const heroTitle = document.querySelector(".hero-title");
+
+function updateMagnetic(e, el) {
+    let x, y;
+    if (e.type.startsWith('touch')) {
+        x = e.touches[0].clientX;
+        y = e.touches[0].clientY;
+    } else {
+        x = e.clientX;
+        y = e.clientY;
+    }
+
+    const rect = el.getBoundingClientRect();
+    const tX = x - rect.left - rect.width / 2;
+    const tY = y - rect.top - rect.height / 2;
+    const force = el.classList.contains('hero-title') ? 0.4 : 0.3;
+    gsap.to(el, { x: tX * force, y: tY * force, duration: 0.4, ease: "power2.out" });
+
+    // Handle Ambient Glow separately (if inside hero)
+    if (heroSection && ambientGlow) {
+        const hRect = heroSection.getBoundingClientRect();
+        gsap.to(ambientGlow, { x: x - hRect.left, y: y - hRect.top, duration: 0.4, ease: "power2.out" });
+    }
+}
+
+function resetMagnetic(el) {
+    gsap.to(el, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1.2, 0.4)" });
+}
+
 magneticElements.forEach(el => {
-    el.addEventListener('mousemove', (e) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        const force = el.classList.contains('hero-title') ? 0.4 : 0.3;
-        gsap.to(el, { x: x * force, y: y * force, duration: 0.4, ease: "power2.out" });
-    });
-    el.addEventListener('mouseleave', () => {
-        gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1.2, 0.3)" });
-    });
+    el.addEventListener('mousemove', (e) => updateMagnetic(e, el));
+    el.addEventListener('touchmove', (e) => updateMagnetic(e, el), { passive: true });
+    el.addEventListener('touchstart', (e) => updateMagnetic(e, el), { passive: true });
+    el.addEventListener('mouseleave', () => resetMagnetic(el));
+    el.addEventListener('touchend', () => resetMagnetic(el));
 });
 
-// Glitch Effect
+
+// High-Tech Scramble Effect (Links)
 const scrambleSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*$0123456789";
 document.querySelectorAll(".glitch-link").forEach(link => {
     const targetSpan = link.querySelector("span:nth-child(2)");
@@ -232,18 +258,6 @@ document.querySelectorAll(".glitch-link").forEach(link => {
         }, 30);
     });
 });
-
-// Ambient Glow Follower
-const heroSection = document.querySelector(".hero");
-const ambientGlow = document.getElementById("ambientGlow");
-if (heroSection && ambientGlow) {
-    heroSection.addEventListener("mousemove", (e) => {
-        const rect = heroSection.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        gsap.to(ambientGlow, { x: x, y: y, duration: 0.4, ease: "power2.out" });
-    });
-}
 
 // 9. Parallax & Atmosphere
 gsap.to(".orb-purple", { yPercent: 50, scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 } });

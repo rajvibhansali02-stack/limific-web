@@ -613,7 +613,7 @@ section {
     }
 
     .cards-stack {
-        width: 90%;
+        width: 88%; /* MORE COMPACT, PREMIUM FRAME */
         aspect-ratio: 1 / 1; /* PERFECT SQUARE STACK */
         height: auto;
         min-height: 350px;
