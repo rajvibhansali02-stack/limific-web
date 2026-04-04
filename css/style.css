@@ -579,50 +579,60 @@ section {
 /* Final Mobile Master Transformation */
 @media (max-width: 768px) {
     nav {
-        top: 0;
+        position: absolute; /* GHOST NAV: DOESN'T BLOCK CONTENT */
+        top: 20px;
         left: 0;
         transform: none;
         width: 100%;
-        border-radius: 0;
-        padding: 15px 20px;
-        background: rgba(5, 5, 5, 0.9);
-        border-bottom: 1px solid var(--border-color);
-        justify-content: center;
+        background: transparent;
+        border-bottom: none;
+        padding: 0;
+        backdrop-filter: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 1000;
     }
 
     .nav-container {
-        width: 100%;
-        overflow-x: auto;
-        white-space: nowrap;
-        padding-bottom: 5px;
-        scrollbar-width: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
     }
-    .nav-container::-webkit-scrollbar { display: none; }
 
-    .logo-text { margin-right: 0; font-size: 0.9rem; margin-bottom: 10px; display: block; text-align: center; width: 100%; }
+    .logo-text { 
+        margin-right: 0; 
+        font-size: 0.9rem; 
+        font-family: 'Syncopate', sans-serif;
+        letter-spacing: 0.3em;
+        color: #fff;
+    }
 
     .nav-links {
+        display: flex;
         gap: 20px;
-        justify-content: center;
-        width: max-content;
-        margin: 0 auto;
+        opacity: 0.6; /* SUBTLE LINKS */
+        font-size: 0.65rem;
     }
 
     .cards-container {
-        padding-bottom: 120px; /* SPACE FOR UNPINNING */
+        padding-top: 100px;
+        padding-bottom: 120px; 
     }
 
     .cards-stack {
-        width: 88%; /* MORE COMPACT, PREMIUM FRAME */
-        aspect-ratio: 1 / 1; /* PERFECT SQUARE STACK */
-        height: auto;
-        min-height: 350px;
+        width: 92%;
+        height: 340px; /* MORE COMPACT MASTERPIECE FRAME */
+        margin: 0 auto;
     }
 
     .card {
-        aspect-ratio: 1 / 1; /* PERFECT SQUARE CARD */
-        height: auto;
-        padding: 25px;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        aspect-ratio: auto;
+        padding: 30px 20px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -630,12 +640,12 @@ section {
         text-align: center;
     }
 
-    .card h3 { font-size: 1.4rem; margin-bottom: 10px; }
-    .card p { font-size: 0.9rem; }
-    .card-icon { width: 40px; height: 40px; margin-bottom: 15px; }
+    .card h3 { font-size: 1.3rem; margin-bottom: 12px; }
+    .card p { font-size: 0.9rem; max-width: 90%; }
+    .card-icon { width: 45px; height: 45px; margin-bottom: 20px; }
 
     .stat-number-wrapper {
-        margin-top: 40px; /* ADD SPACE BEFORE START OF STATS */
+        margin-top: 60px; 
     }
 }
 
