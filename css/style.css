@@ -632,7 +632,7 @@ section {
 .cards-stack {
     position: relative;
     width: 90%;
-    max-width: 1200px;
+    max-width: 1152px; /* max-w-6xl */
     height: 600px;
 }
 
@@ -644,8 +644,8 @@ section {
     height: 100%;
     background: #0E111B; /* Exact Refract background */
     border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 80px 100px; /* lg:px-12 lg:py-20 */
-    border-radius: 40px; /* rounded-3xl approx */
+    padding: 80px 48px; /* lg:px-12 lg:py-20 (py is 80px, px is 48px) */
+    border-radius: 24px; /* rounded-3xl */
     overflow: hidden;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -656,7 +656,7 @@ section {
     flex-direction: row; 
     justify-content: center;
     align-items: center;
-    gap: 64px; /* gap-8 for LG is often more */
+    gap: 32px; /* gap-8 */
 }
 
 .card-image {
@@ -664,7 +664,7 @@ section {
     aspect-ratio: 16 / 9; /* md:aspect-video */
     height: auto;
     overflow: hidden;
-    border-radius: 24px; /* rounded-2xl */
+    border-radius: 16px; /* rounded-2xl is 16px */
     flex-shrink: 0;
     box-shadow: rgba(1, 3, 10, 0.43) 0px 6px 30px;
 }
@@ -708,7 +708,6 @@ section {
 .card h3 {
     font-size: 1.875rem; /* text-3xl */
     font-weight: 600;
-    color: #ffffff;
     text-align: left;
     letter-spacing: -0.025em; /* tracking-tight */
     line-height: 1.25; /* leading-tight */
@@ -717,7 +716,6 @@ section {
 .card p {
     font-size: 1rem; /* text-base */
     max-width: 100%;
-    color: rgba(255, 255, 255, 0.6) !important;
     line-height: 1.625; /* leading-relaxed */
     text-align: left;
 }
