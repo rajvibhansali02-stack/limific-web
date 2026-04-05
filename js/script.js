@@ -112,7 +112,7 @@ if (cards.length > 0) {
     ).addLabel("header");
 
     cards.forEach((card, i) => {
-        const landPos = i * 40; 
+        const landPos = 0; // Stack perfectly on top of each other
         const maskedSpans = card.querySelectorAll('.text-mask span');
 
         if (i === 0) {
