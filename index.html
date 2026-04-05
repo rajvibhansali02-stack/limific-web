@@ -105,14 +105,14 @@
     </section>
 
     <!-- Product Collections -->
-    <section id="collections" class="collections">
+    <section id="collections" class="collections" style="overflow: visible !important;">
         <div class="section-header reveal">
             <h2 class="section-title text-grad">Masterpiece Collections</h2>
             <p class="section-subtitle">Sculpting modern spaces with visionary luminescence.</p>
         </div>
 
         <div class="cards-container">
-            <div class="cards-stack">
+            <div class="cards-stack" style="padding-bottom: 120vh !important;">
                 <!-- Product Card 1 -->
                 <div class="card card-1" style="z-index: 10;">
                     <div class="card-glow"></div>
@@ -310,6 +310,20 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="js/script.js"></script>
 
+    <script>
+        // Force Mobile Card Visibility over GSAP/CSS Glitches
+        if (window.innerWidth < 768) {
+            document.querySelectorAll('.card .text-mask span').forEach(span => {
+                span.style.opacity = '1';
+                span.style.transform = 'none';
+                span.style.filter = 'none';
+            });
+            document.querySelectorAll('.card .text-mask').forEach(mask => {
+                mask.style.opacity = '1';
+                mask.style.visibility = 'visible';
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -30,9 +30,17 @@ body {
     font-family: 'Outfit', sans-serif;
     line-height: 1.5;
     overflow-x: hidden;
+    overflow-y: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     cursor: none; /* Hide default cursor */
+}
+
+@media (max-width: 768px) {
+    body {
+        cursor: auto; /* Show cursor for touch testing tools etc */
+        overflow-x: clip; /* clip is better for sticky on mobile */
+    }
 }
 
 /* Custom Cursor */
@@ -520,37 +528,43 @@ section {
         text-align: center;
     }
 
-    /* Fixed Boutique Navigation Bar */
     nav {
         position: fixed; 
-        top: 20px; /* Closer to top as per Refract */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 92%; 
-        max-width: 600px;
-        background: rgba(14, 17, 27, 0.85); /* Refract Color */
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 100px;
-        padding: 12px 16px;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%; 
+        max-width: none;
+        background: rgba(8, 8, 8, 0.95);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 0;
+        padding: 18px 24px;
         display: flex;
         flex-direction: row; 
-        justify-content: center; /* Center links on mobile */
+        justify-content: flex-start;
         align-items: center;
-        z-index: 1000;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        z-index: 10000;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.8);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
     }
+
+    nav::-webkit-scrollbar { display: none; }
 
     .nav-links {
         display: flex;
-        gap: 15px;
-        font-size: 0.7rem;
-        font-weight: 600;
+        gap: 30px;
+        font-size: 0.8rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        width: 100%;
-        justify-content: center;
+        letter-spacing: 0.2em;
+        width: auto;
+        padding-right: 60px; /* Force scroll runway */
+        white-space: nowrap;
     }
 
     .logo-text { display: none; } /* Hide logo in the pill on phone to save space */
