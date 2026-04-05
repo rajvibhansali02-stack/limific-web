@@ -556,61 +556,30 @@ section {
 
     /* Compact 'Masterpiece' Framed Deck */
     .cards-stack {
-        width: 100%; /* Full bleed for perfect stack */
-        height: 600px; 
+        width: 100%; 
+        height: 650px; /* Taller for mobile to accommodate content */
         margin: 0 auto;
     }
 
     .card {
-        height: 600px;
+        height: 650px;
+        flex-direction: column; /* Vertical stack for mobile */
+        padding: 20px;
+    }
+
+    .card-image {
         width: 100%;
-        left: 0;
-        padding: 24px 16px; /* Padding for 'in between' feel */
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        border-radius: 40px;
-        box-shadow: 0 -20px 40px rgba(0,0,0,0.4); /* Stronger indicator of stack */
+        height: 45%; /* Shorter image on mobile to leave room for text */
+        margin-bottom: 25px;
     }
 
     .card-content {
-        padding: 40px 30px; /* More padding like reference */
-        align-items: flex-start; /* Left align */
-        text-align: left; /* Left align */
+        width: 100%;
+        padding: 0 10px;
     }
 
-    .card h3 { 
-        font-size: 2.2rem; /* Significantly larger title */
-        font-weight: 500;
-        margin-bottom: 12px; 
-        text-align: left;
-    }
-    .card p { 
-        font-size: 1.1rem; 
-        max-width: 100%; 
-        line-height: 1.5; 
-        color: rgba(255, 255, 255, 0.7) !important;
-        text-align: left;
-    }
-    .card-icon { width: 32px; height: 32px; margin-bottom: 24px; color: var(--text-primary); }
-
-    .card .text-mask {
-        height: auto; /* Allow multi-line */
-        overflow: visible; /* Don't cut off */
-    }
-
-    .card .text-mask span {
-        transform: none !important; /* Disable mask animation for now to ensure visibility */
-        opacity: 1 !important;
-    }
-
-
-    .card-image {
-        height: 65%; /* Significantly longer image on mobile */
-        border-radius: 24px;
-        margin-bottom: 20px;
-    }
+    .card h3 { font-size: 2rem; margin-bottom: 12px; }
+    .card p { font-size: 1rem; line-height: 1.5; }
 }
 
 /* Micro-Mobile Polish (480px and below) */
@@ -640,13 +609,13 @@ section {
 .card {
     position: absolute;
     top: 0;
-    left: 2%; /* Move closer to edge */
-    width: 96%; /* Wider card */
+    left: 10%;
+    width: 80%; 
     height: 100%;
-    background: #0d0d0d;
+    background: #0a0a0a;
     border: 1px solid var(--border-color);
-    padding: 30px; /* Internal padding for 'in between' effect */
-    border-radius: 48px; 
+    padding: 40px; 
+    border-radius: 54px; 
     overflow: hidden;
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
@@ -654,18 +623,19 @@ section {
     cursor: pointer;
     box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start; /* Left align */
+    flex-direction: row; /* Horizontal for Desktop */
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
 }
 
 .card-image {
-    width: 100%;
-    height: 60%; /* Significantly longer image */
+    width: 60%; /* Image takes 60% width on desktop */
+    height: 100%; /* Full height of row */
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 40px; /* More rounded image like reference */
-    margin-bottom: 30px;
+    border-radius: 36px;
+    flex-shrink: 0;
 }
 
 .card-image img {
@@ -680,12 +650,13 @@ section {
 }
 
 .card-content {
-    padding: 40px;
-    width: 100%;
-    flex-grow: 1;
+    width: 40%; /* Content takes remaining 40% */
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
 }
 
 /* Card Specific Aesthetics */
