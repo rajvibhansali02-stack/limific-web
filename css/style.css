@@ -557,29 +557,33 @@ section {
     /* Compact 'Masterpiece' Framed Deck */
     .cards-stack {
         width: 100%; 
-        height: 650px; /* Taller for mobile to accommodate content */
+        height: 600px; 
         margin: 0 auto;
     }
 
     .card {
-        height: 650px;
-        flex-direction: column; /* Vertical stack for mobile */
+        height: 550px;
+        flex-direction: row; /* FORCE HORIZONTAL ON MOBILE */
         padding: 20px;
+        align-items: center;
+        gap: 20px;
     }
 
     .card-image {
-        width: 100%;
-        height: 45%; /* Shorter image on mobile to leave room for text */
-        margin-bottom: 25px;
+        width: 40%; /* Narrow vertical strip like reference */
+        height: 90%; 
+        margin-bottom: 0;
+        border-radius: 60px; /* Highly rounded like reference */
     }
 
     .card-content {
-        width: 100%;
-        padding: 0 10px;
+        width: 60%;
+        padding: 0;
     }
 
-    .card h3 { font-size: 2rem; margin-bottom: 12px; }
-    .card p { font-size: 1rem; line-height: 1.5; }
+    .card h3 { font-size: 1.6rem; margin-bottom: 8px; }
+    .card p { font-size: 0.9rem; line-height: 1.4; color: rgba(255, 255, 255, 0.5) !important; }
+    .card-icon { width: 32px; height: 32px; margin-bottom: 20px; }
 }
 
 /* Micro-Mobile Polish (480px and below) */
