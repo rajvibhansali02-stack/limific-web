@@ -444,9 +444,9 @@ section {
 }
 
 #collections {
-    padding-top: 40px; /* Specific tight spacing for collections */
+    padding-top: 40px; 
     padding-bottom: 0;
-    overflow: visible;
+    overflow: visible !important; /* Force visible for sticky */
 }
 
 .section-header {
@@ -544,20 +544,14 @@ section {
 
     .nav-links {
         display: flex;
-        gap: 20px;
+        gap: 15px;
         font-size: 0.7rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        overflow-x: auto;
-        white-space: nowrap;
         width: 100%;
         justify-content: center;
-        padding: 0 10px;
-        scrollbar-width: none; /* Hide scrollbar Firefox */
     }
-
-    .nav-links::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
 
     .logo-text { display: none; } /* Hide logo in the pill on phone to save space */
 
@@ -624,21 +618,25 @@ section {
     }
 
     .text-mask span {
-        display: block;
+        display: block !important;
         opacity: 1 !important;
         transform: none !important;
+        translate: none !important;
+        visibility: visible !important;
+        filter: none !important;
+        line-height: inherit !important;
     }
 
     .card h3 { 
-        font-size: 1.75rem; 
+        font-size: 1.8rem; 
         font-weight: 700;
         margin: 0;
-        line-height: 1.2;
+        color: #fff !important;
     }
     .card p { 
-        font-size: 0.95rem; 
+        font-size: 1rem; 
         line-height: 1.5;
-        color: rgba(255, 255, 255, 0.7) !important;
+        color: rgba(255, 255, 255, 0.75) !important;
         margin: 0;
     }
     .card-icon { width: 20px; height: 20px; margin-bottom: 0; opacity: 0.7; }
