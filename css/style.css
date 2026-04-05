@@ -17,6 +17,17 @@
     color: #000;
 }
 
+/* Base Masking System for Animations */
+.text-mask {
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+}
+
+.text-mask span {
+    display: block;
+}
+
 
 * {
     margin: 0;
