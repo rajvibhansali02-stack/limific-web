@@ -86,63 +86,55 @@ heroEntranceTl.to(".text-mask span", {
 
 
 // 5. Specialized Stacked Cards Animation (Masterpiece Collections)
-// MatchMedia ensures we don't apply 'hide-by-default' reveals on mobile
-let mm = gsap.matchMedia();
-
-mm.add("(min-width: 768px)", () => {
-    const cards = gsap.utils.toArray(".card");
-    if (cards.length > 0) {
-        cards.forEach((card, i) => {
-            // Create an entrance reveal for the elements inside (Desktop Only)
-            const maskedSpans = card.querySelectorAll('.text-mask span');
-            
-            gsap.fromTo(maskedSpans, 
-                { y: "105%", opacity: 0, filter: "blur(5px)" },
-                { 
-                    y: 0, opacity: 1, filter: "blur(0px)", 
-                    duration: 0.8, stagger: 0.1, ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 85%",
-                        toggleActions: "play none none none"
-                    }
+// Refactored to work with CSS Sticky for maximum flexibility
+const cards = gsap.utils.toArray(".card");
+if (cards.length > 0) {
+    cards.forEach((card, i) => {
+        // Create an entrance reveal for the elements inside
+        const maskedSpans = card.querySelectorAll('.text-mask span');
+        
+        gsap.fromTo(maskedSpans, 
+            { y: "105%", opacity: 0, filter: "blur(5px)" },
+            { 
+                y: 0, opacity: 1, filter: "blur(0px)", 
+                duration: 0.8, stagger: 0.1, ease: "power2.out",
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
                 }
-            );
-
-            // Core Stacking Effect: Scale down previous card as next one arrives
-            if (i < cards.length - 1) {
-                gsap.to(card, {
-                    scale: 0.95,
-                    opacity: 0.6,
-                    filter: "blur(10px)",
-                    scrollTrigger: {
-                        trigger: cards[i + 1],
-                        start: "top top",
-                        end: "top 30%",
-                        scrub: true
-                    }
-                });
             }
-        });
-    }
-});
+        );
+
+        // Core Stacking Effect: Scale down previous card as next one arrives
+        if (i < cards.length - 1) {
+            gsap.to(card, {
+                scale: 0.95,
+                opacity: 0.6,
+                filter: "blur(10px)",
+                scrollTrigger: {
+                    trigger: cards[i + 1],
+                    start: "top top",
+                    end: "top 30%",
+                    scrub: true
+                }
+            });
+        }
+    });
+}
 
 
 // 6. Global Repeatable Scroll Triggers
-// MatchMedia: Only perform text reveals on Desktop (768px+)
-// This prevents mobile text from starting in a 'hidden' state if triggers fail
-mm.add("(min-width: 768px)", () => {
-    // A. Masked Slide Reveal for all Headers
-    gsap.utils.toArray(".text-mask span").forEach(span => {
-        if (span.closest('.hero-title')) return;
-        gsap.fromTo(span, { y: "105%" }, { 
-            y: 0, duration: 1.2, ease: "back.out(1.2)",
-            scrollTrigger: {
-                trigger: span,
-                start: "top 92%",
-                toggleActions: "play reverse play reverse"
-            }
-        });
+// A. Masked Slide Reveal for all Headers
+gsap.utils.toArray(".text-mask span").forEach(span => {
+    if (span.closest('.hero-title')) return;
+    gsap.fromTo(span, { y: "105%" }, { 
+        y: 0, duration: 1.2, ease: "back.out(1.2)",
+        scrollTrigger: {
+            trigger: span,
+            start: "top 92%",
+            toggleActions: "play reverse play reverse"
+        }
     });
 });
 
