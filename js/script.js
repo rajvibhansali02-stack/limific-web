@@ -107,6 +107,10 @@ if (cards.length > 0) {
         );
 
         // Core Stacking Effect: Scale down previous card as next one arrives
+        // Dynamic trigger point to match CSS sticky top (12.5vh desktop / 25vw mobile)
+        const isMobile = window.innerWidth <= 768;
+        const triggerPoint = isMobile ? "25vw" : "12.5vh";
+
         if (i < cards.length - 1) {
             gsap.to(card, {
                 scale: 0.95,
@@ -114,9 +118,10 @@ if (cards.length > 0) {
                 filter: "blur(10px)",
                 scrollTrigger: {
                     trigger: cards[i + 1],
-                    start: "top top",
-                    end: "top 30%",
-                    scrub: true
+                    start: `top ${triggerPoint}`, 
+                    end: `top ${isMobile ? "10vw" : "5vh"}`, 
+                    scrub: true,
+                    invalidateOnRefresh: true
                 }
             });
         }

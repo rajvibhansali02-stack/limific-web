@@ -821,6 +821,12 @@ section {
     pointer-events: none;
 }
 
+.card-.collections {
+    position: relative;
+    padding: 120px 24px 20vh; /* Precise 20vh buffer at end */
+    background: #06080E;
+    width: 100%;
+}
 .card-content {
     position: relative;
     z-index: 1;
