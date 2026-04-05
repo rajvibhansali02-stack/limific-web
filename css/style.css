@@ -632,7 +632,7 @@ section {
     position: relative;
     width: 90%;
     max-width: 1152px; /* max-w-6xl */
-    height: 600px;
+    height: 550px; /* Reduced from 600px to avoid bottom clipping */
 }
 
 .card {
@@ -643,7 +643,7 @@ section {
     height: 100%;
     background: #161922; /* Extracted Refract Card Background */
     border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 60px 48px; /* md:p-12 LG expands below */
+    padding: 40px 48px; /* Reduced padding to save vertical space */
     border-radius: 40px; /* rounded-[40px] */
     overflow: hidden;
     backdrop-filter: blur(20px);
@@ -655,12 +655,12 @@ section {
     flex-direction: row; 
     justify-content: center;
     align-items: center;
-    gap: 64px; /* gap-16 extracted */
+    gap: 40px; /* Refined gap */
 }
 
 @media (min-width: 1024px) {
     .card {
-        padding: 80px; /* p-20 */
+        padding: 60px 80px; /* Compacted p-20 equivalent */
     }
 }
 
