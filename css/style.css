@@ -575,12 +575,36 @@ section {
     }
 
     .card-content {
-        padding: 24px 8px;
+        padding: 40px 30px; /* More padding like reference */
+        align-items: flex-start; /* Left align */
+        text-align: left; /* Left align */
     }
 
-    .card h3 { font-size: 1.5rem; margin-bottom: 12px; }
-    .card p { font-size: 0.95rem; max-width: 100%; line-height: 1.6; }
-    .card-icon { width: 32px; height: 32px; margin-bottom: 12px; }
+    .card h3 { 
+        font-size: 2.2rem; /* Significantly larger title */
+        font-weight: 500;
+        margin-bottom: 12px; 
+        text-align: left;
+    }
+    .card p { 
+        font-size: 1.1rem; 
+        max-width: 100%; 
+        line-height: 1.5; 
+        color: rgba(255, 255, 255, 0.7) !important;
+        text-align: left;
+    }
+    .card-icon { width: 32px; height: 32px; margin-bottom: 24px; color: var(--text-primary); }
+
+    .card .text-mask {
+        height: auto; /* Allow multi-line */
+        overflow: visible; /* Don't cut off */
+    }
+
+    .card .text-mask span {
+        transform: none !important; /* Disable mask animation for now to ensure visibility */
+        opacity: 1 !important;
+    }
+
 
     .card-image {
         height: 65%; /* Significantly longer image on mobile */
@@ -616,12 +640,12 @@ section {
 .card {
     position: absolute;
     top: 0;
-    left: 5%;
-    width: 90%; 
+    left: 2%; /* Move closer to edge */
+    width: 96%; /* Wider card */
     height: 100%;
     background: #0d0d0d;
     border: 1px solid var(--border-color);
-    padding: 30px 25px; /* Internal padding for 'in between' effect */
+    padding: 30px; /* Internal padding for 'in between' effect */
     border-radius: 48px; 
     overflow: hidden;
     backdrop-filter: blur(40px);
@@ -632,7 +656,7 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: flex-start; /* Left align */
 }
 
 .card-image {
@@ -640,8 +664,8 @@ section {
     height: 60%; /* Significantly longer image */
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 36px; /* Internal rounded corners */
-    margin-bottom: 20px;
+    border-radius: 40px; /* More rounded image like reference */
+    margin-bottom: 30px;
 }
 
 .card-image img {
@@ -671,26 +695,27 @@ section {
 .card-4 { border-top: 1px solid rgba(59, 130, 246, 0.3); }
 
 .card h3 {
-    font-size: 1.8rem; /* Compact title */
-    margin-bottom: 12px;
+    font-size: 2.8rem; /* Even larger bold titles */
+    font-weight: 600;
+    margin-bottom: 16px;
     color: #ffffff;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    text-align: left;
 }
 
 .card p {
-    font-size: 1.05rem; /* Compact paragraph */
+    font-size: 1.15rem; 
     max-width: 100%;
     color: rgba(255, 255, 255, 0.6) !important;
-    line-height: 1.6;
-    margin-bottom: 24px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    text-align: left;
 }
 
 .card-icon {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 20px;
-    color: var(--accent);
-    filter: drop-shadow(0 0 10px rgba(245, 151, 104, 0.2));
+    width: 42px;
+    height: 42px;
+    margin-bottom: 24px;
+    color: #fff; /* White icon like reference */
 }
 
 .card-link {
