@@ -449,22 +449,75 @@ section {
 }
 
 .section-header {
-    margin-bottom: 20px; /* Minimal gap between title and cards */
     text-align: center;
+    margin-bottom: 96px; /* mb-24 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px; /* space-y-6 roughly */
 }
 
 .section-title {
-    font-size: clamp(2rem, 4vw, 3rem); /* Smaller titles */
-    font-weight: 500;
-    margin-bottom: 15px;
+    font-size: 2.5rem; /* text-4xl */
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.05em; /* tracking-tighter */
     color: #fff;
 }
 
 .section-subtitle {
-    font-size: 1.1rem; /* Smaller subtitle */
-    max-width: 500px;
+    font-size: 1rem; /* text-base */
+    line-height: 1.625;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 448px; /* max-w-md */
     margin: 0 auto;
-    color: var(--text-secondary);
+}
+
+.cards-filter-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px; /* gap-2 */
+    margin-top: 16px;
+    position: relative;
+    z-index: 30;
+}
+
+@media (min-width: 768px) {
+    .cards-filter-nav {
+        gap: 24px; /* gap-6 */
+        margin-top: 24px;
+    }
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+}
+
+.filter-btn:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.filter-btn.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 768px) {
+    .section-title {
+        font-size: 3.75rem; /* text-6xl */
+    }
+    .section-subtitle {
+        font-size: 1.25rem; /* text-xl */
+    }
 }
 
 
