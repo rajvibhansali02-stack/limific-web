@@ -446,6 +446,7 @@ section {
 #collections {
     padding-top: 40px; /* Specific tight spacing for collections */
     padding-bottom: 0;
+    overflow: visible;
 }
 
 .section-header {
@@ -573,6 +574,7 @@ section {
         width: 100%; 
         height: 600px; 
         margin: 0 auto;
+        padding-bottom: 50vh;
     }
 
     .card {
@@ -644,6 +646,7 @@ section {
 @media (min-width: 768px) {
     .cards-stack {
         gap: 6.25vh; /* md:gap-[6.25vh] */
+        padding-bottom: 20vh;
     }
 }
 
@@ -821,12 +824,6 @@ section {
     pointer-events: none;
 }
 
-.card-.collections {
-    position: relative;
-    padding: 120px 24px 20vh; /* Precise 20vh buffer at end */
-    background: #06080E;
-    width: 100%;
-}
 .card-content {
     position: relative;
     z-index: 1;
