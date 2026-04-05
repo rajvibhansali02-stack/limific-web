@@ -685,6 +685,14 @@ section {
 .card-3 { border-top: 1px solid rgba(16, 185, 129, 0.3); }
 .card-4 { border-top: 1px solid rgba(59, 130, 246, 0.3); }
 
+.text-grad {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
 .card h3 {
     font-size: 1.875rem; /* text-3xl */
     font-weight: 600;
