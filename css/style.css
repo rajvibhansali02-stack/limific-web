@@ -630,37 +630,43 @@ section {
 
 .cards-stack {
     position: relative;
-    width: 90%;
+    width: 100%;
     max-width: 1152px; /* max-w-6xl */
-    height: 550px; /* Reduced from 600px to avoid bottom clipping */
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* Space between cards as they scroll into view */
+    margin: 0 auto;
 }
 
 .card {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: sticky;
+    top: 112px; /* Extracted desktop sticky top */
     width: 100%;
-    height: 100%;
-    background: #161922; /* Extracted Refract Card Background */
+    min-height: 600px;
+    background: #161922; 
     border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 40px 48px; /* Reduced padding to save vertical space */
-    border-radius: 40px; /* rounded-[40px] */
+    padding: 60px 80px; 
+    border-radius: 40px;
     overflow: hidden;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    cursor: pointer;
     box-shadow: rgba(2, 7, 24, 0.38) 0px 2px 20px;
     display: flex;
     flex-direction: row; 
     justify-content: center;
     align-items: center;
-    gap: 40px; /* Refined gap */
+    gap: 64px;
+    margin-bottom: 100px; /* Creates the overlap effect range */
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 768px) {
     .card {
-        padding: 60px 80px; /* Compacted p-20 equivalent */
+        top: 80px; /* Extracted mobile sticky top */
+        flex-direction: column;
+        padding: 40px 24px;
+        min-height: 500px;
+        gap: 32px;
+        margin-bottom: 60px;
     }
 }
 

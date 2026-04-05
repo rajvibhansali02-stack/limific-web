@@ -86,56 +86,41 @@ heroEntranceTl.to(".text-mask span", {
 
 
 // 5. Specialized Stacked Cards Animation (Masterpiece Collections)
-const cards = gsap.utils.toArray(".cards-stack .card");
+// Refactored to work with CSS Sticky for maximum flexibility
+const cards = gsap.utils.toArray(".card");
 if (cards.length > 0) {
-    const stackTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: ".collections",
-            start: "top top",
-            end: "+=300%", // Tightened track for faster transitions
-            pin: true,
-            scrub: 1.5,
-            anticipatePin: 1,
-            snap: {
-                snapTo: "labels", 
-                duration: { min: 0.2, max: 0.4 },
-                delay: 0,
-                ease: "expo.out"
-            }
-        }
-    });
-
-    // 1. Initial Quick Header Reveal
-    stackTl.fromTo(".collections .section-header .text-mask span", 
-        { y: "105%", opacity: 0, filter: "blur(10px)" },
-        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "back.out(1.2)" }
-    ).addLabel("header");
-
     cards.forEach((card, i) => {
-        const landPos = 0; // Stack perfectly on top of each other
+        // Create an entrance reveal for the elements inside
         const maskedSpans = card.querySelectorAll('.text-mask span');
+        
+        gsap.fromTo(maskedSpans, 
+            { y: "105%", opacity: 0, filter: "blur(5px)" },
+            { 
+                y: 0, opacity: 1, filter: "blur(0px)", 
+                duration: 0.8, stagger: 0.1, ease: "power2.out",
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            }
+        );
 
-        if (i === 0) {
-            stackTl.fromTo(card, 
-                { y: 20, opacity: 0 },
-                { y: landPos, opacity: 1, duration: 0.5, ease: "back.out(1.2)" },
-                "<0.1"
-            ).addLabel(`card-${i+1}-arrival`);
-            
-            stackTl.fromTo(maskedSpans, { y: "105%", opacity: 0, filter: "blur(5px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, stagger: 0.08, ease: "back.out(1.2)" }, "<");
-        } else {
-            stackTl.fromTo(card, 
-                { y: 400, opacity: 0, zIndex: i + 1 },
-                { y: landPos, opacity: 1, duration: 0.6, ease: "back.out(1.2)", zIndex: i + 1 }
-            ).addLabel(`card-${i+1}-arrival`);
-
-            stackTl.fromTo(maskedSpans, { y: "105%", opacity: 0, filter: "blur(5px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, stagger: 0.1, ease: "back.out(1.2)" }, "<0.1");
+        // Core Stacking Effect: Scale down previous card as next one arrives
+        if (i < cards.length - 1) {
+            gsap.to(card, {
+                scale: 0.95,
+                opacity: 0.6,
+                filter: "blur(10px)",
+                scrollTrigger: {
+                    trigger: cards[i + 1],
+                    start: "top top",
+                    end: "top 30%",
+                    scrub: true
+                }
+            });
         }
-        stackTl.to({}, { duration: 0.3 }); 
     });
-
-    // Snappier Final Hold: Still persistent but lets you move on much quicker
-    stackTl.to({}, { duration: 1.2 }).addLabel("end");
 }
 
 
