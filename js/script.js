@@ -129,16 +129,20 @@ mm.add("(min-width: 768px)", () => {
 
 
 // 6. Global Repeatable Scroll Triggers
-// A. Masked Slide Reveal for all Headers
-gsap.utils.toArray(".text-mask span").forEach(span => {
-    if (span.closest('.hero-title')) return;
-    gsap.fromTo(span, { y: "105%" }, { 
-        y: 0, duration: 1.2, ease: "back.out(1.2)",
-        scrollTrigger: {
-            trigger: span,
-            start: "top 92%",
-            toggleActions: "play reverse play reverse"
-        }
+// MatchMedia: Only perform text reveals on Desktop (768px+)
+// This prevents mobile text from starting in a 'hidden' state if triggers fail
+mm.add("(min-width: 768px)", () => {
+    // A. Masked Slide Reveal for all Headers
+    gsap.utils.toArray(".text-mask span").forEach(span => {
+        if (span.closest('.hero-title')) return;
+        gsap.fromTo(span, { y: "105%" }, { 
+            y: 0, duration: 1.2, ease: "back.out(1.2)",
+            scrollTrigger: {
+                trigger: span,
+                start: "top 92%",
+                toggleActions: "play reverse play reverse"
+            }
+        });
     });
 });
 
