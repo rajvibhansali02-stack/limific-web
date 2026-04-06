@@ -226,7 +226,7 @@ nav.scrolled {
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 32px;
+    gap: 48px;
 }
 
 .glitch-link {
@@ -621,7 +621,7 @@ section {
         flex-direction: column; /* Refract Mobile logic */
         padding: 24px; /* p-6 */
         align-items: center;
-        gap: 32px; /* gap-8 extracted */
+        gap: 48px; /* gap-8 extracted */
     }
 
     .card-image {
@@ -706,7 +706,7 @@ section {
     flex-direction: column; /* mobile default */
     justify-content: center;
     align-items: center;
-    gap: 32px; /* gap-8 extracted */
+    gap: 48px; /* gap-8 extracted */
     margin-bottom: 0;
 }
 
@@ -715,7 +715,7 @@ section {
         top: 12.5vh; /* Refract Desktop Sticky Top */
         flex-direction: row;
         padding: 56px 40px; /* md:px-10 md:py-14 */
-        gap: 32px;
+        gap: 48px;
     }
 }
 
@@ -1124,21 +1124,23 @@ footer {
 
 
 
+
+
 /* CUSTOM OVERRIDE FOR MOBILE NAV AND TEXT */
 @media (max-width: 768px) {
     nav {
         position: fixed;
-        top: 16px;
+        top: 24px;
         left: 50%;
         transform: translateX(-50%);
-        width: 98% !important;
-        max-width: 480px;
+        width: 92% !important;
+        max-width: 500px;
         background: rgba(5, 5, 5, 0.85);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         border: 1px solid var(--border-color);
         border-radius: 100px;
-        padding: 5px 6px !important;
+        padding: 10px 16px !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center;
@@ -1146,8 +1148,8 @@ footer {
     }
     .nav-links {
         display: flex !important;
-        gap: 4px !important;
-        font-size: 0.38rem !important;
+        gap: 20px !important;
+        font-size: 0.7rem !important;
         list-style: none;
         margin: 0 !important;
         padding: 0 !important;
@@ -1155,9 +1157,9 @@ footer {
         width: 100%;
     }
     .nav-links a {
-        padding: 0 1px;
+        padding: 0 4px;
         white-space: nowrap;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.01em;
     }
     .text-grad {
         background: none !important;
