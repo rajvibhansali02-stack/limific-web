@@ -309,16 +309,17 @@ let curY   = mouseY;
 window.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    cursor.style.opacity = "1";
-    cursorDot.style.opacity = "1";
+    // Desktop only: show cursor on first movement
+    cursor.classList.add('is-visible');
+    cursorDot.classList.add('is-visible');
 });
 
 // Track touch position for mobile — tactile feedback
 window.addEventListener('touchstart', e => {
     mouseX = e.touches[0].clientX;
     mouseY = e.touches[0].clientY;
-    cursor.classList.add('touch-active');
-    cursorDot.classList.add('touch-active');
+    cursor.classList.add('touch-active', 'is-visible');
+    cursorDot.classList.add('touch-active', 'is-visible');
 }, { passive: true });
 
 window.addEventListener('touchmove', e => {
@@ -327,8 +328,8 @@ window.addEventListener('touchmove', e => {
 }, { passive: true });
 
 window.addEventListener('touchend', () => {
-    cursor.classList.remove('touch-active');
-    cursorDot.classList.remove('touch-active');
+    cursor.classList.remove('touch-active', 'is-visible');
+    cursorDot.classList.remove('touch-active', 'is-visible');
 }, { passive: true });
 
 // Lerp factor — lower = more lag/smooth, higher = snappier
