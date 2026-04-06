@@ -30,6 +30,8 @@ window.addEventListener("load", () => {
     // Static Orbs continuous movement
     gsap.to(".orb-purple", { x: '20vw', y: '10vh', duration: 15, repeat: -1, yoyo: true, ease: "sine.inOut" });
     gsap.to(".orb-orange", { x: '-10vw', y: '-20vh', duration: 20, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    // Ensure all animations are calculated correctly
+    ScrollTrigger.refresh();
 });
 
 
@@ -93,25 +95,25 @@ if (cards.length > 0) {
         // Create an entrance reveal for the elements inside
         const maskedSpans = card.querySelectorAll('.text-mask span');
         
-        gsap.fromTo(maskedSpans, 
-            { y: "105%", opacity: 0, filter: "blur(5px)" },
-            { 
-                y: 0, opacity: 1, filter: "blur(0px)", 
-                duration: 0.8, stagger: 0.1, ease: "power2.out",
-                scrollTrigger: {
-                    trigger: card,
-                    start: "top 85%",
-                    toggleActions: "play none none none"
+            gsap.fromTo(maskedSpans, 
+                { y: "105%", opacity: 0, filter: "blur(5px)" },
+                { 
+                    y: 0, opacity: 1, filter: "blur(0px)", 
+                    duration: 0.8, stagger: 0.1, ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 95%",
+                        toggleActions: "play none none none"
+                    }
                 }
-            }
-        );
+            );
 
         // Core Stacking Effect: Scale down previous card as next one arrives
         if (i < cards.length - 1) {
             gsap.to(card, {
                 scale: 0.95,
-                opacity: 0.6,
-                filter: "blur(10px)",
+                opacity: 0.7,
+                filter: "blur(4px)",
                 scrollTrigger: {
                     trigger: cards[i + 1],
                     start: "top top",
@@ -126,17 +128,7 @@ if (cards.length > 0) {
 
 // 6. Global Repeatable Scroll Triggers
 // A. Masked Slide Reveal for all Headers
-gsap.utils.toArray(".text-mask span").forEach(span => {
-    if (span.closest('.hero-title')) return;
-    gsap.fromTo(span, { y: "105%" }, { 
-        y: 0, duration: 1.2, ease: "back.out(1.2)",
-        scrollTrigger: {
-            trigger: span,
-            start: "top 92%",
-            toggleActions: "play reverse play reverse"
-        }
-    });
-});
+
 
 // B. Fade/Slide Reveal for Paragraphs & Buttons
 gsap.utils.toArray(".reveal-tagline, .reveal-btn, .about p, .contact p, .contact-info p, .exp-content p, .exp-content button").forEach(el => {
