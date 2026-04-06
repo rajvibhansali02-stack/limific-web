@@ -560,7 +560,7 @@ section {
     /* Fixed Boutique Navigation Bar */
     nav {
         position: fixed; 
-        top: 10vh;
+        bottom: 24px; top: auto;
         left: 50%;
         transform: translateX(-50%);
         width: 88%; /* Boutique Scale */
@@ -581,7 +581,7 @@ section {
     .nav-links {
         display: flex;
         gap: 12px;
-        font-size: 0.5rem;
+        font-size: 0.65rem;
     }
 
 
@@ -1409,7 +1409,7 @@ body.light-mode .card p .text-grad {
 
 
 /* ============================================================
-   CARD H3 TITLE — HARD PAINT FIX
+   CARD H3 TITLE â€” HARD PAINT FIX
    The gradient clip fails when combined with GSAP opacity;
    force a solid visible white title on cards at all times.
    ============================================================ */
