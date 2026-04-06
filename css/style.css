@@ -560,7 +560,7 @@ section {
     /* Fixed Boutique Navigation Bar */
     nav {
         position: fixed; 
-        bottom: 24px; top: auto;
+        top: 10vh;
         left: 50%;
         transform: translateX(-50%);
         width: 88%; /* Boutique Scale */
@@ -581,7 +581,7 @@ section {
     .nav-links {
         display: flex;
         gap: 12px;
-        font-size: 0.65rem;
+        font-size: 0.5rem;
     }
 
 
