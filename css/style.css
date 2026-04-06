@@ -1128,6 +1128,8 @@ footer {
 
 
 
+
+
 /* CUSTOM OVERRIDE FOR MOBILE NAV AND TEXT */
 @media (max-width: 768px) {
     nav {
@@ -1166,7 +1168,6 @@ footer {
     .text-grad {
         background: none !important;
         -webkit-text-fill-color: #ffffff !important;
-        text-fill-color: #ffffff !important;
         color: #ffffff !important;
         opacity: 1 !important;
         display: block !important;
@@ -1178,5 +1179,8 @@ footer {
     .card h3, .card p {
         opacity: 1 !important;
         visibility: visible !important;
+    }
+    .experience {
+        padding: 60px 0 !important;
     }
 }
