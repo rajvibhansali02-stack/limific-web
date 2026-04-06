@@ -49,39 +49,60 @@ body {
     z-index: 10000;
     mix-blend-mode: difference;
     will-change: transform;
-    /* transition handles the expansion when hovering items */
+    opacity: 0; /* Hidden until movement */
     transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
                 height 0.4s cubic-bezier(0.23, 1, 0.32, 1),
-                background 0.4s ease, border-color 0.4s ease;
+                background 0.4s ease, 
+                border-color 0.4s ease,
+                opacity 0.5s ease;
 }
 
 .cursor-dot {
     position: fixed;
     top: 0;
     left: 0;
-    width: 16px; /* Increased from 10px */
-    height: 16px; /* Increased from 10px */
+    width: 16px;
+    height: 16px;
     background: #fff;
     border-radius: 50%;
     pointer-events: none;
     z-index: 10001;
     mix-blend-mode: difference;
     will-change: transform;
+    opacity: 0; /* Hidden until movement */
     transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1), 
                 height 0.3s cubic-bezier(0.23, 1, 0.32, 1),
                 opacity 0.3s ease;
 }
 
 .custom-cursor.active {
-    width: 90px; /* Further expanded for drama */
+    width: 90px;
     height: 90px;
     background: rgba(255, 255, 255, 0.15);
     border-color: transparent;
 }
 
 .cursor-dot.active {
-    width: 8px; /* Slightly smaller on hover to refine focus within the expanded ring */
+    width: 8px;
     opacity: 0.8;
+}
+
+/* TOUCH FEEDBACK — PREMIUM MOBILE HALO */
+.custom-cursor.touch-active {
+    opacity: 1;
+    width: 120px; /* Large halo around finger */
+    height: 120px;
+    border-width: 2px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cursor-dot.touch-active {
+    opacity: 1;
+    width: 40px; /* Soft glow dot */
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    filter: blur(10px);
 }
 
 

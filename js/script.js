@@ -309,19 +309,42 @@ let curY   = mouseY;
 window.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    cursor.style.opacity = "1";
+    cursorDot.style.opacity = "1";
 });
+
+// Track touch position for mobile — tactile feedback
+window.addEventListener('touchstart', e => {
+    mouseX = e.touches[0].clientX;
+    mouseY = e.touches[0].clientY;
+    cursor.classList.add('touch-active');
+    cursorDot.classList.add('touch-active');
+}, { passive: true });
+
+window.addEventListener('touchmove', e => {
+    mouseX = e.touches[0].clientX;
+    mouseY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchend', () => {
+    cursor.classList.remove('touch-active');
+    cursorDot.classList.remove('touch-active');
+}, { passive: true });
 
 // Lerp factor — lower = more lag/smooth, higher = snappier
 // Lerp factor — lower = more fluid/liquid, higher = snappier
 const LERP = 0.08;
+const TOUCH_LERP = 0.15; // Snappier for touch to feel responsive
 
 function lerpCursor() {
+    const isTouch = cursor.classList.contains('touch-active');
+    const currentLerp = isTouch ? TOUCH_LERP : LERP;
+
     // Outer ring — liquid lag
-    curX  += (mouseX - curX) * LERP;
-    curY  += (mouseY - curY) * LERP;
-    cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate3d(-50%, -50%, 0)`;
+    curX  += (mouseX - curX) * currentLerp;
+    curY  += (mouseY - curY) * currentLerp;
     
-    // Inner dot — snappy/high-precision
+    cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate3d(-50%, -50%, 0)`;
     cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate3d(-50%, -50%, 0)`;
     
     requestAnimationFrame(lerpCursor);
