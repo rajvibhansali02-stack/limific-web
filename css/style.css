@@ -1193,3 +1193,277 @@ footer {
         padding-bottom: 0 !important;
     }
 }
+
+
+/* ============================================================
+   THEME TOGGLE BUTTON
+   ============================================================ */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 18px;
+    flex-shrink: 0;
+}
+
+.toggle-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 54px;
+    height: 28px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+body.light-mode .toggle-track {
+    background: linear-gradient(135deg, #c8843a 0%, #d4952a 100%);
+    border-color: #b87528;
+    box-shadow: 0 0 14px rgba(212, 149, 42, 0.55);
+}
+
+.toggle-thumb {
+    position: absolute;
+    left: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.20);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    color: rgba(255, 255, 255, 0.70);
+}
+
+body.light-mode .toggle-thumb {
+    transform: translateX(26px);
+    background: #fff8ee;
+    border-color: #e6c27a;
+    color: #8b5e0a;
+    box-shadow: 0 0 10px rgba(255, 200, 80, 0.70);
+}
+
+.toggle-thumb svg {
+    width: 13px;
+    height: 13px;
+    transition: opacity 0.3s ease;
+    position: absolute;
+}
+
+/* Dark mode: show moon */
+.toggle-thumb .icon-bulb { opacity: 0; }
+.toggle-thumb .icon-moon { opacity: 1; }
+
+/* Light mode: show bulb */
+body.light-mode .toggle-thumb .icon-bulb { opacity: 1; }
+body.light-mode .toggle-thumb .icon-moon { opacity: 0; }
+
+@media (max-width: 768px) {
+    .theme-toggle { margin-left: 8px; }
+    .toggle-track  { width: 44px; height: 24px; }
+    .toggle-thumb  { width: 18px; height: 18px; }
+    body.light-mode .toggle-thumb { transform: translateX(20px); }
+    .toggle-thumb svg { width: 11px; height: 11px; }
+}
+
+
+/* ============================================================
+   WARM LIGHT MODE  (body.light-mode)
+   ============================================================ */
+body.light-mode {
+    --bg-color:        #2C1A0E;
+    --text-primary:    #F5ECD7;
+    --text-secondary:  rgba(245, 236, 215, 0.70);
+    --accent:          #E8A04A;
+    --accent-glow:     rgba(232, 160, 74, 0.35);
+    --card-bg:         rgba(255, 240, 210, 0.06);
+    --border-color:    rgba(255, 230, 180, 0.14);
+    --nav-bg:          rgba(30, 16, 6, 0.72);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    transition: background-color 0.6s ease, color 0.4s ease;
+}
+
+body.light-mode .orb-purple { background: radial-gradient(circle, #7B3A10 0%, transparent 70%); }
+body.light-mode .orb-orange  { background: radial-gradient(circle, #D4852A 0%, transparent 70%); }
+body.light-mode .orb-blue    { background: radial-gradient(circle, #B0602A 0%, transparent 70%); }
+
+body.light-mode nav { background: rgba(28, 12, 4, 0.80) !important; border-color: rgba(220,170,90,0.25) !important; }
+body.light-mode nav.scrolled { background: rgba(20,8,2,0.92) !important; box-shadow: 0 8px 32px rgba(80,30,0,0.4); }
+body.light-mode .glitch-link { color: var(--text-secondary); }
+body.light-mode .glitch-link span:nth-child(2) { color: var(--accent); text-shadow: 0 0 12px rgba(232,160,74,.6); }
+
+body.light-mode .hero::after { background: radial-gradient(circle at center, transparent 0%, #2C1A0E 80%); }
+
+body.light-mode .card { background: #3A2010; border-color: rgba(220,170,90,0.12); }
+body.light-mode .card-1 { border-top-color: rgba(180,100,40,0.45); }
+body.light-mode .card-2 { border-top-color: rgba(232,160,74,0.45); }
+body.light-mode .card-3 { border-top-color: rgba(200,140,60,0.45); }
+body.light-mode .card-4 { border-top-color: rgba(160,90,30,0.45); }
+body.light-mode .card h3  { color: #F5ECD7; }
+body.light-mode .card p   { color: rgba(245,236,215,0.65) !important; }
+body.light-mode .card-link { color: rgba(245,236,215,0.55); }
+body.light-mode .card-link:hover { color: var(--accent); }
+
+body.light-mode .text-grad {
+    background: linear-gradient(135deg, #F5ECD7 0%, #D4A060 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .section-title    { color: #F5ECD7; }
+body.light-mode .section-subtitle { color: rgba(245,236,215,0.60); }
+body.light-mode p { color: var(--text-secondary); }
+
+body.light-mode .stat-number-wrapper { color: var(--accent); }
+body.light-mode .stat-plus  { color: #F5ECD7; }
+body.light-mode .stat-label { color: var(--text-secondary); }
+
+body.light-mode .exp-overlay      { background: rgba(20,8,0,0.72); }
+body.light-mode .exp-content p    { color: #F0DFB5; }
+
+body.light-mode .btn-primary { background: #E8A04A; color: #1A0A00; }
+body.light-mode .btn-primary:hover { background: #f5c070; color: #1A0A00; box-shadow: 0 10px 30px rgba(232,160,74,.30); }
+body.light-mode .btn-primary::before { background: #f5c070; }
+
+body.light-mode .input-group input { background: rgba(255,240,210,0.06); border-color: rgba(220,170,90,.20); color: #F5ECD7; }
+body.light-mode .input-group input::placeholder { color: rgba(245,236,215,.40); }
+body.light-mode .input-group input:focus { border-color: var(--accent); background: rgba(255,240,210,.10); }
+body.light-mode .contact-info p { color: #F5ECD7 !important; }
+
+body.light-mode footer p { color: rgba(245,236,215,0.45); }
+body.light-mode .custom-cursor { background: #E8A04A; mix-blend-mode: normal; }
+body.light-mode .scroll-indicator .line { background: linear-gradient(to bottom, var(--accent), transparent); }
+body.light-mode .transition-overlay { background-color: #2C1A0E; }
+body.light-mode .ambient-glow { background: radial-gradient(circle, rgba(232,160,74,0.18) 0%, transparent 50%); }
+
+@media (max-width: 768px) {
+    body.light-mode .text-grad { background: none !important; -webkit-text-fill-color: #F5ECD7 !important; color: #F5ECD7 !important; }
+    body.light-mode .card p { color: rgba(245,236,215,0.65) !important; }
+}
+
+
+/* ============================================================
+   CARD TEXT VISIBILITY HARD FIX
+   Force card titles and descriptions to always be visible
+   regardless of GSAP animation state
+   ============================================================ */
+.card .text-mask span,
+.card h3 .text-mask span,
+.card p .text-mask span {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+.card h3 {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.card p {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #9CA3AF !important;
+}
+
+/* Also fix text-grad on cards - gradient text needs to paint */
+.card .text-grad {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 1 !important;
+}
+
+.card p.text-grad,
+.card p .text-grad {
+    -webkit-text-fill-color: #9CA3AF !important;
+    background: none !important;
+    color: #9CA3AF !important;
+}
+
+body.light-mode .card .text-grad {
+    background: linear-gradient(135deg, #F5ECD7 0%, #D4A060 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 1 !important;
+}
+
+body.light-mode .card p.text-grad,
+body.light-mode .card p .text-grad {
+    -webkit-text-fill-color: rgba(245,236,215,0.65) !important;
+    background: none !important;
+    color: rgba(245,236,215,0.65) !important;
+}
+
+
+/* ============================================================
+   CARD H3 TITLE — HARD PAINT FIX
+   The gradient clip fails when combined with GSAP opacity;
+   force a solid visible white title on cards at all times.
+   ============================================================ */
+.card h3,
+.card h3.text-mask,
+.card h3 .text-mask,
+.card h3 .text-grad,
+.card h3 span {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    filter: none !important;
+}
+
+/* Clear the broken gradient clip on card h3 and use solid colour */
+.card h3 .text-grad,
+.card h3.text-grad {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+body.light-mode .card h3 .text-grad,
+body.light-mode .card h3.text-grad {
+    -webkit-text-fill-color: #F5ECD7 !important;
+    color: #F5ECD7 !important;
+}
+
+
+/* ============================================================
+   DEFINITIVE CARD TITLE FIX
+   Card h3 uses .text-grad which sets -webkit-text-fill-color:
+   transparent for gradient clipping. On dark card backgrounds
+   the gradient is invisible. Override to solid colour.
+   ============================================================ */
+.card h3.text-mask,
+.card h3.text-mask.text-grad,
+.card h3.text-mask > span {
+    -webkit-text-fill-color: #ffffff !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    filter: none !important;
+}
+
+/* Warm mode override for card h3 */
+body.light-mode .card h3.text-mask,
+body.light-mode .card h3.text-mask.text-grad,
+body.light-mode .card h3.text-mask > span {
+    -webkit-text-fill-color: #F5ECD7 !important;
+    color: #F5ECD7 !important;
+}

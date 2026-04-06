@@ -89,26 +89,44 @@ heroEntranceTl.from(".hero .text-mask span", {
 // 5. Specialized Stacked Cards Animation (Masterpiece Collections)
 // Refactored to work with CSS Sticky for maximum flexibility
 const cards = gsap.utils.toArray(".card");
+
+// Pre-set all card text spans to visible immediately — CSS fallback
+// so they're never stuck invisible if scroll trigger misfires
+document.querySelectorAll('.card .text-mask span').forEach(span => {
+    gsap.set(span, { y: 0, opacity: 1, filter: "none" });
+});
+
 if (cards.length > 0) {
     cards.forEach((card, i) => {
-        // Create an entrance reveal for the elements inside
+        // Entrance reveal: animate from hidden to visible
         const maskedSpans = card.querySelectorAll('.text-mask span');
-        
-        gsap.from(maskedSpans, 
-            { 
-                y: "105%", 
-                opacity: 0, 
-                filter: "blur(5px)",
-                duration: 0.8, 
-                stagger: 0.1, 
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: card,
-                    start: "top 90%",
-                    toggleActions: "play none none none"
+
+        // Only animate if the card hasn't entered the viewport yet
+        const cardRect = card.getBoundingClientRect();
+        if (cardRect.top > window.innerHeight) {
+            // Card is below the fold — safe to animate in
+            gsap.fromTo(maskedSpans,
+                { y: "105%", opacity: 0, filter: "blur(5px)" },
+                {
+                    y: 0,
+                    opacity: 1,
+                    filter: "none",
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power2.out",
+                    clearProps: "transform,opacity,filter",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 90%",
+                        toggleActions: "play none none none",
+                        onLeaveBack: () => {
+                            // Always keep text visible even on scroll back
+                            gsap.set(maskedSpans, { y: 0, opacity: 1, filter: "none" });
+                        }
+                    }
                 }
-            }
-        );
+            );
+        }
 
         // Core Stacking Effect: Scale down previous card as next one arrives
         if (i < cards.length - 1) {
@@ -277,15 +295,60 @@ gsap.to(".orb-orange", {
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: true }
 });
 
-// Custom Cursor (Subtle)
+// Custom Cursor — Smooth Lerp Trailing
 const cursor = document.createElement('div');
 cursor.className = 'custom-cursor';
 document.body.appendChild(cursor);
-gsap.set(cursor, { xPercent: -50, yPercent: -50 });
+
+let mouseX = window.innerWidth  / 2;
+let mouseY = window.innerHeight / 2;
+let curX   = mouseX;
+let curY   = mouseY;
+
+// Track real mouse position
 window.addEventListener('mousemove', e => {
-    gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: "power2.out" });
+    mouseX = e.clientX;
+    mouseY = e.clientY;
 });
+
+// Lerp factor — lower = more lag/smooth, higher = snappier
+const LERP = 0.10;
+
+function lerpCursor() {
+    curX  += (mouseX - curX) * LERP;
+    curY  += (mouseY - curY) * LERP;
+    cursor.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
+    requestAnimationFrame(lerpCursor);
+}
+requestAnimationFrame(lerpCursor);
+
+// Hover states
 document.querySelectorAll('a, button, .card').forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('active'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
 });
+// 11. Custom Smooth Navigation & Form Logic
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = this.getAttribute('href');
+        lenis.scrollTo(target);
+    });
+});
+
+const formSubmit = document.querySelector(".form-submit");
+if (formSubmit) {
+    formSubmit.addEventListener("click", (e) => {
+        const btn = e.target;
+        const originalText = btn.innerText;
+        btn.innerText = "MESSAGE SENT";
+        btn.classList.add("sent");
+        
+        gsap.fromTo(btn, { scale: 0.95 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1 });
+        
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.classList.remove("sent");
+        }, 3000);
+    });
+}
