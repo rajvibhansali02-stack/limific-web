@@ -242,10 +242,7 @@ function resetMagnetic(el) {
 
 magneticElements.forEach(el => {
     el.addEventListener('mousemove', (e) => updateMagnetic(e, el));
-    el.addEventListener('touchmove', (e) => updateMagnetic(e, el), { passive: true });
-    el.addEventListener('touchstart', (e) => updateMagnetic(e, el), { passive: true });
     el.addEventListener('mouseleave', () => resetMagnetic(el));
-    el.addEventListener('touchend', () => resetMagnetic(el));
 });
 
 
