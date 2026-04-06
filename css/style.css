@@ -175,16 +175,52 @@ nav.scrolled {
 
 .nav-container {
     display: flex;
-    gap: 40px;
     align-items: center;
+    justify-content: center;
 }
 
-.logo-text {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+@media (min-width: 768px) {
+    .nav-container {
+        gap: 20px;
+    }
+}
+
+.nav-brand {
+    text-decoration: none;
+    font-weight: 700;
     color: #fff;
-    margin-right: 20px;
+    font-size: 0.95rem;
+    letter-spacing: -0.04em; /* tracking-tighter */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 8px;
+    transition: all 0.3s ease;
+}
+
+.brand-insignia {
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+@media (max-width: 768px) {
+    .nav-brand {
+        border-right: none;
+        margin-right: 0;
+        padding: 4px 12px;
+        font-size: 0.85rem;
+    }
 }
 
 .nav-links {
@@ -312,7 +348,7 @@ nav.scrolled {
 .text-mask {
     display: block;
     overflow: hidden;
-    height: 1.15em;
+    height: auto;
 }
 
 .text-mask span {
@@ -547,7 +583,7 @@ section {
         font-size: 0.5rem;
     }
 
-    .logo-text { font-size: 0.7rem; letter-spacing: 0.25em; }
+
 
     .hero {
         padding: 110px 20px 50px; 
@@ -598,38 +634,22 @@ section {
     .card-content {
         width: 100%;
         padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 12px; /* space-y-3 approx for mobile */
-        text-align: left;
-        align-items: flex-start;
-    }
-
-    .card h3, 
-    .card p,
-    .card h3 span,
-    .card p span {
-        opacity: 1 !important;
-        visibility: visible !important;
-        display: block !important;
-        transform: translate(0, 0) !important;
-        filter: none !important;
+        gap: 16px; /* space-y-4 mobile */
     }
 
     .card h3 { 
-        font-size: 1.4rem !important; /* text-2xl mobile */
+        font-size: 1.5rem; /* text-2xl mobile */
         font-weight: 700;
-        margin: 0;
-        line-height: 1.2;
+        margin-bottom: 0; 
     }
     .card p { 
-        font-size: 0.85rem !important; /* Slightly larger for readability */
-        line-height: 1.5 !important;
-        color: rgba(255, 255, 255, 0.7) !important;
-        margin: 0;
+        font-size: 0.875rem; /* text-sm */
+        line-height: 1.625; /* leading-relaxed */
+        color: rgba(255, 255, 255, 0.6) !important;
+        margin-bottom: 0;
     }
-    .card-icon { width: 18px; height: 18px; margin-bottom: 0; opacity: 0.8; }
-    .card-link { font-size: 0.875rem; color: #fff; margin-top: 8px; }
+    .card-icon { width: 20px; height: 20px; margin-bottom: 0; opacity: 0.7; }
+    .card-link { font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); }
 }
 
 /* Micro-Mobile Polish (480px and below) */
