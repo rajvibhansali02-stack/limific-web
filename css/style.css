@@ -353,7 +353,7 @@ nav.scrolled {
 
 .text-mask span {
     display: block;
-
+    transform: translateY(110%);
     will-change: transform;
 }
 
@@ -608,7 +608,8 @@ section {
     /* Compact 'Masterpiece' Framed Deck */
     .cards-stack {
         width: 100%; 
-        height: 600px; 
+        height: auto; 
+        min-height: 100vh;
         margin: 0 auto;
         padding-bottom: 50vh;
     }
@@ -648,8 +649,7 @@ section {
         color: rgba(255, 255, 255, 0.6) !important;
         margin-bottom: 0;
     }
-    .card-icon { width: 24px; height: 24px; margin-bottom: 0; opacity: 0.8; }
-    .card-icon svg { width: 100%; height: 100%; }
+    .card-icon { width: 20px; height: 20px; margin-bottom: 0; opacity: 0.7; }
     .card-link { font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); }
 }
 
