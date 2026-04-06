@@ -71,8 +71,9 @@ revealElements.forEach((el) => {
 
 // 4. Hero Section Entrance (Masked Word-by-Word - Bouncy)
 const heroEntranceTl = gsap.timeline();
-heroEntranceTl.to(".text-mask span", {
-    y: 0,
+heroEntranceTl.from(".hero .text-mask span", {
+    y: "110%",
+    opacity: 0,
     stagger: 0.3,
     duration: 1.5,
     ease: "back.out(1.4)",
@@ -93,14 +94,17 @@ if (cards.length > 0) {
         // Create an entrance reveal for the elements inside
         const maskedSpans = card.querySelectorAll('.text-mask span');
         
-        gsap.fromTo(maskedSpans, 
-            { y: "105%", opacity: 0, filter: "blur(5px)" },
+        gsap.from(maskedSpans, 
             { 
-                y: 0, opacity: 1, filter: "blur(0px)", 
-                duration: 0.8, stagger: 0.1, ease: "power2.out",
+                y: "105%", 
+                opacity: 0, 
+                filter: "blur(5px)",
+                duration: 0.8, 
+                stagger: 0.1, 
+                ease: "power2.out",
                 scrollTrigger: {
                     trigger: card,
-                    start: "top 85%",
+                    start: "top 90%",
                     toggleActions: "play none none none"
                 }
             }
@@ -128,11 +132,14 @@ if (cards.length > 0) {
 // A. Masked Slide Reveal for all Headers
 gsap.utils.toArray(".text-mask span").forEach(span => {
     if (span.closest('.hero-title') || span.closest('.card')) return;
-    gsap.fromTo(span, { y: "105%" }, { 
-        y: 0, duration: 1.2, ease: "back.out(1.2)",
+    gsap.from(span, { 
+        y: "105%",
+        opacity: 0,
+        duration: 1.2, 
+        ease: "back.out(1.2)",
         scrollTrigger: {
             trigger: span,
-            start: "top 92%",
+            start: "top 95%",
             toggleActions: "play reverse play reverse"
         }
     });
