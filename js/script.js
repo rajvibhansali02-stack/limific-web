@@ -295,74 +295,37 @@ gsap.to(".orb-orange", {
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: true }
 });
 
-// 10. Advanced Liquid Motion Cursor (Inner Dot + Smooth Trailing Outer Ring)
-const cursorInner = document.createElement('div');
-cursorInner.className = 'custom-cursor';
-const cursorOuter = document.createElement('div');
-cursorOuter.className = 'custom-cursor-outer';
-document.body.append(cursorInner, cursorOuter);
+// Custom Cursor — Smooth Lerp Trailing
+const cursor = document.createElement('div');
+cursor.className = 'custom-cursor';
+document.body.appendChild(cursor);
 
-let mouseX = window.innerWidth / 2;
+let mouseX = window.innerWidth  / 2;
 let mouseY = window.innerHeight / 2;
-let curX = mouseX;
-let curY = mouseY;
-let outerX = mouseX;
-let outerY = mouseY;
-let isMoving = false;
+let curX   = mouseX;
+let curY   = mouseY;
 
-// Initial state: hide until first movement to avoid jumping
-gsap.set([cursorInner, cursorOuter], { opacity: 0 });
-
+// Track real mouse position
 window.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    
-    if (!isMoving) {
-        // Snap first move position to avoid jumping from center
-        curX = outerX = mouseX;
-        curY = outerY = mouseY;
-        isMoving = true;
-        gsap.to([cursorInner, cursorOuter], { opacity: 1, duration: 0.8 });
-    }
 });
 
-// Lerp factors: Inner is snappy (follows close), Outer is fluid (lags slightly)
-const LERP_INNER = 0.18;
-const LERP_OUTER = 0.07;
+// Lerp factor — lower = more lag/smooth, higher = snappier
+const LERP = 0.10;
 
-function animateCursor() {
-    // Smoother LERP Calculation
-    curX += (mouseX - curX) * LERP_INNER;
-    curY += (mouseY - curY) * LERP_INNER;
-    outerX += (mouseX - outerX) * LERP_OUTER;
-    outerY += (mouseY - outerY) * LERP_OUTER;
-    
-    // Apply transformations with 50% offset centering
-    cursorInner.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
-    cursorOuter.style.transform = `translate(${outerX}px, ${outerY}px) translate(-50%, -50%)`;
-    
-    requestAnimationFrame(animateCursor);
+function lerpCursor() {
+    curX  += (mouseX - curX) * LERP;
+    curY  += (mouseY - curY) * LERP;
+    cursor.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
+    requestAnimationFrame(lerpCursor);
 }
-animateCursor();
+requestAnimationFrame(lerpCursor);
 
-// Mouse enter/leave interactivity
-document.querySelectorAll('a, button, .card, #themeToggle, .glitch-link').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursorInner.classList.add('active');
-        cursorOuter.classList.add('active');
-    });
-    el.addEventListener('mouseleave', () => {
-        cursorInner.classList.remove('active');
-        cursorOuter.classList.remove('active');
-    });
-});
-
-// Hide cursor when leaving window
-document.addEventListener('mouseleave', () => {
-    gsap.to([cursorInner, cursorOuter], { opacity: 0, duration: 0.3 });
-});
-document.addEventListener('mouseenter', () => {
-    gsap.to([cursorInner, cursorOuter], { opacity: 1, duration: 0.3 });
+// Hover states
+document.querySelectorAll('a, button, .card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
 });
 // 11. Custom Smooth Navigation & Form Logic
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
