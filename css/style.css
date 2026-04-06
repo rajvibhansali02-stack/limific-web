@@ -1130,6 +1130,8 @@ footer {
 
 
 
+
+
 /* CUSTOM OVERRIDE FOR MOBILE NAV AND TEXT */
 @media (max-width: 768px) {
     nav {
@@ -1181,6 +1183,13 @@ footer {
         visibility: visible !important;
     }
     .experience {
-        padding: 60px 0 !important;
+        padding: 40px 0 !important;
+        min-height: auto !important;
+    }
+    .exp-content {
+        margin: 0 !important;
+    }
+    .cards-stack {
+        padding-bottom: 0 !important;
     }
 }
