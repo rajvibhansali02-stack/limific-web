@@ -3,10 +3,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 // 0. Initialize Lenis Smooth Scroll (Buttery Smooth Virtual Scroll)
 const lenis = new Lenis({
-    duration: 1.2, 
+    duration: 1.5, 
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
     smoothWheel: true,
-    lerp: 0.1,
+    lerp: 0.05,
 });
 
 lenis.on('scroll', ScrollTrigger.update);
@@ -55,9 +55,9 @@ revealElements.forEach((el) => {
         {
             opacity: 1,
             y: 0,
-            duration: 1.2,
-            ease: "back.out(1.2)",
-            stagger: 0.15,
+            duration: 1.5,
+            ease: "power2.out", // Softened from back.out for a more liquid feel
+            stagger: 0.1,
             scrollTrigger: {
                 trigger: el,
                 start: "top 85%",
@@ -81,8 +81,8 @@ heroEntranceTl.from(".hero .text-mask span", {
 })
 .fromTo(".reveal-tagline", 
     { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 1.2, ease: "back.out(1.2)" },
-    "-=0.8"
+    { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" },
+    "-=1.0"
 );
 
 
@@ -226,18 +226,18 @@ function updateMagnetic(e, el) {
     const rect = el.getBoundingClientRect();
     const tX = x - rect.left - rect.width / 2;
     const tY = y - rect.top - rect.height / 2;
-    const force = el.classList.contains('hero-title') ? 0.4 : 0.3;
-    gsap.to(el, { x: tX * force, y: tY * force, duration: 0.4, ease: "power2.out" });
+    const force = el.classList.contains('hero-title') ? 0.25 : 0.22;
+    gsap.to(el, { x: tX * force, y: tY * force, duration: 0.6, ease: "power3.out" }); // More liquid duration
 
     // Handle Ambient Glow separately (if inside hero)
     if (heroSection && ambientGlow) {
         const hRect = heroSection.getBoundingClientRect();
-        gsap.to(ambientGlow, { x: x - hRect.left, y: y - hRect.top, duration: 0.4, ease: "power2.out" });
+        gsap.to(ambientGlow, { x: x - hRect.left, y: y - hRect.top, duration: 0.8, ease: "power3.out" });
     }
 }
 
 function resetMagnetic(el) {
-    gsap.to(el, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1.2, 0.4)" });
+    gsap.to(el, { x: 0, y: 0, duration: 1.2, ease: "elastic.out(1.0, 0.5)" });
 }
 
 magneticElements.forEach(el => {
@@ -292,10 +292,13 @@ gsap.to(".orb-orange", {
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: true }
 });
 
-// Custom Cursor — Smooth Lerp Trailing
+// Custom Cursor — Advanced Dual-Layer Smooth Trailing
 const cursor = document.createElement('div');
 cursor.className = 'custom-cursor';
+const cursorDot = document.createElement('div');
+cursorDot.className = 'cursor-dot';
 document.body.appendChild(cursor);
+document.body.appendChild(cursorDot);
 
 let mouseX = window.innerWidth  / 2;
 let mouseY = window.innerHeight / 2;
@@ -309,20 +312,32 @@ window.addEventListener('mousemove', e => {
 });
 
 // Lerp factor — lower = more lag/smooth, higher = snappier
-const LERP = 0.10;
+// Lerp factor — lower = more fluid/liquid, higher = snappier
+const LERP = 0.08;
 
 function lerpCursor() {
+    // Outer ring — liquid lag
     curX  += (mouseX - curX) * LERP;
     curY  += (mouseY - curY) * LERP;
-    cursor.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
+    cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate3d(-50%, -50%, 0)`;
+    
+    // Inner dot — snappy/high-precision
+    cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate3d(-50%, -50%, 0)`;
+    
     requestAnimationFrame(lerpCursor);
 }
 requestAnimationFrame(lerpCursor);
 
 // Hover states
 document.querySelectorAll('a, button, .card').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('active'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+    el.addEventListener('mouseenter', () => {
+        cursor.classList.add('active');
+        cursorDot.classList.add('active');
+    });
+    el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('active');
+        cursorDot.classList.remove('active');
+    });
 });
 // 11. Custom Smooth Navigation & Form Logic
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
