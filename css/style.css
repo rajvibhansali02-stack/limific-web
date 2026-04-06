@@ -1126,6 +1126,8 @@ footer {
 
 
 
+
+
 /* CUSTOM OVERRIDE FOR MOBILE NAV AND TEXT */
 @media (max-width: 768px) {
     nav {
@@ -1133,14 +1135,14 @@ footer {
         top: 24px;
         left: 50%;
         transform: translateX(-50%);
-        width: 92% !important;
+        width: 95% !important;
         max-width: 500px;
         background: rgba(5, 5, 5, 0.85);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
         border: 1px solid var(--border-color);
         border-radius: 100px;
-        padding: 10px 16px !important;
+        padding: 10px 14px !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center;
@@ -1148,8 +1150,8 @@ footer {
     }
     .nav-links {
         display: flex !important;
-        gap: 20px !important;
-        font-size: 0.7rem !important;
+        gap: 12px !important;
+        font-size: 0.62rem !important;
         list-style: none;
         margin: 0 !important;
         padding: 0 !important;
