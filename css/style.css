@@ -612,7 +612,7 @@ section {
         height: auto; 
         min-height: 100vh;
         margin: 0 auto;
-        padding-bottom: 50vh;
+        padding-bottom: 10vh; /* Reduced blank space */
     }
 
     .card {
