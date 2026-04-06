@@ -1114,3 +1114,24 @@ footer {
     90% { opacity: 0.7; }
     100% { opacity: 1; text-shadow: 0 0 20px rgba(245, 151, 104, 0.4); }
 }
+
+
+/* CUSTOM OVERRIDE FOR MOBILE TEXT VISIBILITY */
+@media (max-width: 768px) {
+    .text-grad {
+        background: none !important;
+        -webkit-text-fill-color: #ffffff !important;
+        text-fill-color: #ffffff !important;
+        color: #ffffff !important;
+        opacity: 1 !important;
+        display: block !important;
+    }
+    .text-mask span {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+    }
+    .card h3, .card p {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
