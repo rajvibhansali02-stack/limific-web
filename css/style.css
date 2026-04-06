@@ -79,20 +79,20 @@ body {
     opacity: 1;
 }
 
-.custom-cursor.active {
+.custom-cursor.is-visible.active {
     width: 90px;
     height: 90px;
     background: rgba(255, 255, 255, 0.15);
     border-color: transparent;
 }
 
-.cursor-dot.active {
+.cursor-dot.is-visible.active {
     width: 8px;
     opacity: 0.8;
 }
 
 /* TOUCH FEEDBACK — PREMIUM MOBILE HALO */
-.custom-cursor.touch-active {
+.custom-cursor.is-visible.touch-active {
     opacity: 1;
     width: 120px; /* Large halo around finger */
     height: 120px;
@@ -101,7 +101,7 @@ body {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-.cursor-dot.touch-active {
+.cursor-dot.is-visible.touch-active {
     opacity: 1;
     width: 40px; /* Soft glow dot */
     height: 40px;

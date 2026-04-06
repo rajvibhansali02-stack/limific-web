@@ -328,9 +328,18 @@ window.addEventListener('touchmove', e => {
 }, { passive: true });
 
 window.addEventListener('touchend', () => {
-    cursor.classList.remove('touch-active', 'is-visible');
-    cursorDot.classList.remove('touch-active', 'is-visible');
+    cursor.classList.remove('touch-active', 'is-visible', 'active');
+    cursorDot.classList.remove('touch-active', 'is-visible', 'active');
 }, { passive: true });
+
+// Ensure visibility is removed on click for absolute safety on mobile taps
+window.addEventListener('click', () => {
+    // Only remove on mobile if needed, or across both for universal snap-back
+    if (window.matchMedia("(pointer: coarse)").matches) {
+        cursor.classList.remove('touch-active', 'is-visible', 'active');
+        cursorDot.classList.remove('touch-active', 'is-visible', 'active');
+    }
+});
 
 // Lerp factor — lower = more lag/smooth, higher = snappier
 // Lerp factor — lower = more fluid/liquid, higher = snappier
