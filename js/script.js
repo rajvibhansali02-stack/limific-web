@@ -99,21 +99,17 @@ revealElements.forEach((el) => {
 });
 
 
-// 4. Hero Section Entrance (Masked Word-by-Word - Bouncy)
+// 4. Hero Section Entrance (Masked Word-by-Word - Unified)
 const heroEntranceTl = gsap.timeline();
 heroEntranceTl.from(".hero .text-mask span", {
     y: "110%",
     opacity: 0,
-    stagger: 0.3,
+    stagger: 0.15,
     duration: 1.5,
-    ease: "back.out(1.4)",
+    ease: "power4.out",
     delay: 0.6
 })
-.fromTo(".reveal-tagline", 
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" },
-    "-=1.0"
-);
+.fromTo(".scroll-indicator", { opacity: 0 }, { opacity: 1, duration: 1 }, "-=0.5");
 
 
 // 5. Specialized Stacked Cards Animation (Masterpiece Collections)
