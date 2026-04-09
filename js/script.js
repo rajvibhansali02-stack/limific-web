@@ -3,10 +3,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 // 0. Initialize Lenis Smooth Scroll (Buttery Smooth Virtual Scroll)
 const lenis = new Lenis({
-    duration: 1.5, 
+    duration: 1.2, 
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
     smoothWheel: true,
-    lerp: 0.05,
+    lerp: 0.07,
+    wheelMultiplier: 1.1,
+    infinite: false,
 });
 
 lenis.on('scroll', ScrollTrigger.update);
@@ -16,6 +18,17 @@ function raf(time) {
     requestAnimationFrame(raf);
 }
 requestAnimationFrame(raf);
+
+// Handle Deep Linking / Back Button Scroll
+if (window.location.hash) {
+    // Only scroll immediately if it's one of the product cards
+    if (window.location.hash.match(/#(ceiling|wall-sculptures|ceiling-masterpieces|smart-lighting)/)) {
+        setTimeout(() => {
+            lenis.scrollTo(window.location.hash, { immediate: true });
+            ScrollTrigger.refresh();
+        }, 50);
+    }
+}
 
 
 // 1. App Initialization & Page Load Animation
@@ -138,10 +151,30 @@ if (cards.length > 0) {
                     trigger: cards[i + 1],
                     start: "top top",
                     end: "top 30%",
-                    scrub: true
+                    scrub: 1.2
                 }
             });
         }
+
+        // 5B. Card Click Navigation
+        card.addEventListener("click", (e) => {
+            // If the user clicked a link inside the card, let the link handle it
+            if (e.target.closest('a')) return;
+            
+            const link = card.querySelector(".card-link");
+            if (link) {
+                const href = link.getAttribute("href");
+                
+                // Start transition
+                gsap.to(".transition-overlay", { 
+                    opacity: 1, 
+                    duration: 0.5, 
+                    onComplete: () => {
+                        window.location.href = href;
+                    } 
+                });
+            }
+        });
     });
 }
 
@@ -269,7 +302,7 @@ document.querySelectorAll(".glitch-link").forEach(link => {
 // 9. Parallax & Atmosphere
 gsap.to(".orb-purple", { yPercent: 50, scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 } });
 gsap.to(".orb-orange", { yPercent: -50, scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 } });
-gsap.to(".exp-bg-wrapper", { yPercent: 20, ease: "none", scrollTrigger: { trigger: ".experience", start: "top bottom", end: "bottom top", scrub: true } });
+gsap.to(".exp-bg-wrapper", { yPercent: 20, ease: "none", scrollTrigger: { trigger: ".experience", start: "top bottom", end: "bottom top", scrub: 1.5 } });
 
 // 10. Scroll Hue-Shifting Background Atmosphere
 gsap.to(".bg-gradients", {
@@ -278,18 +311,18 @@ gsap.to(".bg-gradients", {
         trigger: "body",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1
+        scrub: 1.5
     }
 });
 
 gsap.to(".orb-purple", {
     filter: "hue-rotate(150deg)", 
-    scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: true }
+    scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 }
 });
 
 gsap.to(".orb-orange", {
     filter: "hue-rotate(-60deg)", 
-    scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: true }
+    scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 }
 });
 
 // Custom Cursor — Advanced Dual-Layer Smooth Trailing
@@ -341,16 +374,15 @@ window.addEventListener('click', () => {
     }
 });
 
-// Lerp factor — lower = more lag/smooth, higher = snappier
 // Lerp factor — lower = more fluid/liquid, higher = snappier
-const LERP = 0.08;
-const TOUCH_LERP = 0.15; // Snappier for touch to feel responsive
+const LERP = 1.0; // Set to 1.0 for zero delay as requested
+const TOUCH_LERP = 1.0; 
 
 function lerpCursor() {
     const isTouch = cursor.classList.contains('touch-active');
     const currentLerp = isTouch ? TOUCH_LERP : LERP;
 
-    // Outer ring — liquid lag
+    // Outer ring — liquid lag (now instantaneous)
     curX  += (mouseX - curX) * currentLerp;
     curY  += (mouseY - curY) * currentLerp;
     
@@ -378,6 +410,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         e.preventDefault();
         const target = this.getAttribute('href');
         lenis.scrollTo(target);
+    });
+});
+
+// 11B. Premium Page Transitions for External Links
+document.querySelectorAll('.card-link, .back-btn').forEach(link => {
+    link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href && !href.startsWith('#')) {
+            e.preventDefault();
+            gsap.to(".transition-overlay", { 
+                opacity: 1, 
+                duration: 0.6, 
+                ease: "power2.inOut",
+                onComplete: () => {
+                    window.location.href = href;
+                } 
+            });
+        }
     });
 });
 

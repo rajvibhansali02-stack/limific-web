@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lumific Wall Sculptures - Diffused brilliance for sophisticated interiors. Every piece is a testament to minimalist design.">
+    <title>Lumific | Wall Sculptures</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Product Specific Styles */
+        .product-hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 180px 8vw 60px; /* Increased top padding */
+            position: relative;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .product-visual {
+            position: relative;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .product-visual img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .product-category {
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .product-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1;
+            margin: 0;
+            letter-spacing: -0.04em;
+        }
+
+        .product-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .product-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .spec-item {
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+
+        .spec-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .spec-value {
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .back-nav {
+            position: absolute;
+            top: 60px; /* Moved up to increase gap */
+            left: 8vw;
+            z-index: 100;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--accent);
+        }
+
+        .back-btn svg {
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover svg {
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 968px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .product-hero {
+                padding-top: 160px;
+            }
+            .back-nav {
+                top: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading">
+
+    <!-- Background Gradients -->
+    <div class="bg-gradients">
+        <div class="gradient-orb orb-purple"></div>
+        <div class="gradient-orb orb-orange"></div>
+        <div class="gradient-orb orb-blue"></div>
+    </div>
+
+    <div class="transition-overlay"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
+                <li><a href="index.html#shop" class="glitch-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li>
+                <li><a href="index.html#luxe" class="glitch-link" data-value="LUXE"><span>LUXE</span><span>LUXE</span></a></li>
+                <li><a href="index.html#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
+                <li><a href="index.html#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
+            </ul>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode" title="Toggle warm light">
+                <span class="toggle-track">
+                    <span class="toggle-thumb">
+                        <svg class="icon-bulb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21h6M12 3a6 6 0 0 1 4 10.47V17H8v-3.53A6 6 0 0 1 12 3z"/>
+                        </svg>
+                        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </span>
+                </span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="back-nav">
+        <a href="index.html#wall-sculptures" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            BACK TO COLLECTION
+        </a>
+    </div>
+
+    <section class="product-hero">
+        <div class="product-grid">
+            <div class="product-visual reveal">
+                <img src="images/card_wall.png" alt="Wall Sculptures">
+            </div>
+            <div class="product-info reveal">
+                <div class="product-category">Masterpiece Collection</div>
+                <h1 class="product-title text-grad">Wall Sculptures</h1>
+                <p class="product-description">Diffused brilliance for sophisticated interiors. Every piece is a testament to minimalist design, crafted to cast secondary light that emphasizes texture and depth.</p>
+                
+                <div class="product-specs">
+                    <div class="spec-item">
+                        <div class="spec-label">Light Source</div>
+                        <div class="spec-value">OLED Soft-Panel</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Material</div>
+                        <div class="spec-value">Anodized Obsidian</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">CRI</div>
+                        <div class="spec-value">98+ (True Color)</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Control</div>
+                        <div class="spec-value">Gesture Sensing</div>
+                    </div>
+                </div>
+
+                <a href="index.html#contact" class="btn-primary" style="margin-top: 20px; text-decoration: none; display: inline-block;">Request Custom Quote</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="details" style="padding-top: 0;">
+        <div class="section-header reveal">
+            <h2 class="section-title text-grad">Quiet Sophistication</h2>
+            <p class="section-subtitle">Wall lighting that acts as a silent sculpture when off and a radiant atmosphere when on.</p>
+        </div>
+        
+        <div class="about-container reveal">
+            <p>Our Wall Sculptures series redefines the role of light in the home. No longer just a functional necessity, these fixtures are designed to be focal points. By integrating edge-lit technology with natural materials like stone and hand-finished metals, we ensure that each piece tells a unique story of shadow and light.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Lumific. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+    (function () {
+        const btn   = document.getElementById('themeToggle');
+        const body  = document.body;
+        const LIGHT = 'light-mode';
+        if (localStorage.getItem('theme') === LIGHT) { body.classList.add(LIGHT); }
+        btn.addEventListener('click', () => {
+            const isLight = body.classList.toggle(LIGHT);
+            localStorage.setItem('theme', isLight ? LIGHT : 'dark');
+            gsap.fromTo('#themeToggle .toggle-thumb', { scale: 0.7 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' });
+            gsap.fromTo('body', { opacity: 0.85 }, { opacity: 1, duration: 0.35, ease: 'power2.out' });
+        });
+    })();
+    </script>
+</body>
+</html>
