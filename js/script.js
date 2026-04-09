@@ -21,12 +21,10 @@ requestAnimationFrame(raf);
 
 // Handle Deep Linking / Back Button Scroll
 if (window.location.hash) {
-    // Only scroll immediately if it's one of the product cards
-    if (window.location.hash.match(/#(ceiling|wall-sculptures|ceiling-masterpieces|smart-lighting)/)) {
-        setTimeout(() => {
-            lenis.scrollTo(window.location.hash, { immediate: true });
-            ScrollTrigger.refresh();
-        }, 50);
+    const hash = window.location.hash;
+    if (hash.match(/#(ceiling|wall-sculptures|ceiling-masterpieces|smart-lighting)/)) {
+        // Essential: Scroll immediately to reduce perceived delay
+        lenis.scrollTo(hash, { immediate: true, force: true });
     }
 }
 
@@ -36,8 +34,6 @@ const hasSeenEntrance = sessionStorage.getItem('hasSeenEntrance');
 
 // Immediate check to remove black overlay on navigation (don't wait for images)
 if (hasSeenEntrance) {
-    // We already moved the style injection to a separate turn if needed, 
-    // but for now, we'll just force the style immediately.
     const style = document.createElement('style');
     style.innerHTML = '.transition-overlay { display: none !important; opacity: 0 !important; visibility: hidden !important; } .scroll-indicator { opacity: 1 !important; }';
     document.head.appendChild(style);
@@ -45,6 +41,13 @@ if (hasSeenEntrance) {
 
 window.addEventListener("load", () => {
     document.body.classList.remove("loading");
+    
+    // Crucial: Refresh GSAP and re-scroll on load to account for final layout heights
+    if (window.location.hash) {
+        ScrollTrigger.refresh();
+        lenis.scrollTo(window.location.hash, { immediate: true, force: true });
+    }
+
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
     
     if (!hasSeenEntrance) {
