@@ -470,6 +470,7 @@ nav.scrolled {
 
 .hero-tagline {
     max-width: 800px;
+    opacity: 0;
     margin-bottom: 48px;
     display: flex;
     flex-direction: column;

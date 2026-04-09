@@ -99,17 +99,21 @@ revealElements.forEach((el) => {
 });
 
 
-// 4. Hero Section Entrance (Masked Word-by-Word - Unified)
+// 4. Hero Section Entrance (Masked Word-by-Word - Bouncy)
 const heroEntranceTl = gsap.timeline();
 heroEntranceTl.from(".hero .text-mask span", {
     y: "110%",
     opacity: 0,
-    stagger: 0.15,
+    stagger: 0.3,
     duration: 1.5,
-    ease: "power4.out",
+    ease: "back.out(1.4)",
     delay: 0.6
 })
-.fromTo(".scroll-indicator", { opacity: 0 }, { opacity: 1, duration: 1 }, "-=0.5");
+.fromTo(".reveal-tagline", 
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" },
+    "-=1.0"
+);
 
 
 // 5. Specialized Stacked Cards Animation (Masterpiece Collections)
@@ -182,7 +186,7 @@ if (cards.length > 0) {
 // 6. Global Repeatable Scroll Triggers
 // A. Masked Slide Reveal for all Headers
 gsap.utils.toArray(".text-mask span").forEach(span => {
-    if (span.closest('.hero-title') || span.closest('.card')) return;
+    if (span.closest('.hero') || span.closest('.card')) return;
     gsap.from(span, { 
         y: "105%",
         opacity: 0,
