@@ -11,6 +11,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script>
+        if (sessionStorage.getItem('hasSeenEntrance')) {
+            const style = document.createElement('style');
+            style.innerHTML = '.transition-overlay { display: none !important; opacity: 0 !important; visibility: hidden !important; }';
+            document.head.appendChild(style);
+        }
+    </script>
     <style>
         /* Product Specific Styles */
         .product-hero {

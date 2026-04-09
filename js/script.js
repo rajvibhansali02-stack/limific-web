@@ -3,11 +3,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 // 0. Initialize Lenis Smooth Scroll (Buttery Smooth Virtual Scroll)
 const lenis = new Lenis({
-    duration: 1.2, 
+    duration: 1.1, 
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
     smoothWheel: true,
-    lerp: 0.07,
-    wheelMultiplier: 1.1,
+    lerp: 0.1, // More responsive to remove perceived lag
+    wheelMultiplier: 1.0, 
     infinite: false,
 });
 
@@ -32,13 +32,27 @@ if (window.location.hash) {
 
 
 // 1. App Initialization & Page Load Animation
+const hasSeenEntrance = sessionStorage.getItem('hasSeenEntrance');
+
+// Immediate check to remove black overlay on navigation (don't wait for images)
+if (hasSeenEntrance) {
+    // We already moved the style injection to a separate turn if needed, 
+    // but for now, we'll just force the style immediately.
+    const style = document.createElement('style');
+    style.innerHTML = '.transition-overlay { display: none !important; opacity: 0 !important; visibility: hidden !important; } .scroll-indicator { opacity: 1 !important; }';
+    document.head.appendChild(style);
+}
+
 window.addEventListener("load", () => {
     document.body.classList.remove("loading");
-    
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
     
-    tl.to(".transition-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut" })
-      .to(".scroll-indicator", { opacity: 1, duration: 1 }, "-=0.5");
+    if (!hasSeenEntrance) {
+        // First entry to the site: Play the slow, premium fade-in
+        tl.to(".transition-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut" })
+          .to(".scroll-indicator", { opacity: 1, duration: 1 }, "-=0.5");
+        sessionStorage.setItem('hasSeenEntrance', 'true');
+    }
 
     // Static Orbs continuous movement
     gsap.to(".orb-purple", { x: '20vw', y: '10vh', duration: 15, repeat: -1, yoyo: true, ease: "sine.inOut" });
@@ -119,23 +133,18 @@ if (cards.length > 0) {
         if (cardRect.top > window.innerHeight) {
             // Card is below the fold — safe to animate in
             gsap.fromTo(maskedSpans,
-                { y: "105%", opacity: 0, filter: "blur(5px)" },
+                { y: "105%", opacity: 0 },
                 {
                     y: 0,
                     opacity: 1,
-                    filter: "none",
                     duration: 0.8,
                     stagger: 0.1,
                     ease: "power2.out",
-                    clearProps: "transform,opacity,filter",
+                    clearProps: "transform,opacity",
                     scrollTrigger: {
                         trigger: card,
                         start: "top 90%",
-                        toggleActions: "play none none none",
-                        onLeaveBack: () => {
-                            // Always keep text visible even on scroll back
-                            gsap.set(maskedSpans, { y: 0, opacity: 1, filter: "none" });
-                        }
+                        toggleActions: "play none none none"
                     }
                 }
             );
@@ -144,14 +153,14 @@ if (cards.length > 0) {
         // Core Stacking Effect: Scale down previous card as next one arrives
         if (i < cards.length - 1) {
             gsap.to(card, {
-                scale: 0.95,
-                opacity: 0.6,
-                filter: "blur(10px)",
+                scale: 0.94,
+                opacity: 0.5,
+                // Removed blur filter for buttery performance
                 scrollTrigger: {
                     trigger: cards[i + 1],
                     start: "top top",
                     end: "top 30%",
-                    scrub: 1.2
+                    scrub: 0.8 // Snappier catch-up
                 }
             });
         }
@@ -164,15 +173,7 @@ if (cards.length > 0) {
             const link = card.querySelector(".card-link");
             if (link) {
                 const href = link.getAttribute("href");
-                
-                // Start transition
-                gsap.to(".transition-overlay", { 
-                    opacity: 1, 
-                    duration: 0.5, 
-                    onComplete: () => {
-                        window.location.href = href;
-                    } 
-                });
+                window.location.href = href;
             }
         });
     });
@@ -300,9 +301,9 @@ document.querySelectorAll(".glitch-link").forEach(link => {
 });
 
 // 9. Parallax & Atmosphere
-gsap.to(".orb-purple", { yPercent: 50, scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 } });
-gsap.to(".orb-orange", { yPercent: -50, scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 } });
-gsap.to(".exp-bg-wrapper", { yPercent: 20, ease: "none", scrollTrigger: { trigger: ".experience", start: "top bottom", end: "bottom top", scrub: 1.5 } });
+gsap.to(".orb-purple", { yPercent: 50, scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 } });
+gsap.to(".orb-orange", { yPercent: -50, scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 } });
+gsap.to(".exp-bg-wrapper", { yPercent: 20, ease: "none", scrollTrigger: { trigger: ".experience", start: "top bottom", end: "bottom top", scrub: 0.5 } });
 
 // 10. Scroll Hue-Shifting Background Atmosphere
 gsap.to(".bg-gradients", {
@@ -311,18 +312,18 @@ gsap.to(".bg-gradients", {
         trigger: "body",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.5
+        scrub: 0.5
     }
 });
 
 gsap.to(".orb-purple", {
     filter: "hue-rotate(150deg)", 
-    scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 }
+    scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 }
 });
 
 gsap.to(".orb-orange", {
     filter: "hue-rotate(-60deg)", 
-    scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 1.5 }
+    scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 }
 });
 
 // Custom Cursor — Advanced Dual-Layer Smooth Trailing
@@ -413,20 +414,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// 11B. Premium Page Transitions for External Links
+// 11B. Instant Page Transitions (Redirected immediately as requested)
 document.querySelectorAll('.card-link, .back-btn').forEach(link => {
     link.addEventListener('click', (e) => {
         const href = link.getAttribute('href');
         if (href && !href.startsWith('#')) {
-            e.preventDefault();
-            gsap.to(".transition-overlay", { 
-                opacity: 1, 
-                duration: 0.6, 
-                ease: "power2.inOut",
-                onComplete: () => {
-                    window.location.href = href;
-                } 
-            });
+            // No e.preventDefault() here to allow standard quick navigation
+            // or just let the default browser behavior handle it.
+            // But if we want to ensure zero animation, we just remove the listener 
+            // or just use window.location.href immediately if we kept preventDefault.
         }
     });
 });
