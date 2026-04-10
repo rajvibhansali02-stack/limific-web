@@ -32,7 +32,12 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    cursor: none; /* Hide default cursor */
+}
+
+@media (min-width: 1024px) {
+    body, a, button, .interactive, .glitch-link, .card {
+        cursor: none !important;
+    }
 }
 
 /* ─── THE GLOW CURSOR (MAIN STYLE) ─── */
@@ -49,8 +54,8 @@ body {
 }
 
 .cursor-dot {
-    width: 6px;
-    height: 6px;
+    width: 1.5px;
+    height: 1.5px;
     background: white;
     mix-blend-mode: difference;
     z-index: 100001;
@@ -59,7 +64,7 @@ body {
 .cursor-glow {
     width: 35px;
     height: 35px;
-    background: radial-gradient(circle, rgba(245, 151, 104, 0.45) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(199, 96, 255, 0.4) 0%, rgba(199, 96, 255, 0.1) 40%, transparent 70%);
     filter: blur(1px);
     transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
                 height 0.4s cubic-bezier(0.23, 1, 0.32, 1),
@@ -70,7 +75,7 @@ body {
 .cursor-glow.active {
     width: 50px;
     height: 50px;
-    background: radial-gradient(circle, rgba(79, 142, 255, 0.7) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(79, 142, 255, 0.7) 0%, rgba(79, 142, 255, 0.3) 40%, transparent 70%);
 }
 
 .cursor-dot.is-visible, .cursor-glow.is-visible {
@@ -89,6 +94,7 @@ body {
     z-index: 99999;
     will-change: transform;
     opacity: 0;
+    mix-blend-mode: screen;
 }
 
 .cursor-trail-dot.is-visible {

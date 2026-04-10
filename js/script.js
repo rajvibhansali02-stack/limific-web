@@ -344,9 +344,13 @@ gsap.to(".orb-orange", {
     for (let i = 0; i < trailCount; i++) {
         const td = document.createElement('div');
         td.className = 'cursor-trail-dot';
-        const hue = 40 + (i * (130 / trailCount));
-        td.style.background = `hsl(${hue}, 85%, 72%)`;
-        td.style.boxShadow = `0 0 10px hsla(${hue}, 85%, 72%, 0.5)`;
+        const size = 7 - i * 0.55;
+        const opacity = 0.45 - i * 0.038;
+        const hue = 40 + (i / trailCount) * 130; // Match gold → emerald
+        td.style.width = `${size}px`;
+        td.style.height = `${size}px`;
+        td.style.background = `hsla(${hue}, 85%, 72%, ${opacity})`;
+        td.style.boxShadow = `0 0 ${size * 2}px hsla(${hue}, 85%, 72%, ${opacity * 0.6})`;
         document.body.appendChild(td);
         trailDots.push({ el: td, x: 0, y: 0 });
     }
@@ -364,10 +368,10 @@ gsap.to(".orb-orange", {
         trailDots.forEach(d => d.el.classList.add('is-visible'));
     });
 
-    // Physics Settings
+    // Physics Settings (Synced with Lumific-office)
     const GLOW_LAG = 0.15;
     const DOT_LAG = 0.45;
-    const TRAIL_LAG = 0.58;
+    const TRAIL_LAG = 0.42;
 
     function animate() {
         // Core and Glow strictly follow mouseX/Y
@@ -386,7 +390,9 @@ gsap.to(".orb-orange", {
         trailDots.forEach((d) => {
             d.x += (prevX - d.x) * TRAIL_LAG;
             d.y += (prevY - d.y) * TRAIL_LAG;
-            d.el.style.transform = `translate3d(${d.x}px, ${d.y}px, 0) translate3d(-50%, -50%, 0)`;
+            d.el.style.left = `${d.x}px`;
+            d.el.style.top = `${d.y}px`;
+            d.el.style.transform = `translate3d(-50%, -50%, 0)`;
             prevX = d.x;
             prevY = d.y;
         });
