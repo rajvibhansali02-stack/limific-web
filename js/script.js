@@ -329,104 +329,192 @@ gsap.to(".orb-orange", {
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 }
 });
 
-// Custom Cursor — Advanced Dual-Layer Smooth Trailing
-const cursor = document.createElement('div');
-cursor.className = 'custom-cursor';
-const cursorDot = document.createElement('div');
-cursorDot.className = 'cursor-dot';
-document.body.appendChild(cursor);
-document.body.appendChild(cursorDot);
+// ─── Custom Cursor — The Spectral Liquid Ribbon ───
+(function initializeSpectralCursor() {
+    const dot = document.createElement('div');
+    const glow = document.createElement('div');
+    dot.className = 'cursor-dot';
+    glow.className = 'cursor-glow';
+    document.body.appendChild(dot);
+    document.body.appendChild(glow);
 
-let mouseX = window.innerWidth  / 2;
-let mouseY = window.innerHeight / 2;
-let curX   = mouseX;
-let curY   = mouseY;
-
-// Track real mouse position
-window.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    // Desktop only: show cursor on first movement
-    cursor.classList.add('is-visible');
-    cursorDot.classList.add('is-visible');
-});
-
-// Track touch position for mobile — tactile feedback
-window.addEventListener('touchstart', e => {
-    mouseX = e.touches[0].clientX;
-    mouseY = e.touches[0].clientY;
-    cursor.classList.add('touch-active', 'is-visible');
-    cursorDot.classList.add('touch-active', 'is-visible');
-}, { passive: true });
-
-window.addEventListener('touchmove', e => {
-    mouseX = e.touches[0].clientX;
-    mouseY = e.touches[0].clientY;
-}, { passive: true });
-
-window.addEventListener('touchend', () => {
-    cursor.classList.remove('touch-active', 'is-visible', 'active');
-    cursorDot.classList.remove('touch-active', 'is-visible', 'active');
-}, { passive: true });
-
-// Ensure visibility is removed on click for absolute safety on mobile taps
-window.addEventListener('click', () => {
-    // Only remove on mobile if needed, or across both for universal snap-back
-    if (window.matchMedia("(pointer: coarse)").matches) {
-        cursor.classList.remove('touch-active', 'is-visible', 'active');
-        cursorDot.classList.remove('touch-active', 'is-visible', 'active');
+    // Create 10 trail dots
+    const trailDots = [];
+    const trailCount = 10;
+    for (let i = 0; i < trailCount; i++) {
+        const td = document.createElement('div');
+        td.className = 'cursor-trail-dot';
+        const hue = 40 + (i * (130 / trailCount));
+        td.style.background = `hsl(${hue}, 85%, 72%)`;
+        td.style.boxShadow = `0 0 10px hsla(${hue}, 85%, 72%, 0.5)`;
+        document.body.appendChild(td);
+        trailDots.push({ el: td, x: 0, y: 0 });
     }
-});
 
-// Lerp factor — lower = more fluid/liquid, higher = snappier
-const LERP = 1.0; // Set to 1.0 for zero delay as requested
-const TOUCH_LERP = 1.0; 
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let dotX = mouseX, dotY = mouseY;
+    let glowX = mouseX, glowY = mouseY;
 
-function lerpCursor() {
-    const isTouch = cursor.classList.contains('touch-active');
-    const currentLerp = isTouch ? TOUCH_LERP : LERP;
-
-    // Outer ring — liquid lag (now instantaneous)
-    curX  += (mouseX - curX) * currentLerp;
-    curY  += (mouseY - curY) * currentLerp;
-    
-    cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate3d(-50%, -50%, 0)`;
-    cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate3d(-50%, -50%, 0)`;
-    
-    requestAnimationFrame(lerpCursor);
-}
-requestAnimationFrame(lerpCursor);
-
-// Hover states
-document.querySelectorAll('a, button, .card').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursor.classList.add('active');
-        cursorDot.classList.add('active');
+    window.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.classList.add('is-visible');
+        glow.classList.add('is-visible');
+        trailDots.forEach(d => d.el.classList.add('is-visible'));
     });
-    el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('active');
-        cursorDot.classList.remove('active');
+
+    // Physics Settings
+    const GLOW_LAG = 0.15;
+    const DOT_LAG = 0.45;
+    const TRAIL_LAG = 0.58;
+
+    function animate() {
+        // Core and Glow strictly follow mouseX/Y
+        dotX += (mouseX - dotX) * DOT_LAG;
+        dotY += (mouseY - dotY) * DOT_LAG;
+        glowX += (mouseX - glowX) * GLOW_LAG;
+        glowY += (mouseY - glowY) * GLOW_LAG;
+
+        dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate3d(-50%, -50%, 0)`;
+        glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0) translate3d(-50%, -50%, 0)`;
+
+        // Trail dots — each follows the one before it
+        let prevX = dotX;
+        let prevY = dotY;
+
+        trailDots.forEach((d) => {
+            d.x += (prevX - d.x) * TRAIL_LAG;
+            d.y += (prevY - d.y) * TRAIL_LAG;
+            d.el.style.transform = `translate3d(${d.x}px, ${d.y}px, 0) translate3d(-50%, -50%, 0)`;
+            prevX = d.x;
+            prevY = d.y;
+        });
+
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Interaction Listeners (Visual Feedback Only)
+    function bindInteractions() {
+        const links = document.querySelectorAll('a, button, .card, .glitch-link, .scene-btn');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => glow.classList.add('active'));
+            link.addEventListener('mouseleave', () => glow.classList.remove('active'));
+        });
+    }
+    bindInteractions();
+})();
+
+
+// ─── Smart Lighting Interaction Logic ───
+(function() {
+    const smartToggle = document.getElementById('smartToggle');
+    const brInput = document.getElementById('brInput');
+    const cctInput = document.getElementById('cctInput');
+    const lightBeam = document.getElementById('lightBeam');
+    const ambientSpill = document.getElementById('ambientSpill');
+    const sourceChip = document.getElementById('sourceChip');
+    const brLabel = document.getElementById('brLabel');
+    const cctLabel = document.getElementById('cctLabel');
+    const statusLabel = document.getElementById('statusLabel');
+    const appControls = document.getElementById('appControls');
+    const sceneBtns = document.querySelectorAll('.scene-btn');
+    
+    const sliders = {
+        brightness: { input: brInput, fill: document.getElementById('brFill'), thumb: document.getElementById('brThumb'), label: brLabel },
+        cct: { input: cctInput, thumb: document.getElementById('cctThumb'), label: cctLabel }
+    };
+
+    let state = {
+        isOn: true,
+        brightness: 85,
+        cct: 4000
+    };
+
+    function getCCTColorLiteral(temp) {
+        if (temp <= 4000) {
+            const ratio = (temp - 2700) / 1300;
+            return `rgb(255, ${Math.round(174 + (235 - 174) * ratio)}, ${Math.round(0 + (214 - 0) * ratio)})`;
+        } else {
+            const ratio = (temp - 4000) / 2500;
+            return `rgb(${Math.round(255 + (160 - 255) * ratio)}, ${Math.round(235 + (216 - 235) * ratio)}, ${Math.round(214 + (239 - 214) * ratio)})`;
+        }
+    }
+
+    function updateUI() {
+        const color = getCCTColorLiteral(state.cct);
+        
+        if (state.isOn) {
+            gsap.to(lightBeam, { 
+                opacity: (state.brightness / 100) * 0.4, 
+                backgroundImage: `linear-gradient(to bottom, ${color} 0%, transparent 100%)`,
+                duration: 0.3 
+            });
+            gsap.to(ambientSpill, { 
+                opacity: (state.brightness / 100) * 0.2, 
+                backgroundImage: `radial-gradient(circle at center, ${color} 0%, transparent 70%)`,
+                duration: 0.3 
+            });
+            gsap.to(sourceChip, { backgroundColor: color, boxShadow: `0 0 20px ${color}`, duration: 0.3 });
+            appControls.style.opacity = "1";
+            appControls.style.pointerEvents = "auto";
+            smartToggle.classList.add('active');
+        } else {
+            gsap.to([lightBeam, ambientSpill], { opacity: 0, duration: 0.3 });
+            gsap.to(sourceChip, { backgroundColor: "#333", boxShadow: "none", duration: 0.3 });
+            appControls.style.opacity = "0.3";
+            appControls.style.pointerEvents = "none";
+            smartToggle.classList.remove('active');
+        }
+
+        statusLabel.innerText = state.isOn ? `On • ${state.brightness}%` : 'Off';
+        brLabel.innerText = `${state.brightness}%`;
+        cctLabel.innerText = `${state.cct}K`;
+        
+        sliders.brightness.fill.style.width = `${state.brightness}%`;
+        sliders.brightness.thumb.style.left = `${state.brightness}%`;
+        sliders.cct.thumb.style.left = `${((state.cct - 2700) / 3800) * 100}%`;
+    }
+
+    smartToggle.addEventListener('click', () => {
+        state.isOn = !state.isOn;
+        updateUI();
     });
-});
+
+    brInput.addEventListener('input', (e) => {
+        state.brightness = parseInt(e.target.value);
+        updateUI();
+    });
+
+    cctInput.addEventListener('input', (e) => {
+        state.cct = parseInt(e.target.value);
+        updateUI();
+    });
+
+    sceneBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            sceneBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.brightness = parseInt(btn.dataset.br);
+            state.cct = parseInt(btn.dataset.cct);
+            state.isOn = true;
+            brInput.value = state.brightness;
+            cctInput.value = state.cct;
+            updateUI();
+        });
+    });
+
+    updateUI();
+})();
+
+
 // 11. Custom Smooth Navigation & Form Logic
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = this.getAttribute('href');
         lenis.scrollTo(target);
-    });
-});
-
-// 11B. Instant Page Transitions (Redirected immediately as requested)
-document.querySelectorAll('.card-link, .back-btn').forEach(link => {
-    link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
-        if (href && !href.startsWith('#')) {
-            // No e.preventDefault() here to allow standard quick navigation
-            // or just let the default browser behavior handle it.
-            // But if we want to ensure zero animation, we just remove the listener 
-            // or just use window.location.href immediately if we kept preventDefault.
-        }
     });
 });
 
@@ -446,3 +534,105 @@ if (formSubmit) {
         }, 3000);
     });
 }
+
+// ─── BLE Mesh Neural Network Visualizer ───
+(function initMeshVisual() {
+    const canvas = document.getElementById('meshCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    let nodes = [], edges = [], pkts = [], t = 0;
+    let W, H;
+
+    const NT = {
+        gateway: { col: "#c9a96e", glow: "rgba(201,169,110,.42)", r: 10 },
+        active: { col: "rgba(201,169,110,.85)", glow: "rgba(201,169,110,.25)", r: 5.5 },
+        relay: { col: "rgba(237,233,224,.22)", glow: "rgba(237,233,224,.06)", r: 4 },
+        sensor: { col: "#00cfc0", glow: "rgba(0,207,192,.24)", r: 4.8 },
+        failed: { col: "#ff7080", glow: "rgba(255,112,128,.26)", r: 5 },
+    };
+
+    function spawn() {
+        if (nodes.length < 2) return;
+        const s = Math.floor(Math.random() * nodes.length);
+        const d = Math.floor(Math.random() * nodes.length);
+        if (s === d) return;
+        pkts.push({ 
+            x: nodes[s].x, y: nodes[s].y, 
+            tx: nodes[d].x, ty: nodes[d].y, 
+            pr: 0, sp: 0.003 + Math.random() * 0.005, 
+            col: Math.random() < 0.5 ? "#c9a96e" : "#00cfc0", 
+            sz: 2 + Math.random() 
+        });
+    }
+
+    function build() {
+        nodes = []; edges = []; pkts = [];
+        nodes.push({ x: W / 2, y: H / 2, type: "gateway", id: 0, ph: 0, bk: 1 });
+        
+        for (let i = 1; i < 36; i++) {
+            const a = Math.random() * Math.PI * 2;
+            const r = 48 + Math.random() * (Math.min(W, H) / 2 - 60);
+            const tp = Math.random() < 0.06 ? "failed" : Math.random() < 0.18 ? "relay" : Math.random() < 0.08 ? "sensor" : "active";
+            nodes.push({ 
+                x: W / 2 + Math.cos(a) * r, 
+                y: H / 2 + Math.sin(a) * r, 
+                type: tp, id: i, ph: Math.random() * Math.PI * 2, bk: 0.6 + Math.random() * 1.8 
+            });
+        }
+        
+        const md = W * 0.25;
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+                if (d < md) edges.push({ a: i, b: j, al: 0.04 + 0.12 * (1 - d / md) });
+            }
+        }
+        for (let k = 0; k < 12; k++) spawn();
+    }
+
+    function resize() {
+        W = canvas.offsetWidth; H = canvas.offsetHeight;
+        canvas.width = W * devicePixelRatio; canvas.height = H * devicePixelRatio;
+        ctx.scale(devicePixelRatio, devicePixelRatio);
+        build();
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        t += 0.016;
+        if (Math.floor(t * 60) % 90 === 0) spawn();
+
+        edges.forEach(e => {
+            const na = nodes[e.a], nb = nodes[e.b];
+            const alive = na.type !== "failed" && nb.type !== "failed";
+            const alV = alive ? e.al : e.al * 0.1;
+            ctx.beginPath(); ctx.moveTo(na.x, na.y); ctx.lineTo(nb.x, nb.y);
+            ctx.strokeStyle = `rgba(201,169,110,${alV})`; ctx.lineWidth = 0.6; ctx.stroke();
+        });
+
+        for (let i = pkts.length - 1; i >= 0; i--) {
+            const p = pkts[i]; p.pr += p.sp;
+            p.x += (p.tx - p.x) * p.sp * 3; p.y += (p.ty - p.y) * p.sp * 3;
+            if (p.pr > 1) { pkts.splice(i, 1); spawn(); continue; }
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.sz, 0, Math.PI * 2); ctx.fillStyle = p.col; ctx.fill();
+        }
+
+        nodes.forEach(n => {
+            const nt = NT[n.type];
+            const pulse = 1 + Math.sin(t * n.bk + n.ph) * 0.11;
+            const nr = nt.r * pulse;
+            ctx.beginPath(); ctx.arc(n.x, n.y, nr, 0, Math.PI * 2); ctx.fillStyle = nt.col; ctx.fill();
+            if (n.type === "failed") {
+                ctx.strokeStyle = "#ff7080"; ctx.lineWidth = 1.2;
+                ctx.beginPath(); ctx.moveTo(n.x-3, n.y-3); ctx.lineTo(n.x+3, n.y+3); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(n.x+3, n.y-3); ctx.lineTo(n.x-3, n.y+3); ctx.stroke();
+            }
+        });
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+})();

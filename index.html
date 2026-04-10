@@ -253,6 +253,102 @@
             </div> <!-- cards-stack -->
         </div> <!-- cards-container -->
     </section>
+    <!-- BLE Mesh Section -->
+    <section class="mesh-section reveal">
+        <div class="cob-container">
+            <div class="mesh-header">
+                <span class="cob-eyebrow" style="color: #00cfc0;">BLE Mesh Protocol</span>
+                <h2 class="cob-title">Self-healing <em>Topology</em></h2>
+                <p class="cob-subtitle">Every luminaire is a node in a many-to-many network. Self-healing mesh with AES-128 encryption, managed flooding, and sub-200ms rerouting.</p>
+            </div>
+            
+            <div class="mesh-wrap">
+                <canvas id="meshCanvas"></canvas>
+                <div class="mesh-features">
+                    <div class="mesh-feat">
+                        <div class="mesh-feat-icon" style="color: #00cfc0;">⬡</div>
+                        <div>
+                            <div class="mesh-feat-title">Managed Flooding</div>
+                            <div class="mesh-feat-desc">TTL-controlled across 3 advertising channels for maximum reliability.</div>
+                        </div>
+                    </div>
+                    <div class="mesh-feat">
+                        <div class="mesh-feat-icon" style="color: #c9a96e;">🔒</div>
+                        <div>
+                            <div class="mesh-feat-title">AES-128 Encryption</div>
+                            <div class="mesh-feat-desc">Dual-layer network + application key security protocols.</div>
+                        </div>
+                    </div>
+                    <div class="mesh-feat">
+                        <div class="mesh-feat-icon" style="color: #ff7080;">⚡</div>
+                        <div>
+                            <div class="mesh-feat-title">Sub-200ms Rerouting</div>
+                            <div class="mesh-feat-desc">Automatic path recalculation on fault detection or obstruction.</div>
+                        </div>
+                    </div>
+                    <div class="mesh-feat">
+                        <div class="mesh-feat-icon" style="color: #4ab0ff;">📡</div>
+                        <div>
+                            <div class="mesh-feat-title">32k Addresses</div>
+                            <div class="mesh-feat-desc">Unicast, group, and virtual addressing modes for large-scale deployments.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mesh-stats-strip">
+                <div class="mesh-stat-item">
+                    <div class="mesh-stat-val">2.4<span>GHz</span></div>
+                    <div class="mesh-stat-label">ISM Band Frequency</div>
+                </div>
+                <div class="mesh-stat-item">
+                    <div class="mesh-stat-val">127<span>ms</span></div>
+                    <div class="mesh-stat-label">Max 5-hop Latency</div>
+                </div>
+                <div class="mesh-stat-item">
+                    <div class="mesh-stat-val">AES<span>-128</span></div>
+                    <div class="mesh-stat-label">Dual-layer Security</div>
+                </div>
+                <div class="mesh-stat-item">
+                    <div class="mesh-stat-val">-96<span>dBm</span></div>
+                    <div class="mesh-stat-label">Rx Sensitivity</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COB Technology Section -->
+    <section class="cob-section reveal">
+        <div class="cob-container">
+            <div class="cob-header">
+                <span class="cob-eyebrow">COB Technology</span>
+                <h2 class="cob-title">Chip-on-Board <em>Architecture</em></h2>
+                <p class="cob-subtitle">Direct die bonding on aluminum substrate. CRI Ra 98+, 180 lm/W efficacy, 50,000-hour L70 lifespan.</p>
+            </div>
+            <div class="cob-grid">
+                <div class="cob-card">
+                    <span class="cob-icon">🔬</span>
+                    <h3 class="cob-card-title">Phosphor Layer</h3>
+                    <p class="cob-card-desc">Uniform spectral conversion with &lt;2 SDCM consistency across the entire emitting surface.</p>
+                </div>
+                <div class="cob-card">
+                    <span class="cob-icon">⚡</span>
+                    <h3 class="cob-card-title">Die Array</h3>
+                    <p class="cob-card-desc">Multiple blue LED dies wire-bonded directly to substrate. No individual packaging waste.</p>
+                </div>
+                <div class="cob-card">
+                    <span class="cob-icon">🌡️</span>
+                    <h3 class="cob-card-title">Thermal Management</h3>
+                    <p class="cob-card-desc">Aluminum MCPCB with 2.2 W/mK conductivity. Junction temperature always &lt;85°C.</p>
+                </div>
+                <div class="cob-card">
+                    <span class="cob-icon">🎨</span>
+                    <h3 class="cob-card-title">Color Rendering</h3>
+                    <p class="cob-card-desc">CRI Ra 98+ with R9 &gt;95. Faithful reproduction of every material and texture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Stats Section (Lumen Stats) -->
     <section class="stats-section">
@@ -278,7 +374,107 @@
         </div>
     </section>
 
+    <!-- Smart Lighting Interaction Section -->
+    <section id="smart-as-it-gets" class="smart-interaction reveal">
+        <div class="smart-grid">
+            <div class="smart-text-content">
+                <span class="lumi-eyebrow">Interactive Ecosystem</span>
+                <h2 class="section-title"><span class="text-grad">Smart</span><br>as it gets</h2>
+                <p class="section-subtitle">Adjust brightness, tune into perfect ambiance, and control your lighting remotely with ease.</p>
+            </div>
+
+            <div class="smart-interactive-wrapper">
+                <!-- Light Fixture -->
+                <div class="fixture-container">
+                    <div class="ceiling-strip"></div>
+                    <div class="fixture-body">
+                        <div class="fixture-chip" id="sourceChip"></div>
+                    </div>
+                    <!-- The Beam -->
+                    <div class="light-beam" id="lightBeam"></div>
+                    <!-- Ambient Spill -->
+                    <div class="ambient-spill" id="ambientSpill"></div>
+                </div>
+
+                <!-- Phone Mockup -->
+                <div class="phone-mockup">
+                    <div class="dynamic-island"></div>
+                    <div class="app-ui">
+                        <div class="app-header">
+                            <div>
+                                <h4 class="room-name">Main Room</h4>
+                                <span class="status-indicator" id="statusLabel">On • 85%</span>
+                            </div>
+                            <button class="toggle-switch active" id="smartToggle">
+                                <div class="switch-handle"></div>
+                            </button>
+                        </div>
+
+                        <div class="app-controls" id="appControls">
+                            <!-- Brightness Control -->
+                            <div class="control-group">
+                                <div class="control-label">
+                                    <span>🔆 Brightness</span>
+                                    <span id="brLabel">85%</span>
+                                </div>
+                                <div class="custom-slider" id="brSlider">
+                                    <div class="slider-track">
+                                        <div class="slider-fill" id="brFill" style="width: 85%;"></div>
+                                    </div>
+                                    <div class="slider-thumb" id="brThumb" style="left: 85%;">
+                                        <div class="thumb-detail"></div>
+                                    </div>
+                                    <input type="range" min="1" max="100" value="85" class="slider-input" id="brInput">
+                                </div>
+                            </div>
+
+                            <!-- CCT Control -->
+                            <div class="control-group">
+                                <div class="control-label">
+                                    <span>🌡 CCT</span>
+                                    <span id="cctLabel">4000K</span>
+                                </div>
+                                <div class="custom-slider cct-slider" id="cctSlider">
+                                    <div class="slider-track cct-track"></div>
+                                    <div class="slider-thumb" id="cctThumb" style="left: 34%;">
+                                        <div class="thumb-detail"></div>
+                                    </div>
+                                    <input type="range" min="2700" max="6500" step="50" value="4000" class="slider-input" id="cctInput">
+                                </div>
+                            </div>
+
+                            <!-- Scene Settings -->
+                            <div class="scenes-grid">
+                                <div class="scenes-label">Scenes</div>
+                                <div class="scenes-buttons">
+                                    <button class="scene-btn" data-br="100" data-cct="6000" data-icon="🎯">
+                                        <span class="scene-icon">🎯</span>
+                                        <span class="scene-name">Focus</span>
+                                    </button>
+                                    <button class="scene-btn active" data-br="85" data-cct="4000" data-icon="🛋️">
+                                        <span class="scene-icon">🛋️</span>
+                                        <span class="scene-name">Relax</span>
+                                    </button>
+                                    <button class="scene-btn" data-br="70" data-cct="4500" data-icon="📖">
+                                        <span class="scene-icon">📖</span>
+                                        <span class="scene-name">Reading</span>
+                                    </button>
+                                    <button class="scene-btn" data-br="15" data-cct="2700" data-icon="🌙">
+                                        <span class="scene-icon">🌙</span>
+                                        <span class="scene-name">Night</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Experience Section -->
+
     <section id="luxe" class="experience">
         <div class="exp-bg-wrapper">
             <div class="exp-bg" style="background-image: url('images/experience_bg.png')"></div>
