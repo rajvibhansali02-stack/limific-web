@@ -3,10 +3,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 // 0. Initialize Lenis Smooth Scroll (Buttery Smooth Virtual Scroll)
 const lenis = new Lenis({
-    duration: 1.1, 
+    duration: 1.4, 
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
     smoothWheel: true,
-    lerp: 0.1, // More responsive to remove perceived lag
+    lerp: 0.075, // Slightly gentler for a more "liquid" feel
     wheelMultiplier: 1.0, 
     infinite: false,
 });
@@ -163,7 +163,7 @@ if (cards.length > 0) {
                     trigger: cards[i + 1],
                     start: "top top",
                     end: "top 30%",
-                    scrub: 0.8 // Snappier catch-up
+                    scrub: 1.2 // Smoother catch-up for a premium feel
                 }
             });
         }
@@ -344,13 +344,13 @@ gsap.to(".orb-orange", {
     for (let i = 0; i < trailCount; i++) {
         const td = document.createElement('div');
         td.className = 'cursor-trail-dot';
-        const size = 7 - i * 0.55;
-        const opacity = 0.45 - i * 0.038;
-        const hue = 40 + (i / trailCount) * 130; // Match gold → emerald
+        const size = 10 - i * 0.75;
+        const opacity = 0.5 - i * 0.04;
+        const hue = 40 + (i / trailCount) * 140; // Match gold → emerald
         td.style.width = `${size}px`;
         td.style.height = `${size}px`;
         td.style.background = `hsla(${hue}, 85%, 72%, ${opacity})`;
-        td.style.boxShadow = `0 0 ${size * 2}px hsla(${hue}, 85%, 72%, ${opacity * 0.6})`;
+        td.style.boxShadow = `0 0 ${size * 2.5}px hsla(${hue}, 85%, 72%, ${opacity * 0.7})`;
         document.body.appendChild(td);
         trailDots.push({ el: td, x: 0, y: 0 });
     }
@@ -369,9 +369,9 @@ gsap.to(".orb-orange", {
     });
 
     // Physics Settings (Synced with Lumific-office)
-    const GLOW_LAG = 0.15;
-    const DOT_LAG = 0.45;
-    const TRAIL_LAG = 0.42;
+    const GLOW_LAG = 0.12;
+    const DOT_LAG = 1.0; // Real-time alignment, no delay
+    const TRAIL_LAG = 0.35;
 
     function animate() {
         // Core and Glow strictly follow mouseX/Y

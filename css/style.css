@@ -54,28 +54,28 @@ body {
 }
 
 .cursor-dot {
-    width: 1.5px;
-    height: 1.5px;
+    width: 6px;
+    height: 6px;
     background: white;
     mix-blend-mode: difference;
     z-index: 100001;
 }
 
 .cursor-glow {
-    width: 35px;
-    height: 35px;
-    background: radial-gradient(circle, rgba(199, 96, 255, 0.4) 0%, rgba(199, 96, 255, 0.1) 40%, transparent 70%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(199, 96, 255, 0.45) 0%, rgba(199, 96, 255, 0.15) 40%, transparent 70%);
     filter: blur(1px);
-    transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
-                height 0.4s cubic-bezier(0.23, 1, 0.32, 1),
-                background 0.4s ease,
+    transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1), 
+                height 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+                background 0.5s ease,
                 opacity 0.6s ease;
 }
 
 .cursor-glow.active {
-    width: 50px;
-    height: 50px;
-    background: radial-gradient(circle, rgba(79, 142, 255, 0.7) 0%, rgba(79, 142, 255, 0.3) 40%, transparent 70%);
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, rgba(79, 142, 255, 0.75) 0%, rgba(79, 142, 255, 0.35) 40%, transparent 70%);
 }
 
 .cursor-dot.is-visible, .cursor-glow.is-visible {
@@ -174,7 +174,7 @@ p {
 a {
     color: inherit;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 
@@ -210,7 +210,7 @@ nav {
     border: 1px solid var(--border-color);
     border-radius: 100px;
     padding: 12px 32px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 nav.scrolled {
