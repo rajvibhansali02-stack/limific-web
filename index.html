@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/ecommerce.css">
     <script>
         // Critical: Remove black delay immediately on navigation
         if (sessionStorage.getItem('hasSeenEntrance')) {
@@ -18,6 +19,11 @@
             const style = document.createElement('style');
             style.innerHTML = '.transition-overlay { display: none !important; opacity: 0 !important; visibility: hidden !important; }';
             document.head.appendChild(style);
+        }
+        
+        // Finalize Theme State before body renders
+        if (localStorage.getItem('theme') === 'light-mode') {
+            document.documentElement.classList.add('light-mode');
         }
     </script>
 </head>
@@ -42,14 +48,10 @@
 
             <ul class="nav-links">
                 <li><a href="#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
-                <li><a href="#shop" class="glitch-link"
-                        data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li>
-                <li><a href="#luxe" class="glitch-link"
-                        data-value="LUXE"><span>LUXE</span><span>LUXE</span></a></li>
-                <li><a href="#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a>
-                </li>
-                <li><a href="#contact" class="glitch-link"
-                        data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
+                <li><a href="shop.html" class="glitch-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li>
+                <li><a href="#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
+                <li><a href="#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
+                <li><a href="#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
             </ul>
             <!-- Light Mode Toggle Button -->
             <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode" title="Toggle warm light">
@@ -252,6 +254,91 @@
                 </div>
             </div> <!-- cards-stack -->
         </div> <!-- cards-container -->
+    </section>
+
+    <!-- Shop Entry Section -->
+    <section id="boutique" class="shop-entry-section">
+        <div class="shop-entry-inner reveal">
+            <span class="shop-entry-eyebrow">Our Catalog</span>
+            <h2 class="shop-entry-title">Browse the Collection</h2>
+            <p class="shop-entry-subtitle">113 architectural luminaires — from precision spotlights to statement ceiling rings. Filter by category, explore the full range.</p>
+
+            <div class="shop-entry-categories">
+                <a href="shop.html?cat=all" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="5" y="18" width="50" height="4" rx="2" fill="#333"/>
+                            <rect x="27" y="22" width="6" height="14" rx="2" fill="#444"/>
+                            <ellipse cx="30" cy="42" rx="10" ry="13" fill="#2a2a2a" stroke="#555" stroke-width="1"/>
+                            <ellipse cx="30" cy="51" rx="5" ry="3" fill="rgba(245,151,104,0.8)"/>
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Tracklights</span>
+                    <span class="shop-cat-count">24 products</span>
+                </a>
+                <a href="shop.html?cat=downlights" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="26" r="18" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1"/>
+                            <circle cx="30" cy="26" r="10" fill="#111"/>
+                            <circle cx="30" cy="26" r="5" fill="rgba(255,220,100,0.85)"/>
+                            <circle cx="30" cy="26" r="18" stroke="rgba(255,220,100,0.2)" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Downlights</span>
+                    <span class="shop-cat-count">18 products</span>
+                </a>
+                <a href="shop.html?cat=spots" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="28" r="16" fill="#1e1e1e" stroke="#444" stroke-width="1"/>
+                            <path d="M19 28 A11 11 0 0 1 30 17 A11 11 0 0 1 41 28" fill="#222"/>
+                            <circle cx="30" cy="28" r="6" fill="#111"/>
+                            <circle cx="30" cy="28" r="3.5" fill="rgba(255,160,100,0.9)"/>
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Spots</span>
+                    <span class="shop-cat-count">31 products</span>
+                </a>
+                <a href="shop.html?cat=outdoor" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="30" cy="26" rx="20" ry="6" fill="#2a2a2a" stroke="#444" stroke-width="1"/>
+                            <rect x="25" y="16" width="10" height="12" rx="2" fill="#2a2a2a" stroke="#444" stroke-width="0.5"/>
+                            <ellipse cx="30" cy="26" rx="10" ry="3" fill="rgba(130,200,130,0.8)"/>
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Outdoor</span>
+                    <span class="shop-cat-count">14 products</span>
+                </a>
+                <a href="shop.html?cat=profiles" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="5" y="25" width="50" height="8" rx="3" fill="#222" stroke="#444" stroke-width="1"/>
+                            <rect x="5" y="27" width="50" height="4" rx="2" fill="rgba(180,140,255,0.85)"/>
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Profiles</span>
+                    <span class="shop-cat-count">16 products</span>
+                </a>
+                <a href="shop.html?cat=ceiling" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="27" y="5" width="6" height="10" rx="2" fill="#333"/>
+                            <circle cx="30" cy="38" r="18" stroke="#333" stroke-width="5" fill="none"/>
+                            <circle cx="30" cy="38" r="18" stroke="rgba(255,240,180,0.9)" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Studio Abby</span>
+                    <span class="shop-cat-count">10 products</span>
+                </a>
+            </div>
+
+            <a href="shop.html" class="shop-entry-cta">
+                <span>Browse All 113 Products</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
     </section>
 
 
@@ -477,29 +564,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="js/script.js"></script>
-    <script>
-    // ── Theme Toggle ──────────────────────────────────────────────────────────
-    (function () {
-        const btn   = document.getElementById('themeToggle');
-        const body  = document.body;
-        const LIGHT = 'light-mode';
-
-        // restore saved preference
-        if (localStorage.getItem('theme') === LIGHT) {
-            body.classList.add(LIGHT);
-        }
-
-        btn.addEventListener('click', () => {
-            const isLight = body.classList.toggle(LIGHT);
-            localStorage.setItem('theme', isLight ? LIGHT : 'dark');
-            // Animate toggle thumb
-            gsap.fromTo('#themeToggle .toggle-thumb', { scale: 0.7 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' });
-            // Subtle page flash
-            gsap.fromTo('body', { opacity: 0.85 }, { opacity: 1, duration: 0.35, ease: 'power2.out' });
-        });
-    })();
-    </script>
-
+    <script src="js/theme.js"></script>
 </body>
 
 </html>

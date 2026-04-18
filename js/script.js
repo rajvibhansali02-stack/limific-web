@@ -22,7 +22,8 @@ requestAnimationFrame(raf);
 // Handle Deep Linking / Back Button Scroll
 if (window.location.hash) {
     const hash = window.location.hash;
-    if (hash.match(/#(ceiling|wall-sculptures|ceiling-masterpieces|smart-lighting)/)) {
+    // Include all main sections: shop, about, contact, and product categories
+    if (hash.match(/#(shop|about|contact|boutique|ceiling|wall-sculptures|ceiling-masterpieces|smart-lighting)/)) {
         // Essential: Scroll immediately to reduce perceived delay
         lenis.scrollTo(hash, { immediate: true, force: true });
     }
@@ -520,7 +521,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = this.getAttribute('href');
-        lenis.scrollTo(target);
+        lenis.scrollTo(target, { immediate: true });
     });
 });
 

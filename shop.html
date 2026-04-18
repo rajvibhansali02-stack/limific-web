@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lumific Shop — Browse our premium architectural lighting catalog. Tracklights, Downlights, Spots, Outdoor, Profiles.">
+    <title>Lumific | Shop — All Lighting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/shop.css">
+    <style>
+        /* Cursor override for shop page */
+        @media (min-width: 1024px) {
+            body, a, button, .product-card, .filter-btn, .quick-add-btn {
+                cursor: none !important;
+            }
+        }
+    </style>
+    <script>
+        // Finalize Theme State before body renders
+        if (localStorage.getItem('theme') === 'light-mode') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Background Gradients -->
+    <div class="bg-gradients">
+        <div class="gradient-orb orb-purple"></div>
+        <div class="gradient-orb orb-orange"></div>
+        <div class="gradient-orb orb-blue"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
+                <li><a href="shop.html" class="glitch-link active-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li>
+                <li><a href="index.html#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
+                <li><a href="index.html#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
+                <li><a href="index.html#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
+            </ul>
+
+            <!-- Light Mode Toggle Button -->
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode" title="Toggle warm light">
+                <span class="toggle-track">
+                    <span class="toggle-thumb">
+                        <svg class="icon-bulb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21h6M12 3a6 6 0 0 1 4 10.47V17H8v-3.53A6 6 0 0 1 12 3z"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                        </svg>
+                        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </span>
+                </span>
+            </button>
+
+            <!-- Cart Toggle -->
+            <button id="cartToggle" class="cart-toggle" aria-label="View Cart (0 items)">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                    <path d="M3 6h18"/>
+                    <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+        <div class="cart-drawer-header">
+            <h2>Your Bag</h2>
+            <button class="cart-close-btn" id="cartCloseBtn" aria-label="Close cart">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6 6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="cart-body" id="cartBody">
+            <div class="cart-empty" id="cartEmpty">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                    <path d="M3 6h18"/>
+                    <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                <p>Your bag is empty</p>
+                <span>Add some lights to illuminate your space.</span>
+            </div>
+            <ul class="cart-items-list" id="cartItemsList"></ul>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-subtotal">
+                <span>Subtotal</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-checkout">Proceed to Checkout</button>
+            <p class="cart-note">Taxes & shipping calculated at checkout</p>
+        </div>
+    </aside>
+
+    <!-- Shop Hero Banner -->
+    <section class="shop-hero">
+        <div class="shop-hero-content">
+            <span class="shop-eyebrow">Studio Abby by Lumific</span>
+            <h1 class="shop-hero-title">All Lighting</h1>
+            <p class="shop-hero-subtitle">113 products — Architectural luminaires engineered for precision</p>
+        </div>
+    </section>
+
+    <!-- Shop Main Layout -->
+    <div class="shop-layout">
+        <!-- Sidebar -->
+        <aside class="shop-sidebar" id="shopSidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-heading">Categories</h3>
+                <ul class="sidebar-nav">
+                    <li><button class="filter-btn active" data-filter="all">All Products <span class="count">113</span></button></li>
+                    <li><button class="filter-btn" data-filter="tracklights">Tracklights <span class="count">24</span></button></li>
+                    <li><button class="filter-btn" data-filter="downlights">Downlights <span class="count">18</span></button></li>
+                    <li><button class="filter-btn" data-filter="spots">Spots <span class="count">31</span></button></li>
+                    <li><button class="filter-btn" data-filter="outdoor">Outdoor <span class="count">14</span></button></li>
+                    <li><button class="filter-btn" data-filter="profiles">Profiles <span class="count">16</span></button></li>
+                    <li><button class="filter-btn" data-filter="ceiling">Studio Abby <span class="count">10</span></button></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3 class="sidebar-heading">Sort By</h3>
+                <ul class="sidebar-nav">
+                    <li><button class="filter-btn active-sort" data-sort="featured">Featured</button></li>
+                    <li><button class="filter-btn" data-sort="price-asc">Price: Low to High</button></li>
+                    <li><button class="filter-btn" data-sort="price-desc">Price: High to Low</button></li>
+                    <li><button class="filter-btn" data-sort="new">Newest</button></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Products Area -->
+        <main class="shop-main">
+            <div class="shop-toolbar">
+                <div class="shop-toolbar-left">
+                    <button class="mobile-filter-btn" id="mobileFilterBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="15" y1="18" x2="21" y2="18"/></svg>
+                        Filter
+                    </button>
+                    <span class="results-count" id="resultsCount">Showing all 8 results</span>
+                </div>
+            </div>
+
+
+            <!-- Product Grid -->
+            <div class="product-grid cols-2" id="productGrid">
+
+                <!-- Product 1 — Spotboy Track -->
+                <article class="product-card" data-cat="tracklights" data-price="420" data-id="1">
+                    <div class="product-img-wrap">
+                        <div class="product-img-bg product-real-img" style="--glow: 245,151,104">
+                            <img src="images/shop_spotboy.png" alt="Spotboy 338 Track Light" class="product-real-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-svg-icon" style="display:none">
+                                <rect x="10" y="20" width="180" height="8" rx="4" fill="#333"/>
+                                <rect x="92" y="28" width="16" height="40" rx="4" fill="#444"/>
+                                <ellipse cx="100" cy="80" rx="22" ry="28" fill="#2a2a2a" stroke="#555" stroke-width="1.5"/>
+                                <ellipse cx="100" cy="98" rx="8" ry="5" fill="rgba(245,151,104,0.9)"/>
+                            </svg>
+                        </div>
+                        <div class="product-hover-glow"></div>
+                        <button class="quick-add-btn" data-id="1" data-name="Spotboy 338" data-price="420.00" data-cat="Tracklights">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Quick Add
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-cat-tag">Tracklights</span>
+                        <h2 class="product-title">Spotboy 338</h2>
+                        <p class="product-price-tag">From $420.00</p>
+                    </div>
+                </article>
+
+                <!-- Product 2 — Barrel Track -->
+                <article class="product-card" data-cat="tracklights" data-price="380" data-id="2">
+                    <div class="product-img-wrap">
+                        <div class="product-img-bg product-real-img" style="--glow: 99,102,241">
+                            <img src="images/shop_barrel.png" alt="Barrel 320 Track Light" class="product-real-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-svg-icon" style="display:none">
+                                <rect x="10" y="20" width="180" height="8" rx="4" fill="#333"/>
+                                <rect x="84" y="60" width="32" height="45" rx="8" fill="#2a2a2a" stroke="#555" stroke-width="1.5"/>
+                                <ellipse cx="100" cy="105" rx="7" ry="4" fill="rgba(99,102,241,0.9)"/>
+                            </svg>
+                        </div>
+                        <div class="product-hover-glow"></div>
+                        <button class="quick-add-btn" data-id="2" data-name="Barrel 320" data-price="380.00" data-cat="Tracklights">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Quick Add
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-cat-tag">Tracklights</span>
+                        <h2 class="product-title">Barrel 320</h2>
+                        <p class="product-price-tag">From $380.00</p>
+                    </div>
+                </article>
+
+                <!-- Product 3 — Halo Downlight -->
+                <article class="product-card" data-cat="downlights" data-price="295" data-id="3">
+                    <div class="product-img-wrap">
+                        <div class="product-img-bg product-real-img" style="--glow: 255,220,100">
+                            <img src="images/shop_halo.png" alt="Halo 394 Downlight" class="product-real-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-svg-icon" style="display:none">
+                                <circle cx="100" cy="90" r="55" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="2"/>
+                                <circle cx="100" cy="90" r="12" fill="rgba(255,220,100,0.85)"/>
+                                <circle cx="100" cy="90" r="55" stroke="rgba(255,220,100,0.25)" stroke-width="3" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="product-hover-glow"></div>
+                        <button class="quick-add-btn" data-id="3" data-name="Halo 394" data-price="295.00" data-cat="Downlights">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Quick Add
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-cat-tag">Downlights</span>
+                        <h2 class="product-title">Halo 394</h2>
+                        <p class="product-price-tag">From $295.00</p>
+                    </div>
+                </article>
+
+                <!-- Product 4 — AllRounder Downlight -->
+                <article class="product-card" data-cat="downlights" data-price="180" data-id="4">
+                    <div class="product-img-wrap">
+                        <div class="product-img-bg product-real-img" style="--glow: 200,220,255">
+                            <img src="images/shop_allrounder.png" alt="AllRounder 392 Downlight" class="product-real-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-svg-icon" style="display:none">
+                                <circle cx="100" cy="90" r="58" fill="#222" stroke="#3a3a3a" stroke-width="2"/>
+                                <circle cx="100" cy="90" r="16" fill="rgba(200,220,255,0.8)"/>
+                                <circle cx="100" cy="90" r="58" stroke="rgba(200,220,255,0.2)" stroke-width="4" stroke-dasharray="5 3" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="product-hover-glow"></div>
+                        <button class="quick-add-btn" data-id="4" data-name="AllRounder 392" data-price="180.00" data-cat="Downlights">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Quick Add
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-cat-tag">Downlights</span>
+                        <h2 class="product-title">AllRounder 392</h2>
+                        <p class="product-price-tag">From $180.00</p>
+                    </div>
+                </article>
+
+                <!-- Product 5 — Go Pro Spot -->
+                <article class="product-card" data-cat="spots" data-price="340" data-id="5">
+                    <div class="product-img-wrap">
+                        <div class="product-img-bg product-real-img" style="--glow: 255,160,100">
+                            <img src="images/shop_gopro.png" alt="Go Pro 168 Spot" class="product-real-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-svg-icon" style="display:none">
+                                <circle cx="100" cy="92" r="52" fill="#1e1e1e" stroke="#444" stroke-width="1.5"/>
+                                <circle cx="100" cy="92" r="10" fill="rgba(255,160,100,0.9)"/>
+                                <circle cx="100" cy="92" r="52" stroke="rgba(255,160,100,0.2)" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="product-hover-glow"></div>
+                        <button class="quick-add-btn" data-id="5" data-name="Go Pro 168" data-price="340.00" data-cat="Spots">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Quick Add
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-cat-tag">Spots</span>
+                        <h2 class="product-title">Go Pro 168</h2>
+                        <p class="product-price-tag">From $340.00</p>
+                    </div>
+                </article>
+
+                <!-- Product 6 — Baylight Outdoor -->
+                <article class="product-card" data-cat="outdoor" data-price="890" data-id="6">
+                    <div class="product-img-wrap">
+                        <div class="product-img-bg product-real-img" style="--glow: 130,200,130">
+                            <img src="images/shop_baylight.png" alt="Baylight 418 Outdoor" class="product-real-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-svg-icon" style="display:none">
+                                <ellipse cx="100" cy="88" rx="60" ry="15" fill="#2a2a2a" stroke="#444" stroke-width="1.5"/>
+                                <ellipse cx="100" cy="88" rx="20" ry="4" fill="rgba(130,200,130,0.85)"/>
+                            </svg>
+                        </div>
+                        <div class="product-hover-glow"></div>
+                        <button class="quick-add-btn" data-id="6" data-name="Baylight 418" data-price="890.00" data-cat="Outdoor">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Quick Add
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-cat-tag">Outdoor</span>
+                        <h2 class="product-title">Baylight 418</h2>
+                        <p class="product-price-tag">From $890.00</p>
+                    </div>
+                </article>
+
+                <!-- Product 7 — Iskim Profile -->
+                <article class="product-card" data-cat="profiles" data-price="560" data-id="7">
+                    <div class="product-img-wrap">
+                        <div class="product-img-bg product-real-img" style="--glow: 180,140,255">
+                            <img src="images/shop_sconce.png" alt="Iskim 126 Profile" class="product-real-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-svg-icon" style="display:none">
+                                <rect x="20" y="82" width="160" height="22" rx="5" fill="#222" stroke="#444" stroke-width="1.5"/>
+                                <rect x="20" y="88" width="160" height="10" rx="3" fill="rgba(180,140,255,0.85)"/>
+                            </svg>
+                        </div>
+                        <div class="product-hover-glow"></div>
+                        <button class="quick-add-btn" data-id="7" data-name="Iskim 126" data-price="560.00" data-cat="Profiles">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Quick Add
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-cat-tag">Profiles</span>
+                        <h2 class="product-title">Iskim 126</h2>
+                        <p class="product-price-tag">From $560.00</p>
+                    </div>
+                </article>
+
+                <!-- Product 8 — Enso Ceiling Ring -->
+                <article class="product-card" data-cat="ceiling" data-price="2400" data-id="8">
+                    <div class="product-img-wrap">
+                        <div class="product-img-bg product-real-img" style="--glow: 255,240,180">
+                            <img src="images/shop_flora.png" alt="Enso 30 Chandelier" class="product-real-photo"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="product-svg-icon" style="display:none">
+                                <rect x="95" y="15" width="10" height="30" rx="3" fill="#333"/>
+                                <circle cx="100" cy="105" r="60" stroke="#333" stroke-width="12" fill="none"/>
+                            </svg>
+                        </div>
+                        <div class="product-hover-glow"></div>
+                        <button class="quick-add-btn" data-id="8" data-name="Enso 30" data-price="2400.00" data-cat="Studio Abby">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            Quick Add
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-cat-tag">Studio Abby</span>
+                        <h2 class="product-title">Enso 30</h2>
+                        <p class="product-price-tag">From $2,400.00</p>
+                    </div>
+                </article>
+
+            </div><!-- /product-grid -->
+        </main>
+    </div><!-- /shop-layout -->
+
+    <!-- Mobile Filter Drawer -->
+    <div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
+    <aside class="mobile-filter-drawer" id="mobileFilterDrawer">
+        <div class="cart-drawer-header">
+            <h2>Filter</h2>
+            <button class="cart-close-btn" id="mobileFilterClose">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="mobile-filter-body">
+            <h3 class="sidebar-heading">Categories</h3>
+            <ul class="sidebar-nav mobile-sidebar-nav">
+                <li><button class="filter-btn active" data-filter="all">All Products</button></li>
+                <li><button class="filter-btn" data-filter="tracklights">Tracklights</button></li>
+                <li><button class="filter-btn" data-filter="downlights">Downlights</button></li>
+                <li><button class="filter-btn" data-filter="spots">Spots</button></li>
+                <li><button class="filter-btn" data-filter="outdoor">Outdoor</button></li>
+                <li><button class="filter-btn" data-filter="profiles">Profiles</button></li>
+                <li><button class="filter-btn" data-filter="ceiling">Studio Abby</button></li>
+            </ul>
+        </div>
+    </aside>
+
+    <footer style="padding: 40px; text-align:center; color: rgba(255,255,255,0.3); font-size:0.85rem; border-top: 1px solid rgba(255,255,255,0.05);">
+        &copy; 2026 Lumific. All rights reserved.
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+    // ─── Spectral Liquid Ribbon Cursor (same as index.html) ───
+    (function initializeSpectralCursor() {
+        const dot = document.createElement('div');
+        const glow = document.createElement('div');
+        dot.className = 'cursor-dot';
+        glow.className = 'cursor-glow';
+        document.body.appendChild(dot);
+        document.body.appendChild(glow);
+
+        const trailDots = [];
+        const trailCount = 10;
+        for (let i = 0; i < trailCount; i++) {
+            const td = document.createElement('div');
+            td.className = 'cursor-trail-dot';
+            const size = 10 - i * 0.75;
+            const opacity = 0.5 - i * 0.04;
+            const hue = 40 + (i / trailCount) * 140;
+            td.style.width = `${size}px`;
+            td.style.height = `${size}px`;
+            td.style.background = `hsla(${hue}, 85%, 72%, ${opacity})`;
+            td.style.boxShadow = `0 0 ${size * 2.5}px hsla(${hue}, 85%, 72%, ${opacity * 0.7})`;
+            document.body.appendChild(td);
+            trailDots.push({ el: td, x: 0, y: 0 });
+        }
+
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let dotX = mouseX, dotY = mouseY, glowX = mouseX, glowY = mouseY;
+        const GLOW_LAG = 0.12, DOT_LAG = 1.0, TRAIL_LAG = 0.35;
+
+        window.addEventListener('mousemove', e => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            dot.classList.add('is-visible');
+            glow.classList.add('is-visible');
+            trailDots.forEach(d => d.el.classList.add('is-visible'));
+        });
+
+        function animate() {
+            dotX += (mouseX - dotX) * DOT_LAG;
+            dotY += (mouseY - dotY) * DOT_LAG;
+            glowX += (mouseX - glowX) * GLOW_LAG;
+            glowY += (mouseY - glowY) * GLOW_LAG;
+            dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate3d(-50%, -50%, 0)`;
+            glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0) translate3d(-50%, -50%, 0)`;
+            let prevX = dotX, prevY = dotY;
+            trailDots.forEach(d => {
+                d.x += (prevX - d.x) * TRAIL_LAG;
+                d.y += (prevY - d.y) * TRAIL_LAG;
+                d.el.style.left = `${d.x}px`;
+                d.el.style.top = `${d.y}px`;
+                d.el.style.transform = `translate3d(-50%, -50%, 0)`;
+                prevX = d.x; prevY = d.y;
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        document.querySelectorAll('a, button, .product-card, .filter-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => glow.classList.add('active'));
+            el.addEventListener('mouseleave', () => glow.classList.remove('active'));
+        });
+    })();
+
+    // ─── Handle Hash Navigation (About/Contact Jump) ───
+    window.addEventListener('load', () => {
+        if (window.location.hash) {
+            const id = window.location.hash.substring(1);
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'auto', block: 'start' });
+            }
+        }
+    });
+
+    // Handle internal nav clicks
+    document.querySelectorAll('.glitch-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href.startsWith('index.html#')) {
+                // Browser handles jump
+            } else if (href.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'auto' });
+            }
+        });
+    });
+    </script>
+</body>
+</html>
