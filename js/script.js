@@ -78,7 +78,9 @@ window.addEventListener("scroll", () => {
 // 3. Scroll Content Reveal (General Sections)
 const revealElements = document.querySelectorAll(".reveal");
 revealElements.forEach((el) => {
-    const targets = el.querySelectorAll('h2, h3, p, .btn-primary');
+    // Specialized handling for contact to animate as a single block
+    const isContact = el.classList.contains('contact');
+    const targets = isContact ? [el.querySelector('.contact-container')] : el.querySelectorAll('h2, h3, p, .btn-primary, .ethos-grid');
     const animationTargets = targets.length > 0 ? targets : [el];
     
     gsap.fromTo(animationTargets, 
@@ -86,9 +88,9 @@ revealElements.forEach((el) => {
         {
             opacity: 1,
             y: 0,
-            duration: 1.5,
-            ease: "power2.out", // Softened from back.out for a more liquid feel
-            stagger: 0.1,
+            duration: 1.2,
+            ease: "power2.out",
+            stagger: isContact ? 0 : 0.1,
             scrollTrigger: {
                 trigger: el,
                 start: "top 85%",
@@ -215,12 +217,14 @@ gsap.utils.toArray(".reveal-tagline, .reveal-btn, .about p, .contact p, .contact
 });
 
 
-// 7. Stats Flicker Counter (Repeatable)
+// 7. Stats Counter (Smooth Elevation)
 gsap.utils.toArray(".stat-number").forEach(num => {
     const target = parseInt(num.dataset.target);
     const counterObj = { value: 0 };
     gsap.to(counterObj, {
-        value: target, duration: 3, ease: "power2.out",
+        value: target, 
+        duration: 2.5, 
+        ease: "power2.out",
         scrollTrigger: {
             trigger: num,
             start: "top 90%",
@@ -228,18 +232,10 @@ gsap.utils.toArray(".stat-number").forEach(num => {
             once: false
         },
         onUpdate: () => {
-            let current = Math.floor(counterObj.value);
-            if (Math.random() < 0.12 && current < target) {
-                num.innerText = Math.floor(Math.random() * target * 1.1);
-                num.classList.add("flicker-active");
-                setTimeout(() => num.classList.remove("flicker-active"), 60);
-            } else {
-                num.innerText = current;
-            }
+            num.innerText = Math.floor(counterObj.value);
         },
         onComplete: () => {
             num.innerText = target;
-            num.classList.add("flicker-active");
         }
     });
 });
@@ -347,7 +343,7 @@ gsap.to(".orb-orange", {
         td.className = 'cursor-trail-dot';
         const size = 10 - i * 0.75;
         const opacity = 0.5 - i * 0.04;
-        const hue = 40 + (i / trailCount) * 140; // Match gold → emerald
+        const hue = 20 + (i / trailCount) * 25; // Warm Sunset → Gold Ember
         td.style.width = `${size}px`;
         td.style.height = `${size}px`;
         td.style.background = `hsla(${hue}, 85%, 72%, ${opacity})`;
@@ -480,8 +476,14 @@ gsap.to(".orb-orange", {
         cctLabel.innerText = `${state.cct}K`;
         
         sliders.brightness.fill.style.width = `${state.brightness}%`;
-        sliders.brightness.thumb.style.left = `${state.brightness}%`;
-        sliders.cct.thumb.style.left = `${((state.cct - 2700) / 3800) * 100}%`;
+        
+        // Fix for thumb going out of bounds
+        const brThumbPos = (state.brightness / 100) * (sliders.brightness.input.parentElement.offsetWidth - 42);
+        sliders.brightness.thumb.style.left = `${brThumbPos + 4}px`;
+
+        const cctPercent = (state.cct - 2700) / 3800;
+        const cctThumbPos = cctPercent * (sliders.cct.input.parentElement.offsetWidth - 42);
+        sliders.cct.thumb.style.left = `${cctThumbPos + 4}px`;
     }
 
     smartToggle.addEventListener('click', () => {

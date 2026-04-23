@@ -49,9 +49,9 @@
             <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode" title="Toggle warm light">
                 <span class="toggle-track">
                     <span class="toggle-thumb">
-                        <svg class="icon-bulb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 21h6M12 3a6 6 0 0 1 4 10.47V17H8v-3.53A6 6 0 0 1 12 3z"/>
-                            <line x1="8" y1="21" x2="16" y2="21"/>
+                        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
                         </svg>
                         <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -98,10 +98,10 @@
         <div class="cart-footer" id="cartFooter" style="display:none">
             <div class="cart-subtotal">
                 <span>Subtotal</span>
-                <span id="cartTotal">$0.00</span>
+                <span id="cartTotal">₹0.00</span>
             </div>
             <button class="btn-checkout">Proceed to Checkout</button>
-            <p class="cart-note">Taxes & shipping calculated at checkout</p>
+
         </div>
     </aside>
 
@@ -110,7 +110,7 @@
         <div class="shop-hero-content">
             <span class="shop-eyebrow">Studio Abby by Lumific</span>
             <h1 class="shop-hero-title">All Lighting</h1>
-            <p class="shop-hero-subtitle">113 products — Architectural luminaires engineered for precision</p>
+            <p class="shop-hero-subtitle">Architectural luminaires engineered for precision.</p>
         </div>
     </section>
 
@@ -121,13 +121,13 @@
             <div class="sidebar-section">
                 <h3 class="sidebar-heading">Categories</h3>
                 <ul class="sidebar-nav">
-                    <li><button class="filter-btn active" data-filter="all">All Products <span class="count">113</span></button></li>
-                    <li><button class="filter-btn" data-filter="tracklights">Tracklights <span class="count">24</span></button></li>
-                    <li><button class="filter-btn" data-filter="downlights">Downlights <span class="count">18</span></button></li>
-                    <li><button class="filter-btn" data-filter="spots">Spots <span class="count">31</span></button></li>
-                    <li><button class="filter-btn" data-filter="outdoor">Outdoor <span class="count">14</span></button></li>
-                    <li><button class="filter-btn" data-filter="profiles">Profiles <span class="count">16</span></button></li>
-                    <li><button class="filter-btn" data-filter="ceiling">Studio Abby <span class="count">10</span></button></li>
+                    <li><button class="filter-btn active" data-filter="all">All Products <span class="count glitch-link" data-value="113"><span>113</span><span>113</span></span></button></li>
+                    <li><button class="filter-btn" data-filter="tracklights">Tracklights <span class="count glitch-link" data-value="24"><span>24</span><span>24</span></span></button></li>
+                    <li><button class="filter-btn" data-filter="downlights">Downlights <span class="count glitch-link" data-value="18"><span>18</span><span>18</span></span></button></li>
+                    <li><button class="filter-btn" data-filter="spots">Spots <span class="count glitch-link" data-value="31"><span>31</span><span>31</span></span></button></li>
+                    <li><button class="filter-btn" data-filter="outdoor">Outdoor <span class="count glitch-link" data-value="14"><span>14</span><span>14</span></span></button></li>
+                    <li><button class="filter-btn" data-filter="profiles">Profiles <span class="count glitch-link" data-value="16"><span>16</span><span>16</span></span></button></li>
+                    <li><button class="filter-btn" data-filter="ceiling">Studio Abby <span class="count glitch-link" data-value="10"><span>10</span><span>10</span></span></button></li>
                 </ul>
             </div>
             <div class="sidebar-section">
@@ -149,7 +149,7 @@
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="15" y1="18" x2="21" y2="18"/></svg>
                         Filter
                     </button>
-                    <span class="results-count" id="resultsCount">Showing all 8 results</span>
+
                 </div>
             </div>
 
@@ -171,15 +171,22 @@
                             </svg>
                         </div>
                         <div class="product-hover-glow"></div>
-                        <button class="quick-add-btn" data-id="1" data-name="Spotboy 338" data-price="420.00" data-cat="Tracklights">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                            Quick Add
-                        </button>
+                        <div class="card-qty-wrapper">
+                            <div class="card-qty-controls">
+                                <button class="card-qty-btn" data-action="dec">−</button>
+                                <span class="card-qty-num">1</span>
+                                <button class="card-qty-btn" data-action="inc">+</button>
+                            </div>
+                            <button class="card-quick-add" data-id="1" data-name="Spotboy 338" data-price="420.00" data-cat="Tracklights">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                Add
+                            </button>
+                        </div>
                     </div>
                     <div class="product-info">
                         <span class="product-cat-tag">Tracklights</span>
                         <h2 class="product-title">Spotboy 338</h2>
-                        <p class="product-price-tag">From $420.00</p>
+                        <p class="product-price-tag">₹420.00</p>
                     </div>
                 </article>
 
@@ -196,15 +203,22 @@
                             </svg>
                         </div>
                         <div class="product-hover-glow"></div>
-                        <button class="quick-add-btn" data-id="2" data-name="Barrel 320" data-price="380.00" data-cat="Tracklights">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                            Quick Add
-                        </button>
+                        <div class="card-qty-wrapper">
+                            <div class="card-qty-controls">
+                                <button class="card-qty-btn" data-action="dec">−</button>
+                                <span class="card-qty-num">1</span>
+                                <button class="card-qty-btn" data-action="inc">+</button>
+                            </div>
+                            <button class="card-quick-add" data-id="2" data-name="Barrel 320" data-price="380.00" data-cat="Tracklights">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                Add
+                            </button>
+                        </div>
                     </div>
                     <div class="product-info">
                         <span class="product-cat-tag">Tracklights</span>
                         <h2 class="product-title">Barrel 320</h2>
-                        <p class="product-price-tag">From $380.00</p>
+                        <p class="product-price-tag">₹380.00</p>
                     </div>
                 </article>
 
@@ -221,15 +235,22 @@
                             </svg>
                         </div>
                         <div class="product-hover-glow"></div>
-                        <button class="quick-add-btn" data-id="3" data-name="Halo 394" data-price="295.00" data-cat="Downlights">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                            Quick Add
-                        </button>
+                        <div class="card-qty-wrapper">
+                            <div class="card-qty-controls">
+                                <button class="card-qty-btn" data-action="dec">−</button>
+                                <span class="card-qty-num">1</span>
+                                <button class="card-qty-btn" data-action="inc">+</button>
+                            </div>
+                            <button class="card-quick-add" data-id="3" data-name="Halo 394" data-price="295.00" data-cat="Downlights">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                Add
+                            </button>
+                        </div>
                     </div>
                     <div class="product-info">
                         <span class="product-cat-tag">Downlights</span>
                         <h2 class="product-title">Halo 394</h2>
-                        <p class="product-price-tag">From $295.00</p>
+                        <p class="product-price-tag">₹295.00</p>
                     </div>
                 </article>
 
@@ -246,15 +267,22 @@
                             </svg>
                         </div>
                         <div class="product-hover-glow"></div>
-                        <button class="quick-add-btn" data-id="4" data-name="AllRounder 392" data-price="180.00" data-cat="Downlights">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                            Quick Add
-                        </button>
+                        <div class="card-qty-wrapper">
+                            <div class="card-qty-controls">
+                                <button class="card-qty-btn" data-action="dec">−</button>
+                                <span class="card-qty-num">1</span>
+                                <button class="card-qty-btn" data-action="inc">+</button>
+                            </div>
+                            <button class="card-quick-add" data-id="4" data-name="AllRounder 392" data-price="180.00" data-cat="Downlights">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                Add
+                            </button>
+                        </div>
                     </div>
                     <div class="product-info">
                         <span class="product-cat-tag">Downlights</span>
                         <h2 class="product-title">AllRounder 392</h2>
-                        <p class="product-price-tag">From $180.00</p>
+                        <p class="product-price-tag">₹180.00</p>
                     </div>
                 </article>
 
@@ -271,15 +299,22 @@
                             </svg>
                         </div>
                         <div class="product-hover-glow"></div>
-                        <button class="quick-add-btn" data-id="5" data-name="Go Pro 168" data-price="340.00" data-cat="Spots">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                            Quick Add
-                        </button>
+                        <div class="card-qty-wrapper">
+                            <div class="card-qty-controls">
+                                <button class="card-qty-btn" data-action="dec">−</button>
+                                <span class="card-qty-num">1</span>
+                                <button class="card-qty-btn" data-action="inc">+</button>
+                            </div>
+                            <button class="card-quick-add" data-id="5" data-name="Go Pro 168" data-price="340.00" data-cat="Spots">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                Add
+                            </button>
+                        </div>
                     </div>
                     <div class="product-info">
                         <span class="product-cat-tag">Spots</span>
                         <h2 class="product-title">Go Pro 168</h2>
-                        <p class="product-price-tag">From $340.00</p>
+                        <p class="product-price-tag">₹340.00</p>
                     </div>
                 </article>
 
@@ -295,15 +330,22 @@
                             </svg>
                         </div>
                         <div class="product-hover-glow"></div>
-                        <button class="quick-add-btn" data-id="6" data-name="Baylight 418" data-price="890.00" data-cat="Outdoor">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                            Quick Add
-                        </button>
+                        <div class="card-qty-wrapper">
+                            <div class="card-qty-controls">
+                                <button class="card-qty-btn" data-action="dec">−</button>
+                                <span class="card-qty-num">1</span>
+                                <button class="card-qty-btn" data-action="inc">+</button>
+                            </div>
+                            <button class="card-quick-add" data-id="6" data-name="Baylight 418" data-price="890.00" data-cat="Outdoor">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                Add
+                            </button>
+                        </div>
                     </div>
                     <div class="product-info">
                         <span class="product-cat-tag">Outdoor</span>
                         <h2 class="product-title">Baylight 418</h2>
-                        <p class="product-price-tag">From $890.00</p>
+                        <p class="product-price-tag">₹890.00</p>
                     </div>
                 </article>
 
@@ -319,15 +361,22 @@
                             </svg>
                         </div>
                         <div class="product-hover-glow"></div>
-                        <button class="quick-add-btn" data-id="7" data-name="Iskim 126" data-price="560.00" data-cat="Profiles">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                            Quick Add
-                        </button>
+                        <div class="card-qty-wrapper">
+                            <div class="card-qty-controls">
+                                <button class="card-qty-btn" data-action="dec">−</button>
+                                <span class="card-qty-num">1</span>
+                                <button class="card-qty-btn" data-action="inc">+</button>
+                            </div>
+                            <button class="card-quick-add" data-id="7" data-name="Iskim 126" data-price="560.00" data-cat="Profiles">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                Add
+                            </button>
+                        </div>
                     </div>
                     <div class="product-info">
                         <span class="product-cat-tag">Profiles</span>
                         <h2 class="product-title">Iskim 126</h2>
-                        <p class="product-price-tag">From $560.00</p>
+                        <p class="product-price-tag">₹560.00</p>
                     </div>
                 </article>
 
@@ -343,15 +392,22 @@
                             </svg>
                         </div>
                         <div class="product-hover-glow"></div>
-                        <button class="quick-add-btn" data-id="8" data-name="Enso 30" data-price="2400.00" data-cat="Studio Abby">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                            Quick Add
-                        </button>
+                        <div class="card-qty-wrapper">
+                            <div class="card-qty-controls">
+                                <button class="card-qty-btn" data-action="dec">−</button>
+                                <span class="card-qty-num">1</span>
+                                <button class="card-qty-btn" data-action="inc">+</button>
+                            </div>
+                            <button class="card-quick-add" data-id="8" data-name="Enso 30" data-price="2400.00" data-cat="Studio Abby">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                                Add
+                            </button>
+                        </div>
                     </div>
                     <div class="product-info">
                         <span class="product-cat-tag">Studio Abby</span>
                         <h2 class="product-title">Enso 30</h2>
-                        <p class="product-price-tag">From $2,400.00</p>
+                        <p class="product-price-tag">₹2,400.00</p>
                     </div>
                 </article>
 

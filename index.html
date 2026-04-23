@@ -57,9 +57,9 @@
             <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode" title="Toggle warm light">
                 <span class="toggle-track">
                     <span class="toggle-thumb">
-                        <svg class="icon-bulb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 21h6M12 3a6 6 0 0 1 4 10.47V17H8v-3.53A6 6 0 0 1 12 3z"/>
-                            <line x1="8" y1="21" x2="16" y2="21"/>
+                        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
                         </svg>
                         <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -133,6 +133,7 @@
     <!-- Product Collections -->
     <section id="shop" class="collections">
         <div class="section-header reveal">
+            <span class="lumi-eyebrow">The Boutique</span>
             <h2 class="section-title text-grad">Masterpiece Collections</h2>
             <p class="section-subtitle">Sculpting modern spaces with visionary luminescence.</p>
         </div>
@@ -256,6 +257,8 @@
         </div> <!-- cards-container -->
     </section>
 
+
+
     <!-- Shop Entry Section -->
     <section id="boutique" class="shop-entry-section">
         <div class="shop-entry-inner reveal">
@@ -274,7 +277,7 @@
                         </svg>
                     </div>
                     <span class="shop-cat-name">Tracklights</span>
-                    <span class="shop-cat-count">24 products</span>
+                    <span class="shop-cat-count glitch-link" data-value="24 PRODUCTS"><span>24 PRODUCTS</span><span>24 PRODUCTS</span></span>
                 </a>
                 <a href="shop.html?cat=downlights" class="shop-cat-card">
                     <div class="shop-cat-icon">
@@ -286,7 +289,7 @@
                         </svg>
                     </div>
                     <span class="shop-cat-name">Downlights</span>
-                    <span class="shop-cat-count">18 products</span>
+                    <span class="shop-cat-count glitch-link" data-value="18 PRODUCTS"><span>18 PRODUCTS</span><span>18 PRODUCTS</span></span>
                 </a>
                 <a href="shop.html?cat=spots" class="shop-cat-card">
                     <div class="shop-cat-icon">
@@ -298,7 +301,7 @@
                         </svg>
                     </div>
                     <span class="shop-cat-name">Spots</span>
-                    <span class="shop-cat-count">31 products</span>
+                    <span class="shop-cat-count glitch-link" data-value="31 PRODUCTS"><span>31 PRODUCTS</span><span>31 PRODUCTS</span></span>
                 </a>
                 <a href="shop.html?cat=outdoor" class="shop-cat-card">
                     <div class="shop-cat-icon">
@@ -309,7 +312,7 @@
                         </svg>
                     </div>
                     <span class="shop-cat-name">Outdoor</span>
-                    <span class="shop-cat-count">14 products</span>
+                    <span class="shop-cat-count glitch-link" data-value="14 PRODUCTS"><span>14 PRODUCTS</span><span>14 PRODUCTS</span></span>
                 </a>
                 <a href="shop.html?cat=profiles" class="shop-cat-card">
                     <div class="shop-cat-icon">
@@ -319,7 +322,7 @@
                         </svg>
                     </div>
                     <span class="shop-cat-name">Profiles</span>
-                    <span class="shop-cat-count">16 products</span>
+                    <span class="shop-cat-count glitch-link" data-value="16 PRODUCTS"><span>16 PRODUCTS</span><span>16 PRODUCTS</span></span>
                 </a>
                 <a href="shop.html?cat=ceiling" class="shop-cat-card">
                     <div class="shop-cat-icon">
@@ -330,12 +333,12 @@
                         </svg>
                     </div>
                     <span class="shop-cat-name">Studio Abby</span>
-                    <span class="shop-cat-count">10 products</span>
+                    <span class="shop-cat-count glitch-link" data-value="10 PRODUCTS"><span>10 PRODUCTS</span><span>10 PRODUCTS</span></span>
                 </a>
             </div>
 
             <a href="shop.html" class="shop-entry-cta">
-                <span>Browse All 113 Products</span>
+                <span>Browse All Products</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
         </div>
@@ -348,7 +351,7 @@
             <div class="cob-header">
                 <span class="cob-eyebrow">COB Technology</span>
                 <h2 class="cob-title">Chip-on-Board <em>Architecture</em></h2>
-                <p class="cob-subtitle">Direct die bonding on aluminum substrate. CRI Ra 98+, 180 lm/W efficacy, 50,000-hour L70 lifespan.</p>
+                <p class="cob-subtitle">Direct die bonding on aluminum substrate.<br>CRI Ra 98+, 180 lm/W efficacy, 50,000-hour L70 lifespan.</p>
             </div>
             <div class="cob-grid">
                 <div class="cob-card">
@@ -446,7 +449,7 @@
                                     <div class="slider-track">
                                         <div class="slider-fill" id="brFill" style="width: 85%;"></div>
                                     </div>
-                                    <div class="slider-thumb" id="brThumb" style="left: 85%;">
+                                    <div class="slider-thumb" id="brThumb">
                                         <div class="thumb-detail"></div>
                                     </div>
                                     <input type="range" min="1" max="100" value="85" class="slider-input" id="brInput">
@@ -461,7 +464,7 @@
                                 </div>
                                 <div class="custom-slider cct-slider" id="cctSlider">
                                     <div class="slider-track cct-track"></div>
-                                    <div class="slider-thumb" id="cctThumb" style="left: 34%;">
+                                    <div class="slider-thumb" id="cctThumb">
                                         <div class="thumb-detail"></div>
                                     </div>
                                     <input type="range" min="2700" max="6500" step="50" value="4000" class="slider-input" id="cctInput">
@@ -518,12 +521,31 @@
     <!-- About Section -->
     <section id="about" class="about">
         <div class="about-container reveal">
+            <span class="lumi-eyebrow">Our Vision</span>
             <h2 class="section-title">
                 <div class="text-mask"><span>The Lumific Ethos</span></div>
             </h2>
             <p class="reveal-tagline">Rooted in minimalism, crafted for the opulent. Our lighting fixtures are born from
                 a desire to blend cutting-edge optical engineering with timeless artisanal design. Every curve, every
                 facet is designed to diffuse light with absolute perfection.</p>
+            
+            <div class="ethos-grid">
+                <div class="ethos-card">
+                    <span class="ethos-icon">📐</span>
+                    <h3>Design Philosophy</h3>
+                    <p>Light as a structural element. Minimalist fixtures designed to blend seamlessly into modern architecture.</p>
+                </div>
+                <div class="ethos-card">
+                    <span class="ethos-icon">⚡</span>
+                    <h3>Optical Engineering</h3>
+                    <p>Precision-milled reflectors and COB technology delivering zero-flicker beams with 97+ CRI accuracy.</p>
+                </div>
+                <div class="ethos-card">
+                    <span class="ethos-icon">🌿</span>
+                    <h3>Sustainability</h3>
+                    <p>100% recycled aluminum and ultra-efficient drivers reducing energy consumption by 40%.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -531,6 +553,7 @@
     <section id="contact" class="contact reveal">
         <div class="contact-container">
             <div class="section-header">
+                <span class="lumi-eyebrow">Inquiry</span>
                 <h2 class="section-title">
                     <div class="text-mask"><span>Let's Illuminate Your World</span></div>
                 </h2>
@@ -539,12 +562,9 @@
             </div>
             <div class="contact-info" style="margin-bottom: 30px; margin-top: 20px;">
                 <p style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">📞 +1 (800) 555-0199</p>
-                <p style="font-size: 1.1rem; color: #fff;">✉️ hello@lumific.com</p>
+                <p style="font-size: 1.1rem; color: #fff;">✉️ lumificlighting@gmail.com</p>
             </div>
             <form class="contact-form">
-                <div class="input-group">
-                    <input type="text" placeholder="Your Name" required>
-                </div>
                 <div class="input-group">
                     <input type="email" placeholder="Your Email" required>
                 </div>

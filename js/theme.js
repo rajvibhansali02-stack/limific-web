@@ -8,66 +8,71 @@
     const THEME_KEY = 'theme';
     const root = document.documentElement;
 
-    // 1. Initial State: Apply theme immediately
-    const savedTheme = localStorage.getItem(THEME_KEY);
-    if (savedTheme === LIGHT_CLASS) {
-        root.classList.add(LIGHT_CLASS);
-    } else {
-        root.classList.remove(LIGHT_CLASS);
+    // 1. Core Apply Function
+    function applyTheme(isLight) {
+        if (isLight) {
+            root.classList.add(LIGHT_CLASS);
+        } else {
+            root.classList.remove(LIGHT_CLASS);
+        }
+        
+        // Provide visual feedback
+        if (window.gsap) {
+            gsap.fromTo('body', 
+                { opacity: 0.98 }, 
+                { opacity: 1, duration: 0.3, ease: 'power2.out' }
+            );
+        }
     }
 
-    // 2. Toggle Function
+    // 2. Initial Sync
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    applyTheme(savedTheme === LIGHT_CLASS);
+
+    // 3. Toggle Logic
     function toggleTheme() {
-        const isNowLight = root.classList.toggle(LIGHT_CLASS);
+        const isNowLight = !root.classList.contains(LIGHT_CLASS);
+        applyTheme(isNowLight);
         localStorage.setItem(THEME_KEY, isNowLight ? LIGHT_CLASS : 'dark');
         
-        console.log('Lumific Theme Toggled:', isNowLight ? 'Light' : 'Dark');
-
-        // Visual Feedback Animations
-        if (window.gsap) {
-            gsap.fromTo('#themeToggle .toggle-thumb', 
-                { scale: 0.7 }, 
-                { scale: 1, duration: 0.4, ease: 'back.out(2)' }
-            );
-            gsap.fromTo('body', 
-                { opacity: 0.9 }, 
-                { opacity: 1, duration: 0.35, ease: 'power2.out' }
-            );
-        }
+        // Dispatch a local storage event so current page's other components can react (if needed)
+        // Note: standard 'storage' event ONLY fires on other tabs
+        console.log('Lumific Theme:', isNowLight ? 'Light Mode' : 'Dark Mode');
     }
 
-    // 3. Event Listener: Manual Toggle
-    // Use a small delay to ensure DOM is ready even if script is moved
-    function attachToggleEvent() {
-        const btn = document.getElementById('themeToggle');
-        if (btn) {
-            btn.removeEventListener('click', toggleThemeHandler); // Avoid double binding
-            btn.addEventListener('click', toggleThemeHandler);
-        }
-    }
-
+    // 4. Click Handler
     function toggleThemeHandler(e) {
         if (e) e.preventDefault();
         toggleTheme();
     }
 
+    function attachToggleEvent() {
+        const btn = document.getElementById('themeToggle');
+        if (btn) {
+            btn.removeEventListener('click', toggleThemeHandler);
+            btn.addEventListener('click', toggleThemeHandler);
+        }
+    }
+
+    // Attach on load and on visibility change
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', attachToggleEvent);
     } else {
         attachToggleEvent();
     }
 
-    // 4. Synchronization
+    // 5. Cross-Tab Sync (Standard and Aggressive)
     window.addEventListener('storage', (event) => {
         if (event.key === THEME_KEY) {
-            const isLightRequested = event.newValue === LIGHT_CLASS;
-            if (isLightRequested) {
-                root.classList.add(LIGHT_CLASS);
-            } else {
-                root.classList.remove(LIGHT_CLASS);
-            }
-            console.log('Lumific Theme Synced from other tab:', isLightRequested ? 'Light' : 'Dark');
+            applyTheme(event.newValue === LIGHT_CLASS);
         }
+    });
+
+    // Handle back/forward cache (bfcache)
+    window.addEventListener('pageshow', (event) => {
+        const currentTheme = localStorage.getItem(THEME_KEY);
+        applyTheme(currentTheme === LIGHT_CLASS);
+        attachToggleEvent(); // Realign event listener
     });
 
 })();

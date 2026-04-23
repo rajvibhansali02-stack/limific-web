@@ -2,7 +2,7 @@
 /* This is the gateway section on the homepage that links to shop.html */
 
 .shop-entry-section {
-    padding: 100px 8%;
+    padding: 40px 8% 100px;
     max-width: 1400px;
     margin: 0 auto;
     position: relative;
@@ -106,7 +106,15 @@
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.3);
     letter-spacing: 0.05em;
+    display: inline-block !important; /* Override glitch-link block */
+    height: 1rem;
+    overflow: hidden;
 }
+
+.shop-cat-count span {
+    text-align: center;
+}
+
 
 /* CTA Button */
 .shop-entry-cta {

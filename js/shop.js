@@ -38,83 +38,90 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ─── 3. Cart Rendering ────────────────────────────────────────────────────────
-function renderCart() {
-    if (!cartItemsList) return;
-    cartItemsList.innerHTML = '';
+function updateCartSummary() {
+    let total = 0;
+    let totalQty = 0;
+    cart.forEach(item => {
+        total += item.price * item.qty;
+        totalQty += item.qty;
+    });
+
+    if (cartTotal) cartTotal.textContent = `₹${total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    if (cartBadge) {
+        cartBadge.textContent = totalQty;
+        if (totalQty > 0) cartBadge.classList.add('visible');
+        else cartBadge.classList.remove('visible');
+    }
 
     if (cart.length === 0) {
         cartEmpty.style.display = 'flex';
         if (cartFooter) cartFooter.style.display = 'none';
+        if (cartItemsList) cartItemsList.innerHTML = '';
     } else {
         cartEmpty.style.display = 'none';
         if (cartFooter) cartFooter.style.display = 'block';
-
-        let total = 0;
-
-        cart.forEach((item, index) => {
-            total += item.price * item.qty;
-
-            const li = document.createElement('li');
-            li.className = 'cart-item';
-            
-            // Show real image if available, else SVG
-            const imgHTML = item.imgSrc 
-                ? `<img src="${item.imgSrc}" alt="${item.name}" class="cart-item-photo">`
-                : item.svgSnippet;
-
-            li.innerHTML = `
-                <div class="cart-item-img">
-                    ${imgHTML}
-                </div>
-                <div class="cart-item-info">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-cat">${item.cat}</div>
-                    <div class="cart-item-price">$${item.price.toFixed(2)}</div>
-                    <div class="cart-item-qty">
-                        <button class="qty-btn" data-action="dec" data-index="${index}">−</button>
-                        <span class="qty-num">${item.qty}</span>
-                        <button class="qty-btn" data-action="inc" data-index="${index}">+</button>
-                    </div>
-                </div>
-                <button class="cart-item-remove" data-index="${index}" title="Remove">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-                </button>
-            `;
-            cartItemsList.appendChild(li);
-        });
-
-        if (cartTotal) cartTotal.textContent = `$${total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     }
+}
 
-    // Update badge
-    const totalQty = cart.reduce((a, b) => a + b.qty, 0);
-    if (cartBadge) {
-        cartBadge.textContent = totalQty;
-        if (totalQty > 0) {
-            cartBadge.classList.add('visible');
-        } else {
-            cartBadge.classList.remove('visible');
-        }
-    }
+function renderCart() {
+    if (!cartItemsList) return;
+    updateCartSummary();
+    if (cart.length === 0) return;
 
-    // Quantity/remove handlers
+    cartItemsList.innerHTML = '';
+    cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = 'cart-item';
+        const imgHTML = item.imgSrc 
+            ? `<img src="${item.imgSrc}" alt="${item.name}" class="cart-item-photo">`
+            : item.svgSnippet;
+
+        li.innerHTML = `
+            <div class="cart-item-img">${imgHTML}</div>
+            <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-cat">${item.cat}</div>
+                <div class="cart-item-price">₹${item.price.toFixed(2)}</div>
+                <div class="cart-item-qty">
+                    <button class="qty-btn" data-action="dec" data-index="${index}">−</button>
+                    <span class="qty-num">${item.qty}</span>
+                    <button class="qty-btn" data-action="inc" data-index="${index}">+</button>
+                </div>
+            </div>
+            <button class="cart-item-remove" data-index="${index}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        `;
+        cartItemsList.appendChild(li);
+    });
+
+    // Re-bind listeners (only when list changes)
+    bindCartEvents();
+}
+
+function bindCartEvents() {
     cartItemsList.querySelectorAll('.qty-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const i = parseInt(btn.dataset.index);
+            const qtySpan = btn.parentElement.querySelector('.qty-num');
             if (btn.dataset.action === 'inc') {
                 cart[i].qty++;
+                qtySpan.textContent = cart[i].qty;
+                updateCartSummary();
             } else {
                 cart[i].qty--;
-                if (cart[i].qty <= 0) cart.splice(i, 1);
+                if (cart[i].qty <= 0) {
+                    cart.splice(i, 1);
+                    renderCart(); // Full re-render needed when item removed
+                } else {
+                    qtySpan.textContent = cart[i].qty;
+                    updateCartSummary();
+                }
             }
-            renderCart();
         });
     });
 
     cartItemsList.querySelectorAll('.cart-item-remove').forEach(btn => {
         btn.addEventListener('click', () => {
-            const i = parseInt(btn.dataset.index);
-            cart.splice(i, 1);
+            cart.splice(parseInt(btn.dataset.index), 1);
             renderCart();
         });
     });
@@ -123,8 +130,22 @@ function renderCart() {
 // Initial render
 renderCart();
 
-// ─── 4. Add to Cart Logic + Fly-to-Bag Animation ─────────────────────────────
-document.querySelectorAll('.quick-add-btn').forEach(btn => {
+// ─── 4. Card Quantity Selector Logic ──────────────────────────────────────────
+document.querySelectorAll('.card-qty-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const numSpan = btn.parentElement.querySelector('.card-qty-num');
+        let current = parseInt(numSpan.textContent);
+        if (btn.dataset.action === 'inc') {
+            numSpan.textContent = ++current;
+        } else {
+            if (current > 1) numSpan.textContent = --current;
+        }
+    });
+});
+
+// ─── 5. Add to Cart Logic + Fly-to-Bag Animation ─────────────────────────────
+document.querySelectorAll('.card-quick-add').forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
 
@@ -132,6 +153,8 @@ document.querySelectorAll('.quick-add-btn').forEach(btn => {
         const name = btn.dataset.name;
         const price = parseFloat(btn.dataset.price);
         const cat = btn.dataset.cat;
+        const numSpan = btn.parentElement.querySelector('.card-qty-num');
+        const qtyToAdd = parseInt(numSpan.textContent);
 
         // Capture Image OR SVG from the card for display in cart
         const card = btn.closest('.product-card');
@@ -144,10 +167,13 @@ document.querySelectorAll('.quick-add-btn').forEach(btn => {
         // Add to cart array or increment
         const existing = cart.find(c => c.id === id);
         if (existing) {
-            existing.qty++;
+            existing.qty += qtyToAdd;
         } else {
-            cart.push({ id, name, price, cat, qty: 1, imgSrc, svgSnippet });
+            cart.push({ id, name, price, cat, qty: qtyToAdd, imgSrc, svgSnippet });
         }
+
+        // Reset card qty back to 1
+        numSpan.textContent = "1";
 
         // ─── Fly-to-Bag Animation ───────────────────────────────────────────
         if (window.gsap && cartToggle) {
@@ -256,7 +282,8 @@ function filterProducts(filter) {
         card.classList.toggle('hidden', !show);
         if (show) visible++;
     });
-    if (resultsCount) resultsCount.textContent = `Showing ${visible} result${visible !== 1 ? 's' : ''}`;
+    
+
 }
 
 // ─── 5.5 Sorting Logic ────────────────────────────────────────────────────────
@@ -342,8 +369,59 @@ window.addEventListener('scroll', () => {
             }, 300);
         }
     }
+})();// ─── 10. High-Tech Scramble Effect (Glitch Links) ─────────────────────────────
+(function() {
+    const scrambleSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*$0123456789";
+    
+    function initScramble(el) {
+        const targetSpan = el.querySelector("span:nth-child(2)");
+        if (!targetSpan) return;
+        
+        let interval = null;
+        el.addEventListener("mouseenter", () => {
+            const originalValue = el.dataset.value || el.innerText;
+            let iteration = 0;
+            clearInterval(interval);
+            
+            interval = setInterval(() => {
+                targetSpan.innerText = originalValue.split("").map((letter, index) => {
+                    if (index < iteration) return originalValue[index];
+                    return scrambleSymbols[Math.floor(Math.random() * scrambleSymbols.length)].toUpperCase();
+                }).join("");
+                
+                if (iteration >= originalValue.length) clearInterval(interval);
+                iteration += 1 / 3;
+            }, 30);
+        });
+    }
+
+    // Initialize existing ones
+    document.querySelectorAll(".glitch-link").forEach(initScramble);
+    
+    // Also handle dynamic counts in sidebar if they don't have the listener
+    // (though we added it to the class above)
 })();
 
+// ─── 11. Magnetic Effect ──────────────────────────────────────────────────────
+(function() {
+    const magneticElements = document.querySelectorAll('.nav-links li a, .cart-toggle, .filter-btn, .card-quick-add');
+    
+    function updateMagnetic(e, el) {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(el, { x: x * 0.2, y: y * 0.2, duration: 0.6, ease: "power3.out" });
+    }
+
+    function resetMagnetic(el) {
+        gsap.to(el, { x: 0, y: 0, duration: 1.2, ease: "elastic.out(1.0, 0.5)" });
+    }
+
+    magneticElements.forEach(el => {
+        el.addEventListener('mousemove', (e) => updateMagnetic(e, el));
+        el.addEventListener('mouseleave', () => resetMagnetic(el));
+    });
+})();
 
 
 
