@@ -682,11 +682,12 @@ section {
 
     .card {
         height: auto;
-        min-height: 480px;
-        flex-direction: column; /* Refract Mobile logic */
-        padding: 24px; /* p-6 */
+        min-height: 420px;
+        flex-direction: column;
+        padding: 20px;
         align-items: center;
-        gap: 48px; /* gap-8 extracted */
+        gap: 32px;
+        border-radius: 20px;
     }
 
     .card-image {
@@ -705,13 +706,13 @@ section {
     }
 
     .card h3 { 
-        font-size: 1.5rem; /* text-2xl mobile */
-        font-weight: 700;
+        font-size: 1.4rem;
+        font-weight: 600;
         margin-bottom: 0; 
     }
     .card p { 
-        font-size: 0.875rem; /* text-sm */
-        line-height: 1.625; /* leading-relaxed */
+        font-size: 0.8rem;
+        line-height: 1.5;
         color: rgba(255, 255, 255, 0.6) !important;
         margin-bottom: 0;
     }
@@ -757,7 +758,7 @@ section {
 
 .card {
     position: sticky;
-    top: 25vw; /* Refract Mobile Sticky Top */
+    top: 20vw; /* Refined Mobile Sticky Top for better centering */
     width: 100%;
     background: #0E111B; 
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -777,7 +778,7 @@ section {
 
 @media (min-width: 768px) {
     .card {
-        top: 12.5vh; /* Refract Desktop Sticky Top */
+        top: 100px; /* Stabilized Desktop Sticky Top to clear nav elegantly */
         flex-direction: row;
         padding: 56px 40px; /* md:px-10 md:py-14 */
         gap: 48px;
@@ -1266,11 +1267,11 @@ footer {
     }
     .nav-links {
         display: flex !important;
-        gap: 16px !important;
-        font-size: 0.72rem !important;
+        gap: 14px !important;
+        font-size: 0.78rem !important;
         list-style: none;
         margin: 0 !important;
-        padding: 0 10px !important;
+        padding: 0 12px !important;
         justify-content: center;
         width: 100%;
     }
