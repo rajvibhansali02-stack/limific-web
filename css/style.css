@@ -1966,9 +1966,10 @@ footer {
     .smart-interactive-wrapper {
         flex-direction: row; /* Force side-by-side */
         justify-content: center;
-        gap: 10px;
-        width: 110%; /* Slightly bleed for more width */
-        margin-left: -5%;
+        align-items: center; /* Perfect vertical alignment */
+        gap: 0; /* Tightened for side-by-side balance */
+        width: 100%;
+        margin-left: 0;
     }
     .fixture-container {
         width: 100px;
@@ -1984,9 +1985,10 @@ footer {
     }
     .phone-mockup {
         flex-shrink: 0;
-        width: 280px;
-        transform: scale(0.6) translateX(-20px);
+        width: 260px;
+        transform: scale(0.65); /* Normalized scale */
         margin-top: 0;
+        margin-left: -30px; /* Slight overlap for better integration */
     }
 }
 
