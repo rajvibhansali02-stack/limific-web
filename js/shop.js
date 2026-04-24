@@ -343,8 +343,10 @@ mobileFilterBtn && mobileFilterBtn.addEventListener('click', openMobileFilter);
 mobileFilterClose && mobileFilterClose.addEventListener('click', closeMobileFilter);
 mobileFilterOverlay && mobileFilterOverlay.addEventListener('click', closeMobileFilter);
 
-// ─── 8. Navbar Scroll Behaviour ──────────────────────────────────────────────
+// ─── 8. Navbar Scroll & Mobile Toggle ─────────────────────────────────────────
 const navbar = document.getElementById('navbar');
+const mobileToggle = document.getElementById('mobileToggle');
+
 window.addEventListener('scroll', () => {
     if (navbar) {
         if (window.scrollY > 60) {
@@ -354,6 +356,12 @@ window.addEventListener('scroll', () => {
         }
     }
 });
+
+if (mobileToggle) {
+    mobileToggle.addEventListener('click', () => {
+        navbar.classList.toggle('active');
+    });
+}
 
 // ─── 9. Auto-apply filter from URL ?cat= ─────────────────────────────────────
 (function() {

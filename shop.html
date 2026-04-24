@@ -37,6 +37,10 @@
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">
+                <span class="line"></span>
+                <span class="line"></span>
+            </button>
             <ul class="nav-links">
                 <li><a href="index.html#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
                 <li><a href="shop.html" class="glitch-link active-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li>
@@ -536,6 +540,10 @@
     document.querySelectorAll('.glitch-link').forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
+            
+            // Close mobile menu on click
+            if (navbar) navbar.classList.remove("active");
+
             if (href.startsWith('index.html#')) {
                 // Browser handles jump
             } else if (href.startsWith('#')) {
