@@ -752,13 +752,13 @@ section {
 @media (min-width: 768px) {
     .cards-stack {
         gap: 6.25vh; /* md:gap-[6.25vh] */
-        padding-bottom: 5vh; /* Reduced from 20vh */
+        padding-bottom: 12.5vh; /* Consistent spacing for scroll */
     }
 }
 
 .card {
     position: sticky;
-    top: 20vw; /* Refined Mobile Sticky Top for better centering */
+    top: 25vw; /* top-[25vw] mobile */
     width: 100%;
     background: #0E111B; 
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -772,16 +772,16 @@ section {
     flex-direction: column; /* mobile default */
     justify-content: center;
     align-items: center;
-    gap: 48px; /* gap-8 extracted */
+    gap: 32px; /* gap-8 extracted from screenshot */
     margin-bottom: 0;
 }
 
 @media (min-width: 768px) {
     .card {
-        top: 100px; /* Stabilized Desktop Sticky Top to clear nav elegantly */
+        top: 12.5vh; /* md:top-[12.5vh] */
         flex-direction: row;
         padding: 56px 40px; /* md:px-10 md:py-14 */
-        gap: 48px;
+        gap: 32px;
     }
 }
 
@@ -812,11 +812,11 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.7s ease-in-out; /* duration-700 from screenshot */
 }
 
 .card:hover .card-image img {
-    transform: scale(1.1);
+    transform: scale(1.05); /* hover:scale-105 from screenshot */
 }
 
 .card-content {
@@ -827,7 +827,7 @@ section {
     justify-content: center;
     align-items: flex-start;
     text-align: left;
-    gap: 16px; /* space-y-4 */
+    gap: 16px; /* space-y-4 from screenshot */
 }
 
 @media (min-width: 1024px) {
@@ -851,22 +851,22 @@ section {
 }
 
 .card h3 {
-    font-size: 2.25rem; /* text-5xl md:text-6xl LG sizing */
-    font-weight: 700;
+    font-size: 1.5rem; /* text-2xl approx */
+    font-weight: 600; /* font-semibold */
     text-align: left;
     color: #fff;
-    letter-spacing: -0.05em; /* tracking-tighter */
-    line-height: 1.1; 
+    letter-spacing: -0.025em; /* tracking-tight */
+    line-height: 1.25; /* leading-tight */
 }
 
 @media (min-width: 768px) {
     .card h3 {
-        font-size: 3.75rem; /* text-6xl */
+        font-size: 1.875rem; /* text-3xl */
     }
 }
 
 .card p {
-    font-size: 1.125rem; /* text-lg */
+    font-size: 0.875rem; /* text-sm */
     max-width: 100%;
     color: #9CA3AF !important; /* gray-400 */
     line-height: 1.625; /* leading-relaxed */
@@ -875,7 +875,7 @@ section {
 
 @media (min-width: 768px) {
     .card p {
-        font-size: 1.25rem; /* text-xl */
+        font-size: 1rem; /* text-base */
     }
 }
 
@@ -936,16 +936,15 @@ section {
 }
 
 .card-icon {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 20px;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 8px; /* Reduced margin to match space-y-4 flow */
     color: var(--text-color);
     transition: color 0.4s ease;
 }
 
 .card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     transition: color 0.4s ease;
 }
 
