@@ -250,8 +250,16 @@ nav.scrolled {
 .nav-container {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Change to between for mobile layout */
+    justify-content: center;
+    gap: 32px;
     width: 100%;
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        justify-content: space-between;
+        gap: 0;
+    }
 }
 
 @media (min-width: 768px) {
