@@ -64,6 +64,14 @@ body {
     transition: opacity 0.5s ease;
 }
 
+/* Hide custom cursor elements on mobile/touch devices */
+@media (max-width: 1023px), (pointer: coarse) {
+    .cursor-dot, .cursor-glow, .cursor-trail-dot {
+        display: none !important;
+    }
+}
+
+
 .cursor-dot {
     width: 6px;
     height: 6px;

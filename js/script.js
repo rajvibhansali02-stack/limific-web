@@ -336,7 +336,13 @@ gsap.to(".orb-orange", {
 
 // ─── Custom Cursor — The Spectral Liquid Ribbon ───
 (function initializeSpectralCursor() {
+    // Skip initialization on touch devices or mobile-sized screens
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024) {
+        return;
+    }
+
     const dot = document.createElement('div');
+
     const glow = document.createElement('div');
     dot.className = 'cursor-dot';
     glow.className = 'cursor-glow';
