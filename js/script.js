@@ -64,8 +64,10 @@ window.addEventListener("load", () => {
 });
 
 
-// 2. Navbar Scroll State
+// 2. Navbar Scroll & Mobile Toggle
 const navbar = document.getElementById("navbar");
+const mobileToggle = document.getElementById("mobileToggle");
+
 window.addEventListener("scroll", () => {
     if (window.scrollY > 50) {
         navbar.classList.add("scrolled");
@@ -73,6 +75,12 @@ window.addEventListener("scroll", () => {
         navbar.classList.remove("scrolled");
     }
 });
+
+if (mobileToggle) {
+    mobileToggle.addEventListener("click", () => {
+        navbar.classList.toggle("active");
+    });
+}
 
 
 // 3. Scroll Content Reveal (General Sections)
@@ -523,6 +531,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = this.getAttribute('href');
+        
+        // Close mobile menu on click
+        navbar.classList.remove("active");
+        
         lenis.scrollTo(target, { immediate: true });
     });
 });
