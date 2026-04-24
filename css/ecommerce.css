@@ -2,7 +2,7 @@
 /* This is the gateway section on the homepage that links to shop.html */
 
 .shop-entry-section {
-    padding: 40px 8% 100px;
+    padding: 120px 8%;
     max-width: 1400px;
     margin: 0 auto;
     position: relative;
@@ -15,104 +15,134 @@
 
 .shop-entry-eyebrow {
     display: inline-block;
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.3em;
     color: var(--accent);
-    opacity: 0.8;
-    margin-bottom: 16px;
+    opacity: 0.9;
+    margin-bottom: 24px;
 }
 
 .shop-entry-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 600;
-    letter-spacing: -0.04em;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: -0.05em;
     color: var(--text-primary);
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    line-height: 1;
 }
 
 .shop-entry-subtitle {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--text-secondary);
-    max-width: 520px;
-    margin: 0 auto 60px;
-    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 80px;
+    line-height: 1.8;
+    font-weight: 300;
 }
 
 /* Category Cards Grid */
 .shop-entry-categories {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 900px;
-    margin: 0 auto 48px;
+    gap: 20px;
+    max-width: 960px;
+    margin: 0 auto 60px;
 }
 
 .shop-cat-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
-    padding: 32px 20px;
+    gap: 16px;
+    padding: 30px 20px;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
+    border-radius: 12px;
     text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden; /* Clip the hover image to the box */
 }
 
+.shop-cat-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: all 0.6s ease;
+    pointer-events: none;
+    z-index: 0;
+    filter: brightness(0.4);
+}
+
+.shop-cat-card:nth-child(1):hover::after { background-image: url('../images/cat_tracklights.png'); }
+.shop-cat-card:nth-child(2):hover::after { background-image: url('../images/cat_downlights.png'); }
+.shop-cat-card:nth-child(3):hover::after { background-image: url('../images/cat_spots.png'); }
+.shop-cat-card:nth-child(4):hover::after { background-image: url('../images/cat_outdoor.png'); }
+.shop-cat-card:nth-child(5):hover::after { background-image: url('../images/cat_profiles.png'); }
+.shop-cat-card:nth-child(6):hover::after { background-image: url('../images/cat_studio_abby.png'); }
+
 .shop-cat-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.18);
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.shop-cat-card:hover::after {
+    opacity: 0.7;
 }
 
 .shop-cat-icon {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: #111;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
-    transition: border-color 0.4s ease;
-}
-
-.shop-cat-card:hover .shop-cat-icon {
-    border-color: rgba(255, 255, 255, 0.2);
+    position: relative;
+    transition: all 0.5s ease;
+    z-index: 1;
 }
 
 .shop-cat-icon svg {
     width: 100%;
     height: 100%;
+    transition: all 0.5s ease;
+}
+
+.shop-cat-card:hover .shop-cat-icon svg {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.4));
 }
 
 .shop-cat-name {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 500;
     color: var(--text-primary);
-    transition: color 0.3s ease;
+    transition: all 0.4s ease;
+    z-index: 1;
 }
 
 .shop-cat-card:hover .shop-cat-name {
-    color: var(--accent);
+    color: #fff;
+    letter-spacing: 0.05em;
 }
 
 .shop-cat-count {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.05em;
-    display: inline-block !important; /* Override glitch-link block */
-    height: 1rem;
-    overflow: hidden;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 1;
 }
 
-.shop-cat-count span {
-    text-align: center;
+.shop-cat-card:hover .shop-cat-count {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 
