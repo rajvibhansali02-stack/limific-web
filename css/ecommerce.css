@@ -81,12 +81,12 @@
     transform: scale(1.05);
 }
 
-.shop-cat-card:nth-child(1):hover::after { background-image: url('../images/cat_tracklights.png'); }
-.shop-cat-card:nth-child(2):hover::after { background-image: url('../images/cat_downlights.png'); }
-.shop-cat-card:nth-child(3):hover::after { background-image: url('../images/cat_spots.png'); }
-.shop-cat-card:nth-child(4):hover::after { background-image: url('../images/cat_outdoor.png'); }
-.shop-cat-card:nth-child(5):hover::after { background-image: url('../images/cat_profiles.png'); }
-.shop-cat-card:nth-child(6):hover::after { background-image: url('../images/cat_studio_abby.png'); }
+.shop-cat-card:nth-child(1):hover::after { background-image: url('../images/cat_tracklights.webp'); }
+.shop-cat-card:nth-child(2):hover::after { background-image: url('../images/cat_downlights.webp'); }
+.shop-cat-card:nth-child(3):hover::after { background-image: url('../images/cat_spots.webp'); }
+.shop-cat-card:nth-child(4):hover::after { background-image: url('../images/cat_outdoor.webp'); }
+.shop-cat-card:nth-child(5):hover::after { background-image: url('../images/cat_profiles.webp'); }
+.shop-cat-card:nth-child(6):hover::after { background-image: url('../images/cat_studio_abby.webp'); }
 
 .shop-cat-card:hover {
     transform: translateY(-10px) scale(1.02);

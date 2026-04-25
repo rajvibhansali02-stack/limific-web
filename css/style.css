@@ -633,7 +633,7 @@ section {
 }
 
 .collections {
-    padding-top: 20px;
+    padding-top: 100px;
     padding-bottom: 0;
     overflow: visible;
 }
@@ -1512,25 +1512,25 @@ footer {
    WARM LIGHT MODE  (.light-mode)
    ============================================================ */
 .light-mode {
-    --bg-color:        #2C1A0E;
+    --bg-color:        #160D08; /* Deep Espresso Brown - Less orange */
     --text-primary:    #F5ECD7;
     --text-secondary:  rgba(245, 236, 215, 0.70);
-    --accent:          #E8A04A;
-    --accent-glow:     rgba(232, 160, 74, 0.35);
+    --accent:          #D4A060; /* Soft Champagne Gold - Less orange */
+    --accent-glow:     rgba(212, 160, 96, 0.30);
     --card-bg:         rgba(255, 240, 210, 0.06);
     --border-color:    rgba(255, 230, 180, 0.14);
-    --nav-bg:          rgba(30, 16, 6, 0.72);
+    --nav-bg:          rgba(15, 8, 4, 0.85);
     background-color: var(--bg-color);
     color: var(--text-primary);
     transition: background-color 0.6s ease, color 0.4s ease;
 }
 
-.light-mode .orb-purple { background: radial-gradient(circle, #7B3A10 0%, transparent 70%); }
-.light-mode .orb-orange  { background: radial-gradient(circle, #D4852A 0%, transparent 70%); }
-.light-mode .orb-blue    { background: radial-gradient(circle, #B0602A 0%, transparent 70%); }
+.light-mode .orb-purple { background: radial-gradient(circle, #4A2610 0%, transparent 70%); }
+.light-mode .orb-orange  { background: radial-gradient(circle, #7B522A 0%, transparent 70%); }
+.light-mode .orb-blue    { background: radial-gradient(circle, #5A361A 0%, transparent 70%); }
 
-.light-mode nav { background: rgba(28, 12, 4, 0.80) !important; border-color: rgba(220,170,90,0.25) !important; }
-.light-mode nav.scrolled { background: rgba(20,8,2,0.92) !important; box-shadow: 0 8px 32px rgba(80,30,0,0.4); }
+.light-mode nav { background: rgba(15, 8, 4, 0.85) !important; border-color: rgba(212, 160, 96, 0.20) !important; }
+.light-mode nav.scrolled { background: rgba(10, 5, 2, 0.95) !important; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
 .light-mode .glitch-link { color: var(--text-secondary); }
 .light-mode .glitch-link span:nth-child(2) { color: var(--accent); text-shadow: 0 0 12px rgba(232,160,74,.6); }
 
@@ -2066,153 +2066,73 @@ footer {
     display: none !important;
 }
 
-/* ─── COB TECHNOLOGY SECTION ─── */
-.cob-section {
-    padding: 120px 8vw;
-    background: rgba(8, 8, 8, 0.6);
-    position: relative;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
 
-.cob-container {
-    max-width: 1400px;
-    margin: 0 auto;
-}
 
-.cob-header {
+
+
+/* -------------------------------------------------------------------------- */
+/* 22. FLOATING WHATSAPP BUTTON */
+/* -------------------------------------------------------------------------- */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
     text-align: center;
-    margin-bottom: 80px;
+    font-size: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    z-index: 1000;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.cob-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
+.whatsapp-float:hover {
+    transform: scale(1.1) translateY(-5px);
+    background-color: #128c7e;
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+    color: #fff;
 }
 
-.cob-eyebrow::before,
-.cob-eyebrow::after {
-    content: '';
-    width: 30px;
-    height: 1px;
-    background: var(--accent);
-    opacity: 0.4;
+.whatsapp-float svg {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
 }
 
-.cob-title {
-    font-family: 'Syncopate', sans-serif;
-    font-size: clamp(1.8rem, 4.5vw, 3.2rem);
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 24px;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-}
-
-.cob-title em {
-    font-style: italic;
-    color: var(--accent);
-    font-weight: 500;
-}
-
-.cob-subtitle {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    max-width: 650px;
-    margin: 0 auto;
-    line-height: 1.7;
-    font-weight: 300;
-}
-
-.cob-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-}
-
-.cob-card {
-    background: rgba(255, 255, 255, 0.015);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 48px 32px;
-    border-radius: 28px;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-}
-
-.cob-card::before {
+/* Pulsing effect to draw attention */
+.whatsapp-float::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at top right, rgba(245, 151, 104, 0.08) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    border-radius: 50%;
+    background-color: #25d366;
+    z-index: -1;
+    animation: whatsapp-pulse 2s infinite;
 }
 
-.cob-card:hover {
-    transform: translateY(-12px);
-    border-color: rgba(245, 151, 104, 0.25);
-    background: rgba(255, 255, 255, 0.03);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-}
-
-.cob-card:hover::before {
-    opacity: 1;
-}
-
-.cob-icon {
-    font-size: 2.2rem;
-    margin-bottom: 28px;
-    display: block;
-    filter: drop-shadow(0 0 15px rgba(245, 151, 104, 0.2));
-}
-
-.cob-card-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 16px;
-    color: #fff;
-    letter-spacing: -0.02em;
-}
-
-.cob-card-desc {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.65;
-    font-weight: 300;
-}
-
-@media (max-width: 1280px) {
-    .cob-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+@keyframes whatsapp-pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(1.6); opacity: 0; }
 }
 
 @media (max-width: 768px) {
-    .cob-grid {
-        grid-template-columns: 1fr;
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
     }
-    
-    .cob-section {
-        padding: 80px 5vw;
-    }
-    
-    .cob-header {
-        margin-bottom: 50px;
+    .whatsapp-float svg {
+        width: 26px;
+        height: 26px;
     }
 }
-
-

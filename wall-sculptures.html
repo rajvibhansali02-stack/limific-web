@@ -174,16 +174,17 @@
         <div class="nav-container">
             <ul class="nav-links">
                 <li><a href="index.html#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
-                <!-- <li><a href="index.html#shop" class="glitch-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li> -->
-                <li><a href="index.html#luxe" class="glitch-link" data-value="LUXE"><span>LUXE</span><span>LUXE</span></a></li>
+                <li><a href="index.html#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
+                <li><a href="https://lumific.in/lumific-2026.pdf" target="_blank" class="glitch-link" data-value="CATALOGUE"><span>CATALOGUE</span><span>CATALOGUE</span></a></li>
                 <li><a href="index.html#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
                 <li><a href="index.html#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
             </ul>
             <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode" title="Toggle warm light">
                 <span class="toggle-track">
                     <span class="toggle-thumb">
-                        <svg class="icon-bulb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 21h6M12 3a6 6 0 0 1 4 10.47V17H8v-3.53A6 6 0 0 1 12 3z"/>
+                        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
                         </svg>
                         <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -206,7 +207,7 @@
     <section class="product-hero">
         <div class="product-grid">
             <div class="product-visual reveal">
-                <img src="images/card_wall.png" alt="Wall Sculptures">
+                <img src="images/card_wall.webp" alt="Wall Sculptures">
             </div>
             <div class="product-info reveal">
                 <div class="product-category">Masterpiece Collection</div>
@@ -232,12 +233,22 @@
                     </div>
                 </div>
 
-                <a href="index.html#contact" class="btn-primary" style="margin-top: 20px; text-decoration: none; display: inline-block;">Request Custom Quote</a>
+                <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" style="margin-top: 20px; width: 100%; max-width: 550px;">
+                    <input type="hidden" name="access_key" value="aa98e2ba-1d74-4d13-b2be-11639a5d36e8">
+                    <input type="hidden" name="subject" value="Wall Sculpture Inquiry - Lumific">
+                    <input type="hidden" name="from_name" value="Lumific Boutique">
+                    <div class="input-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <input type="hidden" name="product" value="Wall Sculptures">
+                    <button type="submit" class="btn-primary form-submit" style="width: 100%;">Send Message</button>
+                    <div class="form-message" style="margin-top: 15px; display: none; color: var(--accent);">Thank you! Your message has been sent.</div>
+                </form>
             </div>
         </div>
     </section>
 
-    <section class="details" style="padding-top: 0;">
+    <section class="details" style="padding-top: 0; padding-bottom: 150px;">
         <div class="section-header reveal">
             <h2 class="section-title text-grad">Quiet Sophistication</h2>
             <p class="section-subtitle">Wall lighting that acts as a silent sculpture when off and a radiant atmosphere when on.</p>
@@ -260,5 +271,10 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/theme.js"></script>
+    <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 32 32">
+            <path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.733 5.476 2.017 7.788l-2.017 7.212 7.379-1.936c2.247 1.227 4.832 1.936 7.587 1.936 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.333c-2.457 0-4.757-0.648-6.756-1.78l-0.485-0.274-4.382 1.149 1.168-4.177-0.301-0.479c-1.259-1.996-1.983-4.364-1.983-6.903 0-7.363 5.986-13.349 13.349-13.349 7.363 0 13.349 5.986 13.349 13.349s-5.986 13.349-13.349 13.349zM22.508 18.667c-0.356-0.178-2.105-1.039-2.431-1.157-0.326-0.118-0.563-0.178-0.8 0.178s-0.919 1.157-1.127 1.394c-0.208 0.237-0.415 0.266-0.771 0.089-1.631-0.814-2.705-1.428-3.791-3.294-0.208-0.356-0.089-0.548 0.089-0.726 0.16-0.16 0.356-0.415 0.534-0.623s0.237-0.356 0.356-0.593c0.118-0.237 0.059-0.445-0.030-0.623s-0.8-1.928-1.096-2.641c-0.288-0.693-0.582-0.599-0.8-0.611-0.208-0.011-0.445-0.013-0.682-0.013s-0.623 0.089-0.949 0.445c-0.326 0.356-1.245 1.215-1.245 2.964s1.275 3.439 1.453 3.676c0.178 0.237 2.508 3.829 6.077 5.367 0.85 0.366 1.512 0.584 2.03 0.748 0.853 0.271 1.629 0.233 2.242 0.141 0.684-0.102 2.105-0.86 2.401-1.691 0.297-0.83 0.297-1.542 0.208-1.691s-0.326-0.237-0.682-0.415z"></path>
+        </svg>
+    </a>
 </body>
 </html>

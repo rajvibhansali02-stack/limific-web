@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Lumific</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            background: #050505;
+            color: #fff;
+            overflow: hidden;
+        }
+        .content {
+            z-index: 10;
+        }
+        h1 {
+            font-size: 8rem;
+            font-weight: 200;
+            margin: 0;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.4) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            font-size: 1.2rem;
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+        .btn-primary {
+            padding: 12px 32px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 100px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+        .bg-glow {
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(120, 80, 255, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: blur(100px);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="content">
+        <h1>404</h1>
+        <p>The light has faded here. This page does not exist.</p>
+        <a href="index.html" class="btn-primary">Return to Lumific</a>
+    </div>
+</body>
+</html>

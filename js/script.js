@@ -206,7 +206,7 @@ gsap.utils.toArray(".text-mask span").forEach(span => {
         scrollTrigger: {
             trigger: span,
             start: "top 95%",
-            toggleActions: "play reverse play reverse"
+            toggleActions: "play none none none"
         }
     });
 });
@@ -219,7 +219,7 @@ gsap.utils.toArray(".reveal-tagline, .reveal-btn, .about p, .contact p, .contact
         scrollTrigger: {
             trigger: el,
             start: "top 95%",
-            toggleActions: "play reverse play reverse"
+            toggleActions: "play none none none"
         }
     });
 });
@@ -545,21 +545,76 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-const formSubmit = document.querySelector(".form-submit");
-if (formSubmit) {
-    formSubmit.addEventListener("click", (e) => {
-        const btn = e.target;
+// 11. Functional Form Submission Handler (AJAX)
+const contactForms = document.querySelectorAll(".contact-form");
+
+contactForms.forEach(form => {
+    form.addEventListener("submit", async (e) => {
+        // Removed preventDefault to allow standard submission for local testing
+        // e.preventDefault();
+        const btn = form.querySelector(".form-submit");
+        const msg = form.querySelector(".form-message");
         const originalText = btn.innerText;
-        btn.innerText = "MESSAGE SENT";
-        btn.classList.add("sent");
         
-        gsap.fromTo(btn, { scale: 0.95 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1 });
+        // Visual feedback
+        btn.disabled = true;
+        btn.innerText = "SENDING...";
         
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.classList.remove("sent");
-        }, 3000);
+        try {
+            const response = await fetch(form.action, {
+                method: form.method,
+                body: new URLSearchParams(new FormData(form)),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            
+            if (response.ok) {
+                // Success State
+                btn.innerText = "SENT!";
+                btn.style.background = "var(--accent)";
+                btn.style.color = "#fff";
+                
+                if (msg) {
+                    msg.style.display = "block";
+                    msg.innerText = "Thank you! Your message has been sent.";
+                }
+                
+                form.reset();
+                
+                // Reset button after 5 seconds
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    btn.style.background = "";
+                    btn.style.color = "";
+                    if (msg) msg.style.display = "none";
+                }, 5000);
+            } else {
+                const data = await response.json();
+                if (data.errors) {
+                    throw new Error(data.errors.map(error => error.message).join(", "));
+                } else {
+                    throw new Error();
+                }
+            }
+        } catch (error) {
+            // Error State
+            btn.innerText = "TRY AGAIN";
+            btn.disabled = false;
+            if (msg) {
+                msg.style.display = "block";
+                msg.style.color = "#ff4444";
+                msg.innerText = "Oops! There was a problem. Please try again.";
+            }
+            setTimeout(() => {
+                btn.innerText = originalText;
+                if (msg) {
+                    msg.style.display = "none";
+                    msg.style.color = "var(--accent)";
+                }
+            }, 3000);
+        }
     });
-}
-
-
+});
