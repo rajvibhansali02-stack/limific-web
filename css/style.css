@@ -1237,7 +1237,8 @@ section {
     gap: 20px;
 }
 
-.input-group input {
+.input-group input,
+.input-group textarea {
     width: 100%;
     padding: 18px 25px;
     background: rgba(255, 255, 255, 0.03);
@@ -1247,9 +1248,11 @@ section {
     font-family: inherit;
     font-size: 1rem;
     transition: border-color 0.3s, background 0.3s;
+    resize: none; /* Prevents user from breaking the layout */
 }
 
-.input-group input:focus {
+.input-group input:focus,
+.input-group textarea:focus {
     outline: none;
     border-color: var(--accent);
     background: rgba(255, 255, 255, 0.06);

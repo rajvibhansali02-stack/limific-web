@@ -3,11 +3,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 // 0. Initialize Lenis Smooth Scroll (Buttery Smooth Virtual Scroll)
 const lenis = new Lenis({
-    duration: 1.4, 
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+    duration: 1.4,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
     lerp: 0.075, // Slightly gentler for a more "liquid" feel
-    wheelMultiplier: 1.0, 
+    wheelMultiplier: 1.0,
     infinite: false,
 });
 
@@ -42,7 +42,7 @@ if (hasSeenEntrance) {
 
 window.addEventListener("load", () => {
     document.body.classList.remove("loading");
-    
+
     // Crucial: Refresh GSAP and re-scroll on load to account for final layout heights
     if (window.location.hash) {
         ScrollTrigger.refresh();
@@ -50,11 +50,11 @@ window.addEventListener("load", () => {
     }
 
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-    
+
     if (!hasSeenEntrance) {
         // First entry to the site: Play the slow, premium fade-in
         tl.to(".transition-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut" })
-          .to(".scroll-indicator", { opacity: 1, duration: 1 }, "-=0.5");
+            .to(".scroll-indicator", { opacity: 1, duration: 1 }, "-=0.5");
         sessionStorage.setItem('hasSeenEntrance', 'true');
     }
 
@@ -90,9 +90,9 @@ revealElements.forEach((el) => {
     const isContact = el.classList.contains('contact');
     const targets = isContact ? [el.querySelector('.contact-container')] : el.querySelectorAll('h2, h3, p, .btn-primary, .ethos-grid');
     const animationTargets = targets.length > 0 ? targets : [el];
-    
-    gsap.fromTo(animationTargets, 
-        { opacity: 0, y: 60 }, 
+
+    gsap.fromTo(animationTargets,
+        { opacity: 0, y: 60 },
         {
             opacity: 1,
             y: 0,
@@ -120,11 +120,11 @@ heroEntranceTl.from(".hero .text-mask span", {
     ease: "back.out(1.4)",
     delay: 0.6
 })
-.fromTo(".reveal-tagline", 
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" },
-    "-=1.0"
-);
+    .fromTo(".reveal-tagline",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" },
+        "-=1.0"
+    );
 
 
 // 5. Specialized Stacked Cards Animation (Masterpiece Collections)
@@ -183,7 +183,7 @@ if (cards.length > 0) {
         card.addEventListener("click", (e) => {
             // If the user clicked a link inside the card, let the link handle it
             if (e.target.closest('a')) return;
-            
+
             const link = card.querySelector(".card-link");
             if (link) {
                 const href = link.getAttribute("href");
@@ -198,10 +198,10 @@ if (cards.length > 0) {
 // A. Masked Slide Reveal for all Headers
 gsap.utils.toArray(".text-mask span").forEach(span => {
     if (span.closest('.hero') || span.closest('.card')) return;
-    gsap.from(span, { 
+    gsap.from(span, {
         y: "105%",
         opacity: 0,
-        duration: 1.2, 
+        duration: 1.2,
         ease: "back.out(1.2)",
         scrollTrigger: {
             trigger: span,
@@ -214,7 +214,7 @@ gsap.utils.toArray(".text-mask span").forEach(span => {
 // B. Fade/Slide Reveal for Paragraphs & Buttons
 gsap.utils.toArray(".reveal-tagline, .reveal-btn, .about p, .contact p, .contact-info p, .exp-content p, .exp-content button").forEach(el => {
     if (el.classList.contains('hero-btn') || el.classList.contains('hero-tagline')) return;
-    gsap.fromTo(el, { opacity: 0, y: 60 }, { 
+    gsap.fromTo(el, { opacity: 0, y: 60 }, {
         opacity: 1, y: 0, duration: 1.2, ease: "back.out(1.2)",
         scrollTrigger: {
             trigger: el,
@@ -230,8 +230,8 @@ gsap.utils.toArray(".stat-number").forEach(num => {
     const target = parseInt(num.dataset.target);
     const counterObj = { value: 0 };
     gsap.to(counterObj, {
-        value: target, 
-        duration: 2.5, 
+        value: target,
+        duration: 2.5,
         ease: "power2.out",
         scrollTrigger: {
             trigger: num,
@@ -315,7 +315,7 @@ gsap.to(".exp-bg-wrapper", { yPercent: 20, ease: "none", scrollTrigger: { trigge
 
 // 10. Scroll Hue-Shifting Background Atmosphere
 gsap.to(".bg-gradients", {
-    backgroundColor: "rgba(10, 0, 20, 0.3)", 
+    backgroundColor: "rgba(10, 0, 20, 0.3)",
     scrollTrigger: {
         trigger: "body",
         start: "top top",
@@ -325,12 +325,12 @@ gsap.to(".bg-gradients", {
 });
 
 gsap.to(".orb-purple", {
-    filter: "hue-rotate(150deg)", 
+    filter: "hue-rotate(150deg)",
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 }
 });
 
 gsap.to(".orb-orange", {
-    filter: "hue-rotate(-60deg)", 
+    filter: "hue-rotate(-60deg)",
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0.5 }
 });
 
@@ -425,7 +425,7 @@ gsap.to(".orb-orange", {
 
 
 // ─── Smart Lighting Interaction Logic ───
-(function() {
+(function () {
     const smartToggle = document.getElementById('smartToggle');
     const brInput = document.getElementById('brInput');
     const cctInput = document.getElementById('cctInput');
@@ -437,7 +437,7 @@ gsap.to(".orb-orange", {
     const statusLabel = document.getElementById('statusLabel');
     const appControls = document.getElementById('appControls');
     const sceneBtns = document.querySelectorAll('.scene-btn');
-    
+
     const sliders = {
         brightness: { input: brInput, fill: document.getElementById('brFill'), thumb: document.getElementById('brThumb'), label: brLabel },
         cct: { input: cctInput, thumb: document.getElementById('cctThumb'), label: cctLabel }
@@ -461,17 +461,17 @@ gsap.to(".orb-orange", {
 
     function updateUI() {
         const color = getCCTColorLiteral(state.cct);
-        
+
         if (state.isOn) {
-            gsap.to(lightBeam, { 
-                opacity: (state.brightness / 100) * 0.4, 
+            gsap.to(lightBeam, {
+                opacity: (state.brightness / 100) * 0.4,
                 backgroundImage: `linear-gradient(to bottom, ${color} 0%, transparent 100%)`,
-                duration: 0.3 
+                duration: 0.3
             });
-            gsap.to(ambientSpill, { 
-                opacity: (state.brightness / 100) * 0.2, 
+            gsap.to(ambientSpill, {
+                opacity: (state.brightness / 100) * 0.2,
                 backgroundImage: `radial-gradient(circle at center, ${color} 0%, transparent 70%)`,
-                duration: 0.3 
+                duration: 0.3
             });
             gsap.to(sourceChip, { backgroundColor: color, boxShadow: `0 0 20px ${color}`, duration: 0.3 });
             appControls.style.opacity = "1";
@@ -488,9 +488,9 @@ gsap.to(".orb-orange", {
         statusLabel.innerText = state.isOn ? `On • ${state.brightness}%` : 'Off';
         brLabel.innerText = `${state.brightness}%`;
         cctLabel.innerText = `${state.cct}K`;
-        
+
         sliders.brightness.fill.style.width = `${state.brightness}%`;
-        
+
         // Fix for thumb going out of bounds
         const brThumbPos = (state.brightness / 100) * (sliders.brightness.input.parentElement.offsetWidth - 42);
         sliders.brightness.thumb.style.left = `${brThumbPos + 4}px`;
@@ -537,10 +537,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = this.getAttribute('href');
-        
+
         // Close mobile menu on click
         navbar.classList.remove("active");
-        
+
         lenis.scrollTo(target, { immediate: true });
     });
 });
@@ -549,72 +549,31 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const contactForms = document.querySelectorAll(".contact-form");
 
 contactForms.forEach(form => {
-    form.addEventListener("submit", async (e) => {
-        // Removed preventDefault to allow standard submission for local testing
-        // e.preventDefault();
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const email = form.querySelector('input[name="email"]').value;
+        const message = form.querySelector('textarea[name="message"]').value;
         const btn = form.querySelector(".form-submit");
-        const msg = form.querySelector(".form-message");
         const originalText = btn.innerText;
-        
+
+        // Construct the mailto link
+        const recipient = "lumificlighting@gmail.com";
+        const subject = encodeURIComponent("New Inquiry from Lumific Website");
+        const body = encodeURIComponent(`Customer Email: ${email}\n\nMessage:\n${message}`);
+
         // Visual feedback
+        btn.innerText = "OPENING MAIL...";
         btn.disabled = true;
-        btn.innerText = "SENDING...";
-        
-        try {
-            const response = await fetch(form.action, {
-                method: form.method,
-                body: new URLSearchParams(new FormData(form)),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            });
-            
-            if (response.ok) {
-                // Success State
-                btn.innerText = "SENT!";
-                btn.style.background = "var(--accent)";
-                btn.style.color = "#fff";
-                
-                if (msg) {
-                    msg.style.display = "block";
-                    msg.innerText = "Thank you! Your message has been sent.";
-                }
-                
-                form.reset();
-                
-                // Reset button after 5 seconds
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                    btn.style.background = "";
-                    btn.style.color = "";
-                    if (msg) msg.style.display = "none";
-                }, 5000);
-            } else {
-                const data = await response.json();
-                if (data.errors) {
-                    throw new Error(data.errors.map(error => error.message).join(", "));
-                } else {
-                    throw new Error();
-                }
-            }
-        } catch (error) {
-            // Error State
-            btn.innerText = "TRY AGAIN";
+
+        // Launch email client
+        window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+
+        // Reset button
+        setTimeout(() => {
+            btn.innerText = originalText;
             btn.disabled = false;
-            if (msg) {
-                msg.style.display = "block";
-                msg.style.color = "#ff4444";
-                msg.innerText = "Oops! There was a problem. Please try again.";
-            }
-            setTimeout(() => {
-                btn.innerText = originalText;
-                if (msg) {
-                    msg.style.display = "none";
-                    msg.style.color = "var(--accent)";
-                }
-            }, 3000);
-        }
+            form.reset();
+        }, 2000);
     });
 });
