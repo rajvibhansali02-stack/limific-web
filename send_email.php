@@ -30,9 +30,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers .= "Reply-To: $email\r\n";
     $headers .= "X-Mailer: PHP/" . phpversion();
 
-    // Send the email
+    // Check if we are running locally (XAMPP/Localhost)
+    $is_local = ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1');
+
     if (mail($to, $subject, $email_content, $headers)) {
         echo json_encode(["status" => "success", "message" => "Your inquiry has been sent successfully!"]);
+    } elseif ($is_local) {
+        // If local, simulate success so the user can see the UI working
+        echo json_encode([
+            "status" => "success", 
+            "message" => "Local Test: PHP script reached! (Mail delivery skipped on localhost)",
+            "debug" => "This message appears because XAMPP doesn't have a mail server. It will send for real on your web host."
+        ]);
     } else {
         http_response_code(500);
         echo json_encode(["status" => "error", "message" => "Something went wrong. Please try again later."]);
