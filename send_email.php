@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // Set the recipient email address
-$to = "lumificlighting@gmail.com";
+$to = "rajvibhansali02@gmail.com";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input
