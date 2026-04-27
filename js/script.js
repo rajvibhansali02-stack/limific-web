@@ -545,7 +545,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// 11. Functional Form Submission Handler (AJAX via Web3Forms)
+// 11. Functional Form Submission Handler (PURE PHP)
 const contactForms = document.querySelectorAll(".contact-form");
 
 contactForms.forEach(form => {
@@ -555,25 +555,21 @@ contactForms.forEach(form => {
         const btn = form.querySelector(".form-submit");
         const originalText = btn.innerText;
         const formData = new FormData(form);
-        
-        // Add your Web3Forms Access Key
-        formData.append("access_key", "aa98e2ba-1d74-4d13-b2be-11639a5d36e8");
-        formData.append("subject", "New Inquiry from Lumific Website");
-        formData.append("from_name", "Lumific Boutique");
 
         // Visual feedback
         btn.innerText = "SENDING...";
         btn.disabled = true;
 
         try {
-            const response = await fetch('https://api.web3forms.com/submit', {
+            // This sends data strictly to your own PHP script
+            const response = await fetch('send_email.php', {
                 method: 'POST',
                 body: formData
             });
 
             const result = await response.json();
 
-            if (result.success) {
+            if (response.ok) {
                 btn.innerText = "MESSAGE SENT!";
                 btn.style.backgroundColor = "#4CAF50"; // Green for success
                 btn.style.color = "#fff";
@@ -596,5 +592,6 @@ contactForms.forEach(form => {
         }
     });
 });
+
 
 
