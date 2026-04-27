@@ -567,7 +567,7 @@ contactForms.forEach(form => {
                 body: formData
             });
 
-            const result = await response.json();
+            const result = await response.json().catch(() => ({ message: "Invalid Server Response" }));
 
             if (response.ok) {
                 btn.innerText = "MESSAGE SENT!";
@@ -575,11 +575,13 @@ contactForms.forEach(form => {
                 btn.style.color = "#fff";
                 form.reset();
             } else {
-                throw new Error(result.message || "Failed to send");
+                // Show the specific status code or message for debugging
+                throw new Error(`${response.status}: ${result.message || "Failed"}`);
             }
         } catch (error) {
             console.error("Form Error:", error);
-            btn.innerText = "ERROR - RETRY";
+            // Show the exact error on the button so the user can tell us what it is
+            btn.innerText = error.message.toUpperCase();
             btn.style.backgroundColor = "#f44336"; // Red for error
             btn.style.color = "#fff";
         } finally {
@@ -588,10 +590,11 @@ contactForms.forEach(form => {
                 btn.disabled = false;
                 btn.style.backgroundColor = ""; // Reset background
                 btn.style.color = "";
-            }, 5000);
+            }, 6000);
         }
     });
 });
+
 
 
 
