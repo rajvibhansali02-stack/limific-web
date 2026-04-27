@@ -1729,6 +1729,8 @@ footer {
     font-weight: 500;
 }
 
+
+
 .smart-interactive-wrapper {
     display: flex;
     justify-content: space-between;
@@ -1748,47 +1750,58 @@ footer {
 }
 
 .ceiling-strip {
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    filter: blur(1px);
+    width: 200px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0;
 }
 
 .fixture-body {
-    width: 120px;
-    height: 8px;
-    background: #1a1a1a;
-    border-radius: 0 0 12px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    width: 140px;
+    height: 12px; /* Shallow but deep-looking recessed slot */
+    background: #000;
+    border-radius: 0 0 4px 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10;
+    overflow: hidden;
+    box-shadow: inset 0 5px 15px rgba(0,0,0,1);
 }
 
 .fixture-chip {
-    width: 40px;
-    height: 3px;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 20px #fff;
+    width: 80px; /* Wider COB strip for the slot */
+    height: 4px;
+    background: #ffae00;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 0 25px rgba(255, 174, 0, 0.8);
     transition: all 0.3s ease;
 }
 
+.fixture-chip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+}
+
+
 .light-beam {
     position: absolute;
-    top: 8px;
-    width: 300px;
+    top: 4px; /* Originates from inside the slot */
+    width: 350px;
     height: 500px;
     background: linear-gradient(to bottom, #fff 0%, transparent 100%);
-    clip-path: polygon(50% 0%, 15% 100%, 85% 100%);
-    opacity: 0.4;
+    clip-path: polygon(50% 0%, 5% 100%, 95% 100%);
+    opacity: 0.35;
     pointer-events: none;
     z-index: 1;
     transform-origin: top;
     transition: all 0.3s ease;
-    mask-image: linear-gradient(to bottom, black 20%, transparent 90%);
+    mask-image: linear-gradient(to bottom, black 10%, transparent 90%);
 }
 
 .ambient-spill {
@@ -1803,7 +1816,6 @@ footer {
     transition: all 0.3s ease;
 }
 
-/* Phone Mockup */
 .phone-mockup {
     position: relative;
     width: 280px;

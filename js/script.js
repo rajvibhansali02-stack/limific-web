@@ -545,35 +545,56 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// 11. Functional Form Submission Handler (AJAX)
+// 11. Functional Form Submission Handler (AJAX via Web3Forms)
 const contactForms = document.querySelectorAll(".contact-form");
 
 contactForms.forEach(form => {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const email = form.querySelector('input[name="email"]').value;
-        const message = form.querySelector('textarea[name="message"]').value;
         const btn = form.querySelector(".form-submit");
         const originalText = btn.innerText;
-
-        // Construct the mailto link
-        const recipient = "lumificlighting@gmail.com";
-        const subject = encodeURIComponent("New Inquiry from Lumific Website");
-        const body = encodeURIComponent(`Customer Email: ${email}\n\nMessage:\n${message}`);
+        const formData = new FormData(form);
+        
+        // Add your Web3Forms Access Key
+        formData.append("access_key", "aa98e2ba-1d74-4d13-b2be-11639a5d36e8");
+        formData.append("subject", "New Inquiry from Lumific Website");
+        formData.append("from_name", "Lumific Boutique");
 
         // Visual feedback
-        btn.innerText = "OPENING MAIL...";
+        btn.innerText = "SENDING...";
         btn.disabled = true;
 
-        // Launch email client
-        window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+        try {
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            });
 
-        // Reset button
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.disabled = false;
-            form.reset();
-        }, 2000);
+            const result = await response.json();
+
+            if (result.success) {
+                btn.innerText = "MESSAGE SENT!";
+                btn.style.backgroundColor = "#4CAF50"; // Green for success
+                btn.style.color = "#fff";
+                form.reset();
+            } else {
+                throw new Error(result.message || "Failed to send");
+            }
+        } catch (error) {
+            console.error("Form Error:", error);
+            btn.innerText = "ERROR - RETRY";
+            btn.style.backgroundColor = "#f44336"; // Red for error
+            btn.style.color = "#fff";
+        } finally {
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.disabled = false;
+                btn.style.backgroundColor = ""; // Reset background
+                btn.style.color = "";
+            }, 5000);
+        }
     });
 });
+
+
