@@ -36,11 +36,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mail($to, $subject, $email_content, $headers)) {
         echo json_encode(["status" => "success", "message" => "Your inquiry has been sent successfully!"]);
     } elseif ($is_local) {
-        // If local, simulate success so the user can see the UI working
+        // --- LOCAL VERIFICATION FEATURE ---
+        // Save the inquiry to a local file so the user can verify it's working
+        $log_entry = "[" . date("Y-m-d H:i:s") . "] NEW INQUIRY\n";
+        $log_entry .= "From: $email\nInterest: $product\nMessage: $message\n";
+        $log_entry .= "------------------------------------------\n";
+        file_put_contents("inquiries.log", $log_entry, FILE_APPEND);
+
         echo json_encode([
             "status" => "success", 
-            "message" => "Local Test: PHP script reached! (Mail delivery skipped on localhost)",
-            "debug" => "This message appears because XAMPP doesn't have a mail server. It will send for real on your web host."
+            "message" => "Local Test: SUCCESS! (Check inquiries.log)",
+            "debug" => "Your message was successfully saved to inquiries.log in your folder."
         ]);
     } else {
         http_response_code(500);
