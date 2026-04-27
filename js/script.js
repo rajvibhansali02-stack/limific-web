@@ -575,13 +575,11 @@ contactForms.forEach(form => {
                 btn.style.color = "#fff";
                 form.reset();
             } else {
-                // Show the specific status code or message for debugging
-                throw new Error(`${response.status}: ${result.message || "Failed"}`);
+                throw new Error("Failed");
             }
         } catch (error) {
             console.error("Form Error:", error);
-            // Show the exact error on the button so the user can tell us what it is
-            btn.innerText = error.message.toUpperCase();
+            btn.innerText = "ERROR - RETRY";
             btn.style.backgroundColor = "#f44336"; // Red for error
             btn.style.color = "#fff";
         } finally {

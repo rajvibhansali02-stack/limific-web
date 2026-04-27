@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // Set the recipient email address
-$to = "rajvibhansali02@gmail.com";
+$to = "lumificlighting@gmail.com";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input
@@ -45,8 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         echo json_encode([
             "status" => "success", 
-            "message" => "Local Test: SUCCESS! (Check inquiries.log)",
-            "debug" => "Your message was successfully saved to inquiries.log in your folder."
+            "message" => "Your inquiry has been sent successfully!"
         ]);
     } else {
         http_response_code(500);
