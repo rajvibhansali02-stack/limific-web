@@ -1044,7 +1044,8 @@ section {
 /* Experience Section Full Width Parallax */
 .experience {
     max-width: 100%;
-    padding: 200px 0;
+    min-height: 100vh;
+    padding: 100px 0;
     position: relative;
     display: flex;
     align-items: center;
@@ -1171,10 +1172,10 @@ section {
 }
 
 .ethos-card {
-    padding: 20px 10px;
+    padding: 30px 25px;
     background: transparent;
     border: none;
-    border-radius: 0;
+    border-radius: 20px;
     transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -1185,9 +1186,10 @@ section {
 .ethos-icon {
     font-size: 1.8rem;
     margin-bottom: 24px;
-    display: block;
+    display: inline-flex;
     color: var(--accent);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: center left;
 }
 
 .ethos-card:hover .ethos-icon {
@@ -1719,6 +1721,11 @@ footer {
     max-width: 480px;
 }
 
+.smart-text-content .section-subtitle {
+    margin-left: 0;
+    text-align: left;
+}
+
 .lumi-eyebrow {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -2030,6 +2037,11 @@ footer {
     }
     .smart-text-content {
         margin: 0 auto;
+    }
+    .smart-text-content .section-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
     }
     .smart-interactive-wrapper {
         flex-direction: row;

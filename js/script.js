@@ -541,7 +541,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         // Close mobile menu on click
         navbar.classList.remove("active");
 
-        lenis.scrollTo(target, { immediate: true });
+        const scrollOffset = target === '#about' ? 0 : -80;
+        lenis.scrollTo(target, { offset: scrollOffset });
     });
 });
 

@@ -27,3 +27,19 @@ From: hey@gmail.com
 Interest: General Inquiry
 Message: Hey
 ------------------------------------------
+[2026-04-29 08:01:32] NEW INQUIRY
+From: test_new@gmail.com
+Interest: Testing
+Message: This is a test message from Antigravity
+------------------------------------------
+[2026-04-29 08:04:41] NEW INQUIRY
+From: hello@gmail.com
+Interest: General Inquiry
+Message: is it working ??
+
+------------------------------------------
+[2026-04-29 08:05:45] NEW INQUIRY
+From: work@gmail.com
+Interest: General Inquiry
+Message: Hey i want some product of yours 
+------------------------------------------
