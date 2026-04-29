@@ -292,6 +292,7 @@ magneticElements.forEach(el => {
 const scrambleSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*$0123456789";
 document.querySelectorAll(".glitch-link").forEach(link => {
     const targetSpan = link.querySelector("span:nth-child(2)");
+    if (!targetSpan) return;
     const originalValue = link.dataset.value;
     let interval = null;
     link.addEventListener("mouseenter", () => {
@@ -500,35 +501,39 @@ gsap.to(".orb-orange", {
         sliders.cct.thumb.style.left = `${cctThumbPos + 4}px`;
     }
 
-    smartToggle.addEventListener('click', () => {
-        state.isOn = !state.isOn;
-        updateUI();
-    });
-
-    brInput.addEventListener('input', (e) => {
-        state.brightness = parseInt(e.target.value);
-        updateUI();
-    });
-
-    cctInput.addEventListener('input', (e) => {
-        state.cct = parseInt(e.target.value);
-        updateUI();
-    });
-
-    sceneBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            sceneBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            state.brightness = parseInt(btn.dataset.br);
-            state.cct = parseInt(btn.dataset.cct);
-            state.isOn = true;
-            brInput.value = state.brightness;
-            cctInput.value = state.cct;
+    if (smartToggle && brInput && cctInput && lightBeam) {
+        smartToggle.addEventListener('click', () => {
+            state.isOn = !state.isOn;
             updateUI();
         });
-    });
 
-    updateUI();
+        brInput.addEventListener('input', (e) => {
+            state.brightness = parseInt(e.target.value);
+            updateUI();
+        });
+
+        cctInput.addEventListener('input', (e) => {
+            state.cct = parseInt(e.target.value);
+            updateUI();
+        });
+
+        if (sceneBtns.length > 0) {
+            sceneBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sceneBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    state.brightness = parseInt(btn.dataset.br);
+                    state.cct = parseInt(btn.dataset.cct);
+                    state.isOn = true;
+                    brInput.value = state.brightness;
+                    cctInput.value = state.cct;
+                    updateUI();
+                });
+            });
+        }
+
+        updateUI();
+    }
 })();
 
 
