@@ -325,6 +325,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
                 <!-- Pagination -->
                 <div class="swiper-pagination"></div>
@@ -363,7 +364,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="js/script.js?v=1.2"></script>
+    <script src="js/script.js?v=1.1"></script>
     <script src="js/theme.js"></script>
     <!--
     <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
