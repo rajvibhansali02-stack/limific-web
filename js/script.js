@@ -600,5 +600,47 @@ contactForms.forEach(form => {
 });
 
 
+// 12. Swiper Variants Carousel Initialization
+function initVariantsCarousel() {
+    const swiperContainers = document.querySelectorAll('.variantsCarousel');
+    
+    swiperContainers.forEach(container => {
+        new Swiper(container, {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            loop: false, /* Disabled loop to ensure 100% dot synchronization */
+            speed: 600,
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 2.5,
+                slideShadows: false,
+            },
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: container.querySelector('.swiper-pagination'),
+                clickable: true,
+            },
+            navigation: {
+                nextEl: container.parentElement.querySelector('.next-variant'),
+                prevEl: container.parentElement.querySelector('.prev-variant'),
+            },
+            keyboard: {
+                enabled: true,
+            }
+        });
+    });
+}
+
+// Call initialization on load
+window.addEventListener('load', initVariantsCarousel);
+
+
 
 

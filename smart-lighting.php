@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lumific Wall Sculptures - Diffused brilliance for sophisticated interiors. Every piece is a testament to minimalist design.">
-    <title>Lumific | Wall Sculptures</title>
+    <meta name="description" content="Lumific Smart Lighting - Intuitive atmospheres, responsive elegance. Intelligence, Reimagined With AI for your home.">
+    <title>Lumific | Smart Lighting</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script>
         if (sessionStorage.getItem('hasSeenEntrance')) {
             const style = document.createElement('style');
@@ -25,7 +26,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 180px 8vw 60px; /* Increased top padding */
+            padding: 180px 8vw 20px; /* Reduced bottom padding */
             position: relative;
         }
 
@@ -196,7 +197,7 @@
     </nav>
 
     <div class="back-nav">
-        <a href="index.html#wall-sculptures" class="back-btn">
+        <a href="index.html#smart-lighting" class="back-btn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
@@ -207,29 +208,29 @@
     <section class="product-hero">
         <div class="product-grid">
             <div class="product-visual reveal">
-                <img src="images/card_wall.webp" alt="Wall Sculptures">
+                <img src="images/card_smart.webp" alt="Smart Lighting">
             </div>
             <div class="product-info reveal">
-                <div class="product-category">Masterpiece Collection</div>
-                <h1 class="product-title text-grad">Wall Sculptures</h1>
-                <p class="product-description">Diffused brilliance for sophisticated interiors. Every piece is a testament to minimalist design, crafted to cast secondary light that emphasizes texture and depth.</p>
+                <div class="product-category">Intelligent Systems</div>
+                <h1 class="product-title text-grad">Smart Lighting</h1>
+                <p class="product-description">Intuitive atmospheres, responsive elegance. Intelligence reimagined with AI to understand your natural rhythms and adjust your environments illumination accordingly.</p>
                 
                 <div class="product-specs">
                     <div class="spec-item">
-                        <div class="spec-label">Light Source</div>
-                        <div class="spec-value">OLED Soft-Panel</div>
+                        <div class="spec-label">Connectivity</div>
+                        <div class="spec-value">Matter / HomeKit</div>
                     </div>
                     <div class="spec-item">
-                        <div class="spec-label">Material</div>
-                        <div class="spec-value">Anodized Obsidian</div>
+                        <div class="spec-label">Sensors</div>
+                        <div class="spec-value">Ambient & Occupancy</div>
                     </div>
                     <div class="spec-item">
-                        <div class="spec-label">CRI</div>
-                        <div class="spec-value">98+ (True Color)</div>
+                        <div class="spec-label">Response</div>
+                        <div class="spec-value">< 10ms Latency</div>
                     </div>
                     <div class="spec-item">
-                        <div class="spec-label">Control</div>
-                        <div class="spec-value">Gesture Sensing</div>
+                        <div class="spec-label">Engine</div>
+                        <div class="spec-value">Lumific Neural Core</div>
                     </div>
                 </div>
 
@@ -240,7 +241,7 @@
                     <div class="input-group" style="margin-top: 15px;">
                         <textarea name="message" placeholder="Your Message / Inquiry" rows="3" required></textarea>
                     </div>
-                    <input type="hidden" name="product" value="Wall Sculptures">
+                    <input type="hidden" name="product" value="Smart Lighting">
                     <button type="submit" class="btn-primary form-submit" style="width: 100%; margin-top: 15px;">Send Message</button>
                     <div class="form-message" style="margin-top: 15px; display: none; color: var(--accent);">Thank you! Your message has been sent.</div>
                 </form>
@@ -251,48 +252,104 @@
     <section class="related-products">
         <div class="section-header reveal">
             <h2 class="section-title text-grad" style="font-size: 2.5rem;">Popular Variants</h2>
-            <p class="section-subtitle">Discover the most sought-after designs in the Wall Sculptures collection.</p>
+            <p class="section-subtitle">Discover the most sought-after designs in the Smart Lighting collection.</p>
         </div>
-        <div class="gallery-grid reveal">
-            <div class="gallery-card">
-                <div class="gallery-img"><img src="images/shop_sconce.webp" alt="Minimalist Sconce"></div>
-                <div class="gallery-info">
-                    <h4>Minimalist Sconce</h4>
-                    <span class="badge">Best Seller</span>
+        
+        <div class="variants-container reveal">
+            <div class="swiper variantsCarousel">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/gallery_smart_1.png');"></div>
+                            <div class="gallery-info">
+                                <div class="card-meta">
+                                    <span class="badge">Best Seller</span>
+                                </div>
+                                <h4>Smart Hub Interface</h4>
+                                <div class="card-footer">
+                                    <span class="price">₹15,400</span>
+                                    <button class="add-btn" aria-label="Add to cart">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/gallery_smart_2.png');"></div>
+                            <div class="gallery-info">
+                                <div class="card-meta">
+                                    <span class="badge popular">Popular</span>
+                                </div>
+                                <h4>Modular Smart Panels</h4>
+                                <div class="card-footer">
+                                    <span class="price">₹22,900</span>
+                                    <button class="add-btn" aria-label="Add to cart">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/gallery_smart_3.png');"></div>
+                            <div class="gallery-info">
+                                <div class="card-meta">
+                                    <span class="badge new">New</span>
+                                </div>
+                                <h4>Ambient Corner Core</h4>
+                                <div class="card-footer">
+                                    <span class="price">₹18,250</span>
+                                    <button class="add-btn" aria-label="Add to cart">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/gallery_smart_4.png');"></div>
+                            <div class="gallery-info">
+                                <div class="card-meta">
+                                    <span class="badge">Classic</span>
+                                </div>
+                                <h4>Motion Sense Dial</h4>
+                                <div class="card-footer">
+                                    <span class="price">₹8,750</span>
+                                    <button class="add-btn" aria-label="Add to cart">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
             </div>
-            <div class="gallery-card">
-                <div class="gallery-img"><img src="images/gallery_wall_1.png" alt="Stone Cast Sconce"></div>
-                <div class="gallery-info">
-                    <h4>Stone Cast Sconce</h4>
-                    <span class="badge popular">Popular</span>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-img"><img src="images/cat_outdoor.webp" alt="Architectural Uplight"></div>
-                <div class="gallery-info">
-                    <h4>Architectural Uplight</h4>
-                    <span class="badge">Classic</span>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-img"><img src="images/gallery_wall_2.png" alt="Eclipse Halo Wall Art"></div>
-                <div class="gallery-info">
-                    <h4>Eclipse Halo Wall Art</h4>
-                    <span class="badge new">New</span>
-                </div>
+            <!-- Navigation -->
+            <div class="variants-nav">
+                <button class="nav-btn prev-variant" aria-label="Previous">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button class="nav-btn next-variant" aria-label="Next">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
             </div>
         </div>
     </section>
 
     <section class="details" style="padding-top: 0; padding-bottom: 150px;">
         <div class="section-header reveal">
-            <h2 class="section-title text-grad">Quiet Sophistication</h2>
-            <p class="section-subtitle">Wall lighting that acts as a silent sculpture when off and a radiant atmosphere when on.</p>
+            <h2 class="section-title text-grad">The Future of Light</h2>
+            <p class="section-subtitle">A system that doesn't just respond to commands, but anticipates your needs.</p>
         </div>
         
         <div class="about-container reveal">
-            <p>Our Wall Sculptures series redefines the role of light in the home. No longer just a functional necessity, these fixtures are designed to be focal points. By integrating edge-lit technology with natural materials like stone and hand-finished metals, we ensure that each piece tells a unique story of shadow and light.</p>
+            <p>Our Smart Lighting ecosystem is built on a foundation of "circadian-first" design. Using a suite of hyperspectral sensors and a decentralized AI core, the system monitors natural light levels throughout the day and adjusts the subterranean color temperature and intensity of your Lumific fixtures. This ensures that your body's natural clock remains in sync, whether you're working in a windowless studio or relaxing in a sun-drenched lounge.</p>
         </div>
     </section>
 
@@ -306,6 +363,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/script.js?v=1.1"></script>
     <script src="js/theme.js"></script>
     <!--

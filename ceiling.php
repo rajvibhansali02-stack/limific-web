@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lumific Ceiling Masterpieces - Luminous statement pieces for modern architectures. Redefining the standard of luxury light.">
-    <title>Lumific | Ceiling Masterpieces</title>
+    <meta name="description" content="Lumific Ceiling - Elevate heights with suspended brilliance. We engineer light that transforms architectural volume.">
+    <title>Lumific | Ceiling</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script>
         if (sessionStorage.getItem('hasSeenEntrance')) {
             const style = document.createElement('style');
@@ -25,7 +26,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 180px 8vw 60px; /* Increased top padding */
+            padding: 180px 8vw 20px; /* Reduced bottom padding */
             position: relative;
         }
 
@@ -196,7 +197,7 @@
     </nav>
 
     <div class="back-nav">
-        <a href="index.html#ceiling-masterpieces" class="back-btn">
+        <a href="index.html#ceiling" class="back-btn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
@@ -207,29 +208,29 @@
     <section class="product-hero">
         <div class="product-grid">
             <div class="product-visual reveal">
-                <img src="images/card_ceiling_master.webp" alt="Ceiling Masterpieces">
+                <img src="images/card_ceiling.webp" alt="Ceiling Lighting">
             </div>
             <div class="product-info reveal">
-                <div class="product-category">Signature Collection</div>
-                <h1 class="product-title text-grad">Ceiling Masterpieces</h1>
-                <p class="product-description">Luminous statement pieces for modern architectures. These large-scale installations are designed to be the crown jewel of any space, combining scale with intricate detail.</p>
+                <div class="product-category">Masterpiece Collection</div>
+                <h1 class="product-title text-grad">Ceiling</h1>
+                <p class="product-description">Elevate heights with suspended brilliance. Our ceiling fixtures are engineered to transform architectural volume through precision-guided luminescence and minimalist aesthetics.</p>
                 
                 <div class="product-specs">
                     <div class="spec-item">
                         <div class="spec-label">Light Source</div>
-                        <div class="spec-value">Direct/Indirect LED</div>
+                        <div class="spec-value">Integrated COB LED</div>
                     </div>
                     <div class="spec-item">
                         <div class="spec-label">Material</div>
-                        <div class="spec-value">Hand-Blown Glass</div>
+                        <div class="spec-value">Brushed Chrome</div>
                     </div>
                     <div class="spec-item">
-                        <div class="spec-label">Output</div>
-                        <div class="spec-value">Up to 15,000 Lms</div>
+                        <div class="spec-label">Efficiency</div>
+                        <div class="spec-value">120 Lm/W</div>
                     </div>
                     <div class="spec-item">
-                        <div class="spec-label">Weight</div>
-                        <div class="spec-value">Custom (Reinforced)</div>
+                        <div class="spec-label">Control</div>
+                        <div class="spec-value">TRIAC Dimmable</div>
                     </div>
                 </div>
 
@@ -240,7 +241,7 @@
                     <div class="input-group" style="margin-top: 15px;">
                         <textarea name="message" placeholder="Your Message / Inquiry" rows="3" required></textarea>
                     </div>
-                    <input type="hidden" name="product" value="Ceiling Masterpieces">
+                    <input type="hidden" name="product" value="Ceiling Collection">
                     <button type="submit" class="btn-primary form-submit" style="width: 100%; margin-top: 15px;">Send Message</button>
                     <div class="form-message" style="margin-top: 15px; display: none; color: var(--accent);">Thank you! Your message has been sent.</div>
                 </form>
@@ -251,48 +252,104 @@
     <section class="related-products">
         <div class="section-header reveal">
             <h2 class="section-title text-grad" style="font-size: 2.5rem;">Popular Variants</h2>
-            <p class="section-subtitle">Discover the most sought-after designs in the Masterpiece collection.</p>
+            <p class="section-subtitle">Discover the most sought-after designs in the Ceiling collection.</p>
         </div>
-        <div class="gallery-grid reveal">
-            <div class="gallery-card">
-                <div class="gallery-img"><img src="images/card_ceiling.webp" alt="Minimalist Core"></div>
-                <div class="gallery-info">
-                    <h4>Minimalist Core</h4>
-                    <span class="badge">Best Seller</span>
+        
+        <div class="variants-container reveal">
+            <div class="swiper variantsCarousel">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/cat_downlights.webp');"></div>
+                            <div class="gallery-info">
+                                <div class="card-meta">
+                                    <span class="badge">Best Seller</span>
+                                </div>
+                                <h4>Deep Series Downlight</h4>
+                                <div class="card-footer">
+                                    <span class="price">₹7,490</span>
+                                    <button class="add-btn" aria-label="Add to cart">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/cat_profiles.webp');"></div>
+                            <div class="gallery-info">
+                                <div class="card-meta">
+                                    <span class="badge popular">Popular</span>
+                                </div>
+                                <h4>Linear Magnetic Profile</h4>
+                                <div class="card-footer">
+                                    <span class="price">₹12,250</span>
+                                    <button class="add-btn" aria-label="Add to cart">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/cat_tracklights.webp');"></div>
+                            <div class="gallery-info">
+                                <div class="card-meta">
+                                    <span class="badge new">New</span>
+                                </div>
+                                <h4>Spotboy Track Focus</h4>
+                                <div class="card-footer">
+                                    <span class="price">₹9,800</span>
+                                    <button class="add-btn" aria-label="Add to cart">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/cat_spots.webp');"></div>
+                            <div class="gallery-info">
+                                <div class="card-meta">
+                                    <span class="badge">Classic</span>
+                                </div>
+                                <h4>Adjustable Recessed Spot</h4>
+                                <div class="card-footer">
+                                    <span class="price">₹5,650</span>
+                                    <button class="add-btn" aria-label="Add to cart">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
             </div>
-            <div class="gallery-card">
-                <div class="gallery-img"><img src="images/cat_studio_abby.webp" alt="Studio Abby Signature"></div>
-                <div class="gallery-info">
-                    <h4>Studio Abby Signature</h4>
-                    <span class="badge popular">Popular</span>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-img"><img src="images/gallery_master_1.png" alt="Grand Golden Glass Chandelier"></div>
-                <div class="gallery-info">
-                    <h4>Grand Glass Chandelier</h4>
-                    <span class="badge new">New</span>
-                </div>
-            </div>
-            <div class="gallery-card">
-                <div class="gallery-img"><img src="images/gallery_master_2.png" alt="Kinetic Ring Chandelier"></div>
-                <div class="gallery-info">
-                    <h4>Kinetic Ring Chandelier</h4>
-                    <span class="badge">Classic</span>
-                </div>
+            <!-- Navigation -->
+            <div class="variants-nav">
+                <button class="nav-btn prev-variant" aria-label="Previous">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button class="nav-btn next-variant" aria-label="Next">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
             </div>
         </div>
     </section>
 
     <section class="details" style="padding-top: 0; padding-bottom: 150px;">
         <div class="section-header reveal">
-            <h2 class="section-title text-grad">Grand Scale Art</h2>
-            <p class="section-subtitle">Installations that demand attention and redefine the boundaries of what lighting can achieve.</p>
+            <h2 class="section-title text-grad">Volumetric Brilliance</h2>
+            <p class="section-subtitle">A fixture that commands the room while blending seamlessly with its architectural surroundings.</p>
         </div>
         
         <div class="about-container reveal">
-            <p>The Masterpiece series is where our engineering team and artisanal glassblowers push the limits of possibility. Each fixture is a unique installation, often requiring specialized structural support and advanced wiring. The result is a breathtaking display of light that captures and refracts across the room, creating an atmosphere that is truly one-of-a-kind.</p>
+            <p>The Ceiling series is the result of years of research into how light interacts with vertical space. By utilizing high-transmission acrylic optics and custom-heat-sinked LED modules, we've created a series that offers unparalleled brightness without the glare often associated with high-output fixtures.</p>
         </div>
     </section>
 
@@ -306,6 +363,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/script.js?v=1.1"></script>
     <script src="js/theme.js"></script>
     <!--
