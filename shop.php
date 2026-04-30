@@ -5,20 +5,22 @@ require_once 'admin/config.php';
 $result = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
 $products = $result->fetch_all(MYSQLI_ASSOC);
 
-// Category Counts
+// Calculate dynamic counts based on new catalog categories
 $counts = [
     'all' => count($products),
-    'tracklights' => 0,
+    'magnetic' => 0,
     'downlights' => 0,
     'spots' => 0,
+    'surface' => 0,
     'outdoor' => 0,
-    'profiles' => 0,
-    'ceiling' => 0
+    'underwater' => 0,
+    'accessories' => 0
 ];
 
 foreach ($products as $p) {
-    if (isset($counts[$p['category']])) {
-        $counts[$p['category']]++;
+    $cat = strtolower($p['category']);
+    if (isset($counts[$cat])) {
+        $counts[$cat]++;
     }
 }
 ?>
@@ -38,7 +40,9 @@ foreach ($products as $p) {
     <link rel="stylesheet" href="css/shop.css">
     <style>
         @media (min-width: 1024px) {
-            body, a, button, .product-card, .filter-btn, .quick-add-btn { cursor: none !important; }
+            body, a, button, .product-card, .filter-btn, .quick-add-btn {
+                cursor: none !important;
+            }
         }
     </style>
     <script>
@@ -81,14 +85,20 @@ foreach ($products as $p) {
             <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode">
                 <span class="toggle-track">
                     <span class="toggle-thumb">
-                        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-                        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        </svg>
+                        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
                     </span>
                 </span>
             </button>
         </div>
     </nav>
 
+    <div class="cart-overlay" id="cartOverlay"></div>
     <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
         <div class="cart-drawer-header">
             <h2>Your Bag</h2>
@@ -118,52 +128,60 @@ foreach ($products as $p) {
                 <h3 class="sidebar-heading">Categories</h3>
                 <ul class="sidebar-nav">
                     <li><button class="filter-btn active" data-filter="all">All Products <span class="count"><?php echo $counts['all']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="tracklights">Tracklights <span class="count"><?php echo $counts['tracklights']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="downlights">Downlights <span class="count"><?php echo $counts['downlights']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="spots">Spots <span class="count"><?php echo $counts['spots']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="outdoor">Outdoor <span class="count"><?php echo $counts['outdoor']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="profiles">Profiles <span class="count"><?php echo $counts['profiles']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="ceiling">Studio Abby <span class="count"><?php echo $counts['ceiling']; ?></span></button></li>
+                    <li><button class="filter-btn" data-filter="magnetic">Magnetic Systems <span class="count"><?php echo $counts['magnetic']; ?></span></button></li>
+                    <li><button class="filter-btn" data-filter="downlights">Recessed Downlights <span class="count"><?php echo $counts['downlights']; ?></span></button></li>
+                    <li><button class="filter-btn" data-filter="spots">Spotlights / COB <span class="count"><?php echo $counts['spots']; ?></span></button></li>
+                    <li><button class="filter-btn" data-filter="surface">Surface Mounted <span class="count"><?php echo $counts['surface']; ?></span></button></li>
+                    <li><button class="filter-btn" data-filter="outdoor">Garden / Inground <span class="count"><?php echo $counts['outdoor']; ?></span></button></li>
+                    <li><button class="filter-btn" data-filter="underwater">Underwater Lights <span class="count"><?php echo $counts['underwater']; ?></span></button></li>
+                    <li><button class="filter-btn" data-filter="accessories">Accessories <span class="count"><?php echo $counts['accessories']; ?></span></button></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3 class="sidebar-heading">Sort By</h3>
+                <ul class="sidebar-nav">
+                    <li><button class="filter-btn active-sort" data-sort="featured">Featured</button></li>
+                    <li><button class="filter-btn" data-sort="price-asc">Price: Low to High</button></li>
+                    <li><button class="filter-btn" data-sort="price-desc">Price: High to Low</button></li>
+                    <li><button class="filter-btn" data-sort="new">Newest</button></li>
                 </ul>
             </div>
         </aside>
 
         <main class="shop-main">
-            <div class="product-grid cols-2" id="productGrid">
+            <div class="product-grid cols-3" id="productGrid">
                 <?php foreach ($products as $p): ?>
-                <article class="product-card" data-cat="<?php echo $p['category']; ?>" data-price="<?php echo $p['price']; ?>" data-id="<?php echo $p['id']; ?>">
+                <article class="product-card" data-cat="<?php echo strtolower($p['category']); ?>" data-price="<?php echo $p['price']; ?>" data-id="<?php echo $p['id']; ?>">
                     <div class="product-img-wrap">
                         <div class="product-img-bg product-real-img">
-                            <img src="<?php echo $p['image_url']; ?>" alt="<?php echo $p['name']; ?>" class="product-real-photo">
+                            <img src="<?php echo $p['image_url']; ?>" alt="<?php echo $p['name']; ?>" class="product-real-photo" onerror="this.src='images/logo.png'; this.style.padding='20%'">
                         </div>
-                        <?php if($p['badge']): ?><span class="badge-ui" style="position:absolute; top:15px; left:15px; background:var(--accent); color:#000; padding:4px 10px; border-radius:4px; font-size:0.7rem; font-weight:600;"><?php echo strtoupper($p['badge']); ?></span><?php endif; ?>
+                        <div class="product-hover-glow"></div>
                     </div>
                     <div class="product-info">
                         <div class="product-details-top">
-                            <span class="product-cat-tag" style="text-transform: capitalize;"><?php echo $p['category']; ?></span>
+                            <span class="product-cat-tag"><?php echo $p['category']; ?></span>
                             <h2 class="product-title"><?php echo $p['name']; ?></h2>
                         </div>
                         <div class="product-details-bottom">
-                            <p class="product-price-tag">₹<?php echo number_format($p['price'], 2); ?></p>
-                            <button class="card-quick-add" data-id="<?php echo $p['id']; ?>" data-name="<?php echo $p['name']; ?>" data-price="<?php echo $p['price']; ?>" data-cat="<?php echo $p['category']; ?>">Add</button>
+                            <p class="product-price-tag">₹<?php echo number_format($p['price'], 0); ?></p>
+                            <div class="card-qty-wrapper">
+                                <div class="card-qty-controls">
+                                    <button class="card-qty-btn" data-action="dec">−</button>
+                                    <span class="card-qty-num">1</span>
+                                    <button class="card-qty-btn" data-action="inc">+</button>
+                                </div>
+                                <button class="card-quick-add" data-id="<?php echo $p['id']; ?>" data-name="<?php echo $p['name']; ?>" data-price="<?php echo $p['price']; ?>" data-cat="<?php echo $p['category']; ?>">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </article>
                 <?php endforeach; ?>
-                
-                <?php if(empty($products)): ?>
-                <div style="grid-column: span 2; text-align: center; padding: 100px; opacity: 0.5;">
-                    <h3>The inventory is currently being curated.</h3>
-                    <p>Check back shortly for the latest Lumific arrivals.</p>
-                </div>
-                <?php endif; ?>
             </div>
         </main>
     </div>
-
-    <footer style="padding: 40px; text-align:center; color: rgba(255,255,255,0.3); font-size:0.85rem; border-top: 1px solid rgba(255,255,255,0.05);">
-        &copy; 2026 Lumific. All rights reserved.
-    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="js/shop.js"></script>
@@ -179,17 +197,41 @@ foreach ($products as $p) {
         for (let i = 0; i < 10; i++) {
             const td = document.createElement('div');
             td.className = 'cursor-trail-dot';
+            const size = 10 - i * 0.75;
+            const opacity = 0.5 - i * 0.04;
+            const hue = 40 + (i / 10) * 140;
+            td.style.width = td.style.height = `${size}px`;
+            td.style.background = `hsla(${hue}, 85%, 72%, ${opacity})`;
+            td.style.boxShadow = `0 0 ${size * 2.5}px hsla(${hue}, 85%, 72%, ${opacity * 0.7})`;
             document.body.appendChild(td);
             trailDots.push({ el: td, x: 0, y: 0 });
         }
-        let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0;
-        window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let dotX = mouseX, dotY = mouseY, glowX = mouseX, glowY = mouseY;
+        window.addEventListener('mousemove', e => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            dot.classList.add('is-visible'); glow.classList.add('is-visible');
+            trailDots.forEach(d => d.el.classList.add('is-visible'));
+        });
         function animate() {
             dotX += (mouseX - dotX); dotY += (mouseY - dotY);
+            glowX += (mouseX - glowX) * 0.12; glowY += (mouseY - glowY) * 0.12;
             dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate3d(-50%, -50%, 0)`;
+            glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0) translate3d(-50%, -50%, 0)`;
+            let prevX = dotX, prevY = dotY;
+            trailDots.forEach(d => {
+                d.x += (prevX - d.x) * 0.35; d.y += (prevY - d.y) * 0.35;
+                d.el.style.left = `${d.x}px`; d.el.style.top = `${d.y}px`;
+                d.el.style.transform = `translate3d(-50%, -50%, 0)`;
+                prevX = d.x; prevY = d.y;
+            });
             requestAnimationFrame(animate);
         }
         animate();
+        document.querySelectorAll('a, button, .product-card, .filter-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => glow.classList.add('active'));
+            el.addEventListener('mouseleave', () => glow.classList.remove('active'));
+        });
     })();
     </script>
 </body>

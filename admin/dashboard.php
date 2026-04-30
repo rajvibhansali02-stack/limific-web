@@ -136,6 +136,24 @@ $current_tab = $_GET['tab'] ?? 'products';
         .full-width { grid-column: span 2; }
         label { display: block; margin-bottom: 8px; color: rgba(255,255,255,0.6); font-size: 0.85rem; }
         input, select, textarea { width: 100%; background: #1a1a1a; border: 1px solid var(--border); padding: 12px 15px; border-radius: 10px; color: #fff; font-family: inherit; }
+
+        /* Notifications */
+        .notification {
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.5s ease;
+        }
+        .notif-success { background: rgba(76, 175, 80, 0.1); border: 1px solid rgba(76, 175, 80, 0.2); color: #4CAF50; }
+        .notif-error { background: rgba(244, 67, 54, 0.1); border: 1px solid rgba(244, 67, 54, 0.2); color: #f44336; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -150,6 +168,18 @@ $current_tab = $_GET['tab'] ?? 'products';
     </div>
 
     <div class="main-content">
+        <?php if (isset($_GET['success'])): ?>
+            <div class="notification notif-success">
+                <i class="fa-solid fa-circle-check"></i> Product added successfully!
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['error']) && $_GET['error'] == 'duplicate'): ?>
+            <div class="notification notif-error">
+                <i class="fa-solid fa-triangle-exclamation"></i> Error: A product with this name already exists.
+            </div>
+        <?php endif; ?>
+
         <?php if ($current_tab == 'products'): ?>
             <div class="header">
                 <h1>Product Management</h1>
@@ -194,10 +224,17 @@ $current_tab = $_GET['tab'] ?? 'products';
                             <td>₹<?php echo number_format($p['price']); ?></td>
                             <td><span class="badge-ui badge-<?php echo strtolower($p['badge']); ?>"><?php echo $p['badge']; ?></span></td>
                             <td>
-                                <form action="actions.php" method="POST" style="display:inline;">
-                                    <input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?php echo $p['id']; ?>">
-                                    <button type="submit" class="action-btn" onclick="return confirm('Delete this product?')"><i class="fa-solid fa-trash-can"></i></button>
-                                </form>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="action-btn" onclick='openEditModal(<?php echo json_encode($p); ?>)' title="Edit Product">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <form action="actions.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?php echo $p['id']; ?>">
+                                        <button type="submit" class="action-btn" style="color: #f44336;" onclick="return confirm('Delete this product?')">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -280,10 +317,10 @@ $current_tab = $_GET['tab'] ?? 'products';
                 <input type="hidden" name="action" value="add">
                 <div class="form-grid">
                     <div class="input-group full-width"><label>Product Name</label><input type="text" name="name" required></div>
-                    <div class="input-group"><label>Category</label><select name="category"><option value="tracklights">Tracklights</option><option value="downlights">Downlights</option><option value="spots">Spots</option><option value="outdoor">Outdoor</option><option value="profiles">Profiles</option><option value="ceiling">Studio Abby</option></select></div>
+                    <div class="input-group"><label>Category</label><select name="category"><option value="magnetic">Magnetic Systems</option><option value="downlights">Recessed Downlights</option><option value="spots">Spotlights / COB</option><option value="surface">Surface Mounted</option><option value="outdoor">Outdoor (Garden/Inground)</option><option value="underwater">Underwater Lights</option><option value="accessories">Accessories</option></select></div>
                     <div class="input-group"><label>Price (INR)</label><input type="number" name="price" required></div>
-                    <div class="input-group"><label>Finish/Color</label><input type="text" name="color"></div>
-                    <div class="input-group"><label>Badge</label><select name="badge"><option value="New">New</option><option value="Popular">Popular</option><option value="Best Seller">Best Seller</option><option value="Classic">Classic</option></select></div>
+                    <div class="input-group"><label>Finish/Color</label><input type="text" name="color" list="colorOptions" placeholder="e.g. Matte Black"><datalist id="colorOptions"><option value="Matte Black"><option value="Textured White"><option value="Grey / Silver"><option value="Gold"><option value="Rose Gold"><option value="Copper"></datalist></div>
+                    <div class="input-group"><label>Badge</label><select name="badge"><option value="New Arrival">New Arrival</option><option value="CRI >90">CRI >90</option><option value="IP65 Rated">IP65 Rated</option><option value="IP67 Rated">IP67 Rated</option><option value="Dimmable">Dimmable</option></select></div>
                     <div class="input-group full-width"><label>Product Image</label><input type="file" name="image" accept="image/*" required></div>
                 </div>
                 <button type="submit" class="btn-add" style="width: 100%; margin-top: 10px;">Save Product</button>
@@ -291,9 +328,44 @@ $current_tab = $_GET['tab'] ?? 'products';
         </div>
     </div>
 
+    <!-- Edit Product Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h2 style="margin-bottom: 30px; font-family: 'Outfit', sans-serif;">Edit Product</h2>
+            <form action="actions.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="id" id="edit_id">
+                <div class="form-grid">
+                    <div class="input-group full-width"><label>Product Name</label><input type="text" name="name" id="edit_name" required></div>
+                    <div class="input-group"><label>Category</label><select name="category" id="edit_category"><option value="magnetic">Magnetic Systems</option><option value="downlights">Recessed Downlights</option><option value="spots">Spotlights / COB</option><option value="surface">Surface Mounted</option><option value="outdoor">Outdoor (Garden/Inground)</option><option value="underwater">Underwater Lights</option><option value="accessories">Accessories</option></select></div>
+                    <div class="input-group"><label>Price (INR)</label><input type="number" name="price" id="edit_price" required></div>
+                    <div class="input-group"><label>Finish/Color</label><input type="text" name="color" id="edit_color" list="colorOptions"></div>
+                    <div class="input-group"><label>Badge</label><select name="badge" id="edit_badge"><option value="New Arrival">New Arrival</option><option value="CRI >90">CRI >90</option><option value="IP65 Rated">IP65 Rated</option><option value="IP67 Rated">IP67 Rated</option><option value="Dimmable">Dimmable</option></select></div>
+                    <div class="input-group full-width">
+                        <label>Change Image (Leave blank to keep current)</label>
+                        <input type="file" name="image" accept="image/*">
+                    </div>
+                </div>
+                <button type="submit" class="btn-add" style="width: 100%; margin-top: 10px;">Update Product</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         function openModal() { document.getElementById('productModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+        
+        function openEditModal(product) {
+            document.getElementById('edit_id').value = product.id;
+            document.getElementById('edit_name').value = product.name;
+            document.getElementById('edit_category').value = product.category;
+            document.getElementById('edit_price').value = product.price;
+            document.getElementById('edit_color').value = product.color;
+            document.getElementById('edit_badge').value = product.badge;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+        function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
     </script>
 </body>
 </html>
