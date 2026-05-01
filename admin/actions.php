@@ -10,7 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $category = $_POST['category'];
         $price = $_POST['price'];
         $color = $conn->real_escape_string($_POST['color']);
-        $badge = $_POST['badge'];
         $description = isset($_POST['description']) ? $conn->real_escape_string($_POST['description']) : "";
 
         // Check for duplicates
@@ -33,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $db_path = "images/" . $new_filename;
 
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $sql = "INSERT INTO products (name, category, price, color, description, image_url, badge) 
-                    VALUES ('$name', '$category', '$price', '$color', '$description', '$db_path', '$badge')";
+            $sql = "INSERT INTO products (name, category, price, color, description, image_url) 
+                    VALUES ('$name', '$category', '$price', '$color', '$description', '$db_path')";
             
             if ($conn->query($sql)) {
                 header("Location: dashboard.php?success=1");
@@ -53,11 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $category = $_POST['category'];
         $price = $_POST['price'];
         $color = $conn->real_escape_string($_POST['color']);
-        $badge = $_POST['badge'];
         $description = isset($_POST['description']) ? $conn->real_escape_string($_POST['description']) : "";
 
         // Base update query
-        $sql = "UPDATE products SET name='$name', category='$category', price='$price', color='$color', badge='$badge', description='$description'";
+        $sql = "UPDATE products SET name='$name', category='$category', price='$price', color='$color', description='$description'";
 
         // Handle image update if new file is uploaded
         if (isset($_FILES["image"]) && $_FILES["image"]["size"] > 0) {
@@ -107,6 +105,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $conn->query("DELETE FROM products WHERE id = $id");
         header("Location: dashboard.php?deleted=1");
+        exit;
+    }
+
+    if ($action == "delete_inquiry") {
+        $id = intval($_POST['id']);
+        $conn->query("DELETE FROM inquiries WHERE id = $id");
+        header("Location: dashboard.php?tab=inquiries&deleted=1");
+        exit;
+    }
+
+    if ($action == "add_sale") {
+        $product_id = intval($_POST['product_id']);
+        $quantity = intval($_POST['quantity']);
+        $total_amount = $_POST['total_amount'];
+        $customer_name = $conn->real_escape_string($_POST['customer_name']);
+
+        // Fetch product name for the record
+        $p_res = $conn->query("SELECT name FROM products WHERE id = $product_id");
+        $p_name = ($row = $p_res->fetch_assoc()) ? $row['name'] : "Unknown Product";
+
+        $sql = "INSERT INTO sales (product_id, product_name, quantity, total_amount, customer_name) 
+                VALUES ($product_id, '$p_name', $quantity, '$total_amount', '$customer_name')";
+        
+        if ($conn->query($sql)) {
+            header("Location: dashboard.php?tab=sales&success=sale");
+            exit;
+        } else {
+            echo "Error: " . $conn->error;
+        }
+    }
+
+    if ($action == "delete_sale") {
+        $id = intval($_POST['id']);
+        $conn->query("DELETE FROM sales WHERE id = $id");
+        header("Location: dashboard.php?tab=sales&deleted=1");
         exit;
     }
 }

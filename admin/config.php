@@ -38,6 +38,38 @@ if (!$conn->query($table_sql)) {
     die("Error creating table: " . $conn->error);
 }
 
+// Inquiries Table Setup
+$inquiries_sql = "CREATE TABLE IF NOT EXISTS inquiries (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(20),
+    product VARCHAR(255),
+    message TEXT,
+    status ENUM('new', 'contacted', 'resolved') DEFAULT 'new',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)";
+
+if (!$conn->query($inquiries_sql)) {
+    die("Error creating inquiries table: " . $conn->error);
+}
+
+// Sales Table Setup
+$sales_sql = "CREATE TABLE IF NOT EXISTS sales (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    product_id INT(11),
+    product_name VARCHAR(255),
+    quantity INT(11) DEFAULT 1,
+    total_amount DECIMAL(12, 2),
+    customer_name VARCHAR(255),
+    sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
+)";
+
+if (!$conn->query($sales_sql)) {
+    die("Error creating sales table: " . $conn->error);
+}
+
 // Admin Session Helper
 session_start();
 function checkAuth() {

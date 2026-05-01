@@ -7,24 +7,21 @@ checkAuth();
 $prod_res = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
 $products = $prod_res->fetch_all(MYSQLI_ASSOC);
 
-// 2. Fetch & Parse Inquiries from Log
-$inquiries = [];
-if (file_exists('../inquiries.log')) {
-    $log_content = file_get_contents('../inquiries.log');
-    $entries = explode("------------------------------------------", $log_content);
-    foreach (array_reverse($entries) as $entry) {
-        if (trim($entry) == "") continue;
-        
-        $lines = explode("\n", trim($entry));
-        $inquiry = [
-            'date' => str_replace(['[', '] NEW INQUIRY'], '', $lines[0]),
-            'email' => str_replace('From: ', '', $lines[1] ?? ''),
-            'interest' => str_replace('Interest: ', '', $lines[2] ?? ''),
-            'message' => str_replace('Message: ', '', $lines[3] ?? '')
-        ];
-        $inquiries[] = $inquiry;
-    }
-}
+// 2. Fetch Inquiries from Database
+$inq_res = $conn->query("SELECT * FROM inquiries ORDER BY created_at DESC");
+$inquiries = $inq_res->fetch_all(MYSQLI_ASSOC);
+
+// 3. Fetch Unique Customers
+$cust_res = $conn->query("SELECT email, name, phone, COUNT(*) as total_inquiries, MAX(created_at) as last_activity FROM inquiries GROUP BY email ORDER BY last_activity DESC");
+$customers = $cust_res->fetch_all(MYSQLI_ASSOC);
+
+// 4. Fetch Sales Data
+$sales_res = $conn->query("SELECT * FROM sales ORDER BY sale_date DESC");
+$sales = $sales_res->fetch_all(MYSQLI_ASSOC);
+
+// 5. Calculate Total Revenue
+$total_revenue = 0;
+foreach ($sales as $s) { $total_revenue += $s['total_amount']; }
 
 // 3. Analytics Calculation
 $cat_counts = [];
@@ -34,6 +31,15 @@ foreach ($products as $p) {
 }
 
 $current_tab = $_GET['tab'] ?? 'products';
+
+function getCountry($phone) {
+    $clean = preg_replace('/[^0-9]/', '', $phone);
+    if (strlen($clean) == 10) return "🇮🇳 India";
+    if (strpos($clean, '91') === 0 && strlen($clean) == 12) return "🇮🇳 India";
+    if (strpos($clean, '1') === 0 && strlen($clean) == 11) return "🇺🇸 USA";
+    if (strpos($clean, '44') === 0 && strlen($clean) == 12) return "🇬🇧 UK";
+    return "Other";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -160,7 +166,9 @@ $current_tab = $_GET['tab'] ?? 'products';
     <div class="sidebar">
         <div class="logo">LUMIFIC</div>
         <a href="?tab=products" class="nav-item <?php echo $current_tab == 'products' ? 'active' : ''; ?>"><i class="fa-solid fa-cube"></i> Products</a>
+        <a href="?tab=customers" class="nav-item <?php echo $current_tab == 'customers' ? 'active' : ''; ?>"><i class="fa-solid fa-users"></i> Customers</a>
         <a href="?tab=inquiries" class="nav-item <?php echo $current_tab == 'inquiries' ? 'active' : ''; ?>"><i class="fa-solid fa-envelope"></i> Inquiries</a>
+        <a href="?tab=sales" class="nav-item <?php echo $current_tab == 'sales' ? 'active' : ''; ?>"><i class="fa-solid fa-receipt"></i> Sales</a>
         <a href="?tab=analytics" class="nav-item <?php echo $current_tab == 'analytics' ? 'active' : ''; ?>"><i class="fa-solid fa-chart-line"></i> Analytics</a>
         <div style="margin-top: auto;">
             <a href="logout.php" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
@@ -208,7 +216,7 @@ $current_tab = $_GET['tab'] ?? 'products';
                 </div>
                 <table>
                     <thead>
-                        <tr><th>Product</th><th>Category</th><th>Price</th><th>Badge</th><th>Actions</th></tr>
+                        <tr><th>Product</th><th>Category</th><th>Price</th><th>Description</th><th>Actions</th></tr>
                     </thead>
                     <tbody>
                         <?php foreach($products as $p): ?>
@@ -222,7 +230,7 @@ $current_tab = $_GET['tab'] ?? 'products';
                             </td>
                             <td><span style="text-transform: capitalize;"><?php echo $p['category']; ?></span></td>
                             <td>₹<?php echo number_format($p['price']); ?></td>
-                            <td><span class="badge-ui badge-<?php echo strtolower($p['badge']); ?>"><?php echo $p['badge']; ?></span></td>
+                            <td><div style="font-size: 0.8rem; color: rgba(255,255,255,0.4); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?php echo $p['description']; ?></div></td>
                             <td>
                                 <div style="display: flex; gap: 10px;">
                                     <button class="action-btn" onclick='openEditModal(<?php echo json_encode($p); ?>)' title="Edit Product">
@@ -244,7 +252,7 @@ $current_tab = $_GET['tab'] ?? 'products';
 
         <?php elseif ($current_tab == 'inquiries'): ?>
             <div class="header">
-                <h1>Customer Inquiries</h1>
+                <h1>Service Inquiries</h1>
             </div>
             
             <div class="stats-grid">
@@ -253,8 +261,8 @@ $current_tab = $_GET['tab'] ?? 'products';
                     <div class="value"><?php echo count($inquiries); ?></div>
                 </div>
                 <div class="stat-card">
-                    <h3>New Leads</h3>
-                    <div class="value"><?php echo count($inquiries); ?></div>
+                    <h3>Active Leads</h3>
+                    <div class="value"><?php echo count($customers); ?></div>
                 </div>
             </div>
 
@@ -262,19 +270,117 @@ $current_tab = $_GET['tab'] ?? 'products';
                 <div class="section-header"><h3>Recent Activity</h3></div>
                 <table>
                     <thead>
-                        <tr><th>Date</th><th>Client Email</th><th>Product Interest</th><th>Message</th></tr>
+                        <tr><th>Date</th><th>Client</th><th>Interest</th><th>Message</th><th>Contact Number</th><th>Actions</th></tr>
                     </thead>
                     <tbody>
                         <?php foreach($inquiries as $iq): ?>
                         <tr class="inquiry-row">
-                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo $iq['date']; ?></td>
-                            <td style="font-weight: 600;"><?php echo $iq['email']; ?></td>
-                            <td><span class="badge-ui" style="background: rgba(226,176,78,0.1); color: var(--accent);"><?php echo $iq['interest']; ?></span></td>
+                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y | H:i', strtotime($iq['created_at'])); ?></td>
+                            <td>
+                                <div style="font-weight: 600;"><?php echo $iq['name']; ?></div>
+                                <div style="font-size: 0.75rem; color: rgba(255,255,255,0.4);"><?php echo $iq['email']; ?></div>
+                            </td>
+                            <td><span class="badge-ui" style="background: rgba(226,176,78,0.1); color: var(--accent);"><?php echo $iq['product']; ?></span></td>
                             <td class="inquiry-msg"><?php echo $iq['message']; ?></td>
+                            <td>
+                                <div style="font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                                    <?php echo $iq['phone']; ?>
+                                    <?php if(strlen(preg_replace('/[^0-9]/', '', $iq['phone'])) != 10): ?>
+                                        <i class="fa-solid fa-circle-exclamation" style="color: #f44336; font-size: 0.7rem;" title="Not 10 digits"></i>
+                                    <?php endif; ?>
+                                </div>
+                                <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4);"><?php echo getCountry($iq['phone']); ?></div>
+                            </td>
+                            <td>
+                                <form action="actions.php" method="POST" style="display:inline;">
+                                    <input type="hidden" name="action" value="delete_inquiry">
+                                    <input type="hidden" name="id" value="<?php echo $iq['id']; ?>">
+                                    <button type="submit" class="action-btn" style="color: rgba(255,255,255,0.3);" onclick="return confirm('Delete this inquiry?')" title="Delete Inquiry">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                         <?php if(empty($inquiries)): ?>
-                        <tr><td colspan="4" style="text-align: center; padding: 50px; opacity: 0.3;">No inquiries yet.</td></tr>
+                        <tr><td colspan="6" style="text-align: center; padding: 50px; opacity: 0.3;">No inquiries yet.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+        <?php elseif ($current_tab == 'customers'): ?>
+            <div class="header">
+                <h1>Customer Database</h1>
+            </div>
+
+            <div class="content-section">
+                <div class="section-header"><h3>Verified Leads</h3></div>
+                <table>
+                    <thead>
+                        <tr><th>Name</th><th>Email</th><th>Phone</th><th>Total Inquiries</th><th>Last Activity</th></tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($customers as $c): ?>
+                        <tr class="inquiry-row">
+                            <td style="font-weight: 600;"><?php echo $c['name']; ?></td>
+                            <td><?php echo $c['email']; ?></td>
+                            <td><?php echo $c['phone']; ?></td>
+                            <td><?php echo $c['total_inquiries']; ?></td>
+                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($c['last_activity'])); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php if(empty($customers)): ?>
+                        <tr><td colspan="5" style="text-align: center; padding: 50px; opacity: 0.3;">No customers found.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+        <?php elseif ($current_tab == 'sales'): ?>
+            <div class="header">
+                <h1>Sales Tracking</h1>
+                <button class="btn-add" onclick="openSaleModal()"><i class="fa-solid fa-plus"></i> Log New Sale</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Revenue</h3>
+                    <div class="value">₹<?php echo number_format($total_revenue); ?></div>
+                </div>
+                <div class="stat-card">
+                    <h3>Units Sold</h3>
+                    <div class="value"><?php echo array_sum(array_column($sales, 'quantity')); ?></div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="section-header"><h3>Sales History</h3></div>
+                <table>
+                    <thead>
+                        <tr><th>Date</th><th>Product</th><th>Customer</th><th>Qty</th><th>Total</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($sales as $s): ?>
+                        <tr class="inquiry-row">
+                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($s['sale_date'])); ?></td>
+                            <td style="font-weight: 600;"><?php echo $s['product_name']; ?></td>
+                            <td><?php echo $s['customer_name']; ?></td>
+                            <td><?php echo $s['quantity']; ?></td>
+                            <td style="font-weight: 600; color: var(--accent);">₹<?php echo number_format($s['total_amount']); ?></td>
+                            <td>
+                                <form action="actions.php" method="POST" style="display:inline;">
+                                    <input type="hidden" name="action" value="delete_sale">
+                                    <input type="hidden" name="id" value="<?php echo $s['id']; ?>">
+                                    <button type="submit" class="action-btn" onclick="return confirm('Delete this sale record?')">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php if(empty($sales)): ?>
+                        <tr><td colspan="6" style="text-align: center; padding: 50px; opacity: 0.3;">No sales logged yet.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -320,7 +426,7 @@ $current_tab = $_GET['tab'] ?? 'products';
                     <div class="input-group"><label>Category</label><select name="category"><option value="magnetic">Magnetic Systems</option><option value="downlights">Recessed Downlights</option><option value="spots">Spotlights / COB</option><option value="surface">Surface Mounted</option><option value="outdoor">Outdoor (Garden/Inground)</option><option value="underwater">Underwater Lights</option><option value="accessories">Accessories</option></select></div>
                     <div class="input-group"><label>Price (INR)</label><input type="number" name="price" required></div>
                     <div class="input-group"><label>Finish/Color</label><input type="text" name="color" list="colorOptions" placeholder="e.g. Matte Black"><datalist id="colorOptions"><option value="Matte Black"><option value="Textured White"><option value="Grey / Silver"><option value="Gold"><option value="Rose Gold"><option value="Copper"></datalist></div>
-                    <div class="input-group"><label>Badge</label><select name="badge"><option value="New Arrival">New Arrival</option><option value="CRI >90">CRI >90</option><option value="IP65 Rated">IP65 Rated</option><option value="IP67 Rated">IP67 Rated</option><option value="Dimmable">Dimmable</option></select></div>
+                    <div class="input-group full-width"><label>Product Description</label><textarea name="description" rows="3" placeholder="Enter product features or details..."></textarea></div>
                     <div class="input-group full-width"><label>Product Image</label><input type="file" name="image" accept="image/*" required></div>
                 </div>
                 <button type="submit" class="btn-add" style="width: 100%; margin-top: 10px;">Save Product</button>
@@ -341,7 +447,7 @@ $current_tab = $_GET['tab'] ?? 'products';
                     <div class="input-group"><label>Category</label><select name="category" id="edit_category"><option value="magnetic">Magnetic Systems</option><option value="downlights">Recessed Downlights</option><option value="spots">Spotlights / COB</option><option value="surface">Surface Mounted</option><option value="outdoor">Outdoor (Garden/Inground)</option><option value="underwater">Underwater Lights</option><option value="accessories">Accessories</option></select></div>
                     <div class="input-group"><label>Price (INR)</label><input type="number" name="price" id="edit_price" required></div>
                     <div class="input-group"><label>Finish/Color</label><input type="text" name="color" id="edit_color" list="colorOptions"></div>
-                    <div class="input-group"><label>Badge</label><select name="badge" id="edit_badge"><option value="New Arrival">New Arrival</option><option value="CRI >90">CRI >90</option><option value="IP65 Rated">IP65 Rated</option><option value="IP67 Rated">IP67 Rated</option><option value="Dimmable">Dimmable</option></select></div>
+                    <div class="input-group full-width"><label>Product Description</label><textarea name="description" id="edit_description" rows="3"></textarea></div>
                     <div class="input-group full-width">
                         <label>Change Image (Leave blank to keep current)</label>
                         <input type="file" name="image" accept="image/*">
@@ -352,17 +458,69 @@ $current_tab = $_GET['tab'] ?? 'products';
         </div>
     </div>
 
+    <!-- Log Sale Modal -->
+    <div id="saleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeSaleModal()">&times;</span>
+            <h2 style="margin-bottom: 30px; font-family: 'Outfit', sans-serif;">Log Offline Sale</h2>
+            <form action="actions.php" method="POST">
+                <input type="hidden" name="action" value="add_sale">
+                <div class="form-grid">
+                    <div class="input-group full-width">
+                        <label>Select Product</label>
+                        <select name="product_id" required onchange="updateSalePrice(this)">
+                            <option value="">-- Choose Product --</option>
+                            <?php foreach($products as $p): ?>
+                                <option value="<?php echo $p['id']; ?>" data-price="<?php echo $p['price']; ?>"><?php echo $p['name']; ?> (₹<?php echo number_format($p['price']); ?>)</option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Quantity</label>
+                        <input type="number" name="quantity" id="sale_qty" value="1" min="1" required oninput="calculateTotal()">
+                    </div>
+                    <div class="input-group">
+                        <label>Final Total Amount (₹)</label>
+                        <input type="number" name="total_amount" id="sale_total" required>
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Customer Name</label>
+                        <input type="text" name="customer_name" placeholder="Optional">
+                    </div>
+                </div>
+                <button type="submit" class="btn-add" style="width: 100%; margin-top: 10px;">Record Sale</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         function openModal() { document.getElementById('productModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('productModal').style.display = 'none'; }
         
+        function openSaleModal() { document.getElementById('saleModal').style.display = 'flex'; }
+        function closeSaleModal() { document.getElementById('saleModal').style.display = 'none'; }
+
+        function updateSalePrice(select) {
+            const price = select.options[select.selectedIndex].dataset.price;
+            document.getElementById('sale_total').value = price;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const select = document.getElementsByName('product_id')[0];
+            if(!select.value) return;
+            const unitPrice = parseFloat(select.options[select.selectedIndex].dataset.price);
+            const qty = parseInt(document.getElementById('sale_qty').value);
+            document.getElementById('sale_total').value = unitPrice * qty;
+        }
+
         function openEditModal(product) {
             document.getElementById('edit_id').value = product.id;
             document.getElementById('edit_name').value = product.name;
             document.getElementById('edit_category').value = product.category;
             document.getElementById('edit_price').value = product.price;
             document.getElementById('edit_color').value = product.color;
-            document.getElementById('edit_badge').value = product.badge;
+            document.getElementById('edit_description').value = product.description;
             document.getElementById('editModal').style.display = 'flex';
         }
         function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }

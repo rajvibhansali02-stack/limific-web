@@ -6,6 +6,8 @@ $to = "lumificlighting@gmail.com";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input
+    $name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
+    $phone = isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '';
     $email = isset($_POST['email']) ? filter_var($_POST['email'], FILTER_SANITIZE_EMAIL) : '';
     $message = isset($_POST['message']) ? htmlspecialchars($_POST['message']) : '';
     $product = isset($_POST['product']) ? htmlspecialchars($_POST['product']) : "General Inquiry";
@@ -16,11 +18,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // --- DATABASE STORAGE ---
+    require_once 'admin/config.php';
+    $stmt = $conn->prepare("INSERT INTO inquiries (name, email, phone, product, message) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $name, $email, $phone, $product, $message);
+    $db_saved = $stmt->execute();
+
     $subject = "New Inquiry: " . $product;
     
     // Create the email content
     $email_content = "New inquiry from Lumific Luxury Lighting Boutique:\n\n";
+    $email_content .= "Client Name: $name\n";
     $email_content .= "Client Email: $email\n";
+    $email_content .= "Client Phone: $phone\n";
     $email_content .= "Interest: $product\n";
     $email_content .= "Message:\n$message\n\n";
     $email_content .= "--- End of Message ---";
@@ -35,17 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mail($to, $subject, $email_content, $headers)) {
         echo json_encode(["status" => "success", "message" => "Your inquiry has been sent successfully!"]);
-    } elseif ($is_local) {
-        // --- LOCAL VERIFICATION FEATURE ---
-        // Save the inquiry to a local file so the user can verify it's working
-        $log_entry = "[" . date("Y-m-d H:i:s") . "] NEW INQUIRY\n";
-        $log_entry .= "From: $email\nInterest: $product\nMessage: $message\n";
-        $log_entry .= "------------------------------------------\n";
-        file_put_contents("inquiries.log", $log_entry, FILE_APPEND);
-
+    } elseif ($db_saved) {
+        // If DB save was successful, we consider it a success for local testing even if mail() fails
         echo json_encode([
             "status" => "success", 
-            "message" => "Your inquiry has been sent successfully!"
+            "message" => "Your inquiry has been received (Local Mode)."
         ]);
     } else {
         http_response_code(500);

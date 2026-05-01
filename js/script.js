@@ -562,6 +562,18 @@ contactForms.forEach(form => {
         const originalText = btn.innerText;
         const formData = new FormData(form);
 
+        // Manual validation for 10-digit phone
+        const phone = formData.get('phone');
+        if (phone && !/^[0-9]{10}$/.test(phone)) {
+            btn.innerText = "10 DIGITS REQUIRED";
+            btn.style.backgroundColor = "#f44336";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.backgroundColor = "";
+            }, 3000);
+            return;
+        }
+
         // Visual feedback
         btn.innerText = "SENDING...";
         btn.disabled = true;

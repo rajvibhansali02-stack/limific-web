@@ -254,8 +254,45 @@ document.querySelectorAll('.card-quick-add').forEach(btn => {
 // ─── 4.5 Checkout Button ───────────────────────────────────────────────────
 const checkoutBtn = document.querySelector('.btn-checkout');
 if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', () => {
-        alert("Proceeding to secure checkout... (This would redirect to Stripe/PayPal in production)");
+    checkoutBtn.addEventListener('click', async () => {
+        if (cart.length === 0) return;
+        
+        const originalText = checkoutBtn.innerText;
+        checkoutBtn.innerText = "PROCESSING...";
+        checkoutBtn.disabled = true;
+
+        try {
+            const response = await fetch('process_checkout.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cart: cart })
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                checkoutBtn.innerText = "ORDER PLACED!";
+                checkoutBtn.style.backgroundColor = "#4CAF50";
+                checkoutBtn.style.color = "#fff";
+                
+                // Clear cart
+                cart.length = 0;
+                renderCart();
+                
+                setTimeout(() => {
+                    checkoutBtn.innerText = originalText;
+                    checkoutBtn.style.backgroundColor = "";
+                    checkoutBtn.style.color = "";
+                    checkoutBtn.disabled = false;
+                    closeCart();
+                }, 3000);
+            } else {
+                throw new Error("Checkout failed");
+            }
+        } catch (error) {
+            console.error("Checkout Error:", error);
+            checkoutBtn.innerText = "ERROR - RETRY";
+            checkoutBtn.disabled = false;
+        }
     });
 }
 
