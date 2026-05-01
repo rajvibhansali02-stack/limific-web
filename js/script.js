@@ -600,54 +600,8 @@ contactForms.forEach(form => {
 });
 
 
-// 12. Swiper Variants Carousel Initialization
-function initVariantsCarousel() {
-    const swiperContainers = document.querySelectorAll('.variantsCarousel');
-    
-    swiperContainers.forEach(container => {
-        new Swiper(container, {
-            effect: 'coverflow',
-            grabCursor: true,
-            centeredSlides: true,
-            slidesPerView: 'auto',
-            loop: true,
-            loopedSlides: 12, // Increased for absolute seamlessness
-            speed: 6000,
-            allowTouchMove: true,
-            coverflowEffect: {
-                rotate: 0,
-                stretch: 0,
-                depth: 100,
-                modifier: 2.5,
-                slideShadows: false,
-            },
-            autoplay: {
-                delay: 0,
-                disableOnInteraction: false,
-                waitForTransition: false, // Critical for zero-pause
-            },
-            keyboard: {
-                enabled: true,
-            },
-            on: {
-                init: function() {
-                    // Force linear transition on the wrapper itself for marquee effect
-                    if (this.wrapperEl) {
-                        this.wrapperEl.style.transitionTimingFunction = 'linear';
-                    }
-                },
-                autoplayStart: function() {
-                    if (this.wrapperEl) {
-                        this.wrapperEl.style.transitionTimingFunction = 'linear';
-                    }
-                }
-            }
-        });
-    });
-}
+// 12. Swiper Variants Carousel replaced by CSS Marquee
 
-// Call initialization on load
-window.addEventListener('load', initVariantsCarousel);
 
 
 
