@@ -609,11 +609,12 @@ function initVariantsCarousel() {
             effect: 'coverflow',
             grabCursor: true,
             centeredSlides: true,
-            slidesPerView: 3,
+            slidesPerView: 'auto',
             loop: true,
-            loopedSlides: 12,
+            loopedSlides: 4,
+            loopAdditionalSlides: 2,
             speed: 1200,
-            allowTouchMove: true,
+            watchSlidesProgress: true,
             coverflowEffect: {
                 rotate: 0,
                 stretch: 0,
@@ -622,7 +623,7 @@ function initVariantsCarousel() {
                 slideShadows: false,
             },
             autoplay: {
-                delay: 2500,
+                delay: 4000,
                 disableOnInteraction: false,
             },
             keyboard: {
