@@ -606,26 +606,16 @@ function initVariantsCarousel() {
     
     swiperContainers.forEach(container => {
         new Swiper(container, {
-            effect: 'coverflow',
-            grabCursor: true,
-            centeredSlides: true,
             slidesPerView: 'auto',
+            spaceBetween: 30,
             loop: true,
-            loopedSlides: 4,
-            loopAdditionalSlides: 2,
-            speed: 1200,
-            watchSlidesProgress: true,
-            coverflowEffect: {
-                rotate: 0,
-                stretch: 0,
-                depth: 100,
-                modifier: 2.5,
-                slideShadows: false,
-            },
+            speed: 8000,
+            allowTouchMove: false, // Smooth flow is best when non-interactive or subtle
             autoplay: {
-                delay: 4000,
+                delay: 0,
                 disableOnInteraction: false,
             },
+            freeMode: true,
             keyboard: {
                 enabled: true,
             }
