@@ -611,7 +611,8 @@ function initVariantsCarousel() {
             centeredSlides: true,
             slidesPerView: 'auto',
             loop: true,
-            speed: 600,
+            loopedSlides: 4, // Ensures enough clones for seamless looping with 4 products
+            speed: 800, // Slightly slower transition for a more premium feel
             coverflowEffect: {
                 rotate: 0,
                 stretch: 0,
