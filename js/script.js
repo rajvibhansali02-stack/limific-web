@@ -611,8 +611,9 @@ function initVariantsCarousel() {
             centeredSlides: true,
             slidesPerView: 'auto',
             loop: true,
-            loopedSlides: 4,
-            speed: 1000,
+            loopedSlides: 8,
+            speed: 6000,
+            allowTouchMove: true,
             coverflowEffect: {
                 rotate: 0,
                 stretch: 0,
@@ -621,11 +622,23 @@ function initVariantsCarousel() {
                 slideShadows: false,
             },
             autoplay: {
-                delay: 3000,
+                delay: 0,
                 disableOnInteraction: false,
             },
             keyboard: {
                 enabled: true,
+            },
+            // Pure linear movement for infinite treadmill effect
+            on: {
+                init: function() {
+                    this.el.style.transitionTimingFunction = 'linear';
+                },
+                autoplayStop: function() {
+                    this.el.style.transitionTimingFunction = '';
+                },
+                autoplayStart: function() {
+                    this.el.style.transitionTimingFunction = 'linear';
+                }
             }
         });
     });
