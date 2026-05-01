@@ -611,7 +611,7 @@ function initVariantsCarousel() {
             centeredSlides: true,
             slidesPerView: 'auto',
             loop: true,
-            loopedSlides: 8,
+            loopedSlides: 12, // Increased for absolute seamlessness
             speed: 6000,
             allowTouchMove: true,
             coverflowEffect: {
@@ -624,20 +624,22 @@ function initVariantsCarousel() {
             autoplay: {
                 delay: 0,
                 disableOnInteraction: false,
+                waitForTransition: false, // Critical for zero-pause
             },
             keyboard: {
                 enabled: true,
             },
-            // Pure linear movement for infinite treadmill effect
             on: {
                 init: function() {
-                    this.el.style.transitionTimingFunction = 'linear';
-                },
-                autoplayStop: function() {
-                    this.el.style.transitionTimingFunction = '';
+                    // Force linear transition on the wrapper itself for marquee effect
+                    if (this.wrapperEl) {
+                        this.wrapperEl.style.transitionTimingFunction = 'linear';
+                    }
                 },
                 autoplayStart: function() {
-                    this.el.style.transitionTimingFunction = 'linear';
+                    if (this.wrapperEl) {
+                        this.wrapperEl.style.transitionTimingFunction = 'linear';
+                    }
                 }
             }
         });
