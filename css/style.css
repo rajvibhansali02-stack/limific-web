@@ -2264,6 +2264,24 @@ footer {
 }
 
 .gallery-info h4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 15px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #fff;
+    margin: 0;
+}
+
+.gallery-info h4 .price {
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.gallery-info-old-h4 {
     font-size: 1.25rem; /* Slightly smaller title */
     font-weight: 500;
     color: #fff;
