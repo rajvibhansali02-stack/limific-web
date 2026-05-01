@@ -1239,7 +1239,7 @@ section {
 .input-group input,
 .input-group textarea {
     width: 100%;
-    padding: 14px 22px;
+    padding: 18px 25px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -2191,7 +2191,7 @@ footer {
 
 .variantsCarousel .swiper-slide {
     height: auto;
-    width: 600px; /* Wider slide width for premium flow */
+    width: 450px; /* Width of the active card */
     transition: none !important;
 }
 
