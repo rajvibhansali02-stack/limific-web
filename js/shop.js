@@ -468,5 +468,71 @@ if (mobileToggle) {
     });
 })();
 
+// ─── 12. Mobile Action Bar & Drawer ──────────────────────────────────────────
+const mobileFilterDrawer = document.getElementById('mobileFilterDrawer');
+const mobileFilterOverlay = document.getElementById('mobileFilterOverlay');
+const mobileFilterContent = document.getElementById('mobileFilterContent');
+const mobileFilterBtn = document.getElementById('mobileFilterBtn');
+const mobileSortBtn = document.getElementById('mobileSortBtn');
+
+function openMobileDrawer(section) {
+    if (!mobileFilterDrawer || !mobileFilterContent) return;
+    
+    // Mirror sidebar content if not already done
+    const sidebar = document.querySelector('.shop-sidebar');
+    if (sidebar && mobileFilterContent.children.length === 0) {
+        mobileFilterContent.innerHTML = sidebar.innerHTML;
+        // Re-bind listeners to mirrored buttons
+        bindFilterEvents();
+    }
+    
+    mobileFilterDrawer.classList.add('open');
+    mobileFilterOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    
+    // Scroll to section
+    if (section === 'sort') {
+        const sortHeader = Array.from(mobileFilterContent.querySelectorAll('.sidebar-heading')).find(h => h.textContent.includes('Sort'));
+        if (sortHeader) sortHeader.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        mobileFilterContent.scrollTop = 0;
+    }
+}
+
+function closeMobileDrawer() {
+    mobileFilterDrawer.classList.remove('open');
+    mobileFilterOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+if (mobileFilterBtn) mobileFilterBtn.addEventListener('click', () => openMobileDrawer('filter'));
+if (mobileSortBtn) mobileSortBtn.addEventListener('click', () => openMobileDrawer('sort'));
+if (mobileFilterOverlay) mobileFilterOverlay.addEventListener('click', closeMobileDrawer);
+
+// Helper to re-bind events to cloned elements
+function bindFilterEvents() {
+    const filterBtns = mobileFilterContent.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            const sort = this.getAttribute('data-sort');
+            
+            if (filter) {
+                // Sync with original sidebar
+                document.querySelectorAll(`.shop-sidebar .filter-btn[data-filter="${filter}"]`).forEach(b => b.click());
+                // Update mirrored UI
+                mobileFilterContent.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            }
+            if (sort) {
+                document.querySelectorAll(`.shop-sidebar .filter-btn[data-sort="${sort}"]`).forEach(b => b.click());
+                mobileFilterContent.querySelectorAll('.filter-btn[data-sort]').forEach(b => b.classList.remove('active-sort'));
+                this.classList.add('active-sort');
+            }
+        });
+    });
+}
+
+
 
 

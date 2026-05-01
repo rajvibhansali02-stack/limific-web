@@ -234,6 +234,30 @@ foreach ($products as $p) {
         });
     })();
     </script>
+    <!-- Mobile Sticky Action Bar -->
+    <div class="mobile-action-bar">
+        <button class="action-bar-btn" id="mobileFilterBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
+            <span>Collections</span>
+        </button>
+        <div class="action-bar-divider"></div>
+        <button class="action-bar-btn" id="mobileSortBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12m-3 6h3"/></svg>
+            <span>Sort By</span>
+        </button>
+    </div>
+
+    <!-- Mobile Filter/Sort Drawer -->
+    <div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
+    <aside class="mobile-filter-drawer" id="mobileFilterDrawer">
+        <div class="mobile-filter-body" id="mobileFilterContent">
+            <!-- Content will be mirrored from sidebar via JS -->
+        </div>
+        <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <button class="btn-checkout" style="width: 100%;" onclick="closeMobileDrawer()">Apply & Close</button>
+        </div>
+    </aside>
+
     <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
