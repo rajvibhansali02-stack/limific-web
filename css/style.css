@@ -2175,47 +2175,218 @@ footer {
     margin-top: 50px;
 }
 
-/* CSS-Only Infinite Marquee */
-.marquee-container {
-    --gap: 30px;
-    --duration: 40s;
+/* Swiper Carousel Integration - Coverflow Style */
+.variants-container {
     width: 100%;
-    overflow: hidden;
-    padding: 60px 0;
-    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
     position: relative;
+    margin-top: 40px;
+    padding-bottom: 20px;
 }
 
-.marquee-content {
+.variantsCarousel {
+    width: 100%;
+    padding: 60px 0 60px !important; /* Extra padding for 3D effect */
+    overflow: hidden !important;
+}
+
+.variantsCarousel .swiper-slide {
+    height: auto;
+    transition: all 0.5s ease;
+}
+
+.gallery-card {
+    background: #0d0d0d; /* Solid dark background to block overlaps */
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 48px;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    height: 100%;
     display: flex;
-    gap: var(--gap);
-    width: max-content;
-    animation: marquee-scroll var(--duration) linear infinite;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
 }
 
-.marquee-content:hover {
-    animation-play-state: paused;
+.gallery-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+    pointer-events: none;
+    z-index: 1;
 }
 
-.marquee-item {
-    flex-shrink: 0;
-    width: 420px;
+.gallery-img {
+    width: 100%;
+    height: 320px; /* Reduced from 380px */
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 1.2s ease;
 }
 
-@keyframes marquee-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(calc(-50% - var(--gap) / 2)); }
+.gallery-card:hover .gallery-img {
+    transform: scale(1.1);
 }
 
-@media (max-width: 768px) {
-    .marquee-item {
-        width: 300px;
-    }
-    .marquee-container {
-        --duration: 25s;
-        padding: 40px 0;
-    }
+.gallery-info {
+    padding: 25px 35px 30px; /* More compact padding */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 2;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: #ffb800; /* Premium Gold */
+    font-weight: 600;
+}
+
+.gallery-info h4 {
+    font-size: 1.25rem; /* Slightly smaller title */
+    font-weight: 500;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+    font-family: 'Syncopate', sans-serif;
+    text-transform: uppercase;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.price {
+    font-size: 1.2rem; /* Slightly smaller price */
+    font-weight: 600;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.01em;
+}
+
+.add-btn {
+    width: 44px; /* Slightly smaller button */
+    height: 44px;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 1, 1);
+    box-shadow: 0 8px 20px rgba(245, 151, 104, 0.25);
+}
+
+.add-btn:hover {
+    transform: scale(1.1) translateY(-2px);
+    background: #fff;
+    color: #000;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+}
+
+.add-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.badge {
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-weight: 600;
+    backdrop-filter: blur(5px);
+}
+
+.badge.popular {
+    background: rgba(52, 211, 153, 0.15);
+    color: #34d399;
+    border-color: rgba(52, 211, 153, 0.3);
+}
+
+/* Side Arrows - Reference Style Positioning */
+.variants-nav {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 600px; /* Arrows close to the active card */
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.nav-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95); /* Light style as in reference */
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.nav-btn:hover {
+    transform: scale(1.1);
+    background: #fff;
+}
+
+.nav-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Swiper Pagination - Match Reference */
+.variants-container .swiper-pagination {
+    position: relative !important;
+    margin-top: 20px !important;
+}
+
+}
+
+.variantsCarousel {
+    width: 100%;
+    padding: 60px 0 60px !important; /* Extra padding for 3D effect */
+    overflow: hidden !important;
+}
+
+.variantsCarousel .swiper-slide {
+    height: auto;
+    transition: all 0.5s ease;
 }
 
 .gallery-card {
@@ -2414,9 +2585,6 @@ footer {
 }
 
 @media (max-width: 1024px) {
-    .variantsCarousel .swiper-slide {
-        width: 380px;
-    }
     .variants-nav {
         max-width: 100%;
         padding: 0 10px;
@@ -2424,11 +2592,8 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .variantsCarousel .swiper-slide {
-        width: 85vw;
-    }
     .gallery-img {
-        height: 260px; /* Further reduced from 300px */
+        height: 260px;
     }
     .gallery-info {
         padding: 20px 25px 25px;

@@ -598,3 +598,55 @@ contactForms.forEach(form => {
         }
     });
 });
+
+
+// 12. Swiper Variants Carousel Initialization
+function initVariantsCarousel() {
+    const swiperContainers = document.querySelectorAll('.variantsCarousel');
+    
+    swiperContainers.forEach(container => {
+        new Swiper(container, {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 3,
+            loop: true,
+            loopedSlides: 12,
+            speed: 8000,
+            allowTouchMove: true,
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 2.5,
+                slideShadows: false,
+            },
+            autoplay: {
+                delay: 0,
+                disableOnInteraction: false,
+            },
+            keyboard: {
+                enabled: true,
+            },
+            // Pure linear movement for infinite treadmill effect
+            on: {
+                init: function() {
+                    this.el.style.transitionTimingFunction = 'linear';
+                },
+                autoplayStop: function() {
+                    this.el.style.transitionTimingFunction = '';
+                },
+                autoplayStart: function() {
+                    this.el.style.transitionTimingFunction = 'linear';
+                }
+            }
+        });
+    });
+}
+
+// Call initialization on load
+window.addEventListener('load', initVariantsCarousel);
+
+
+
+
