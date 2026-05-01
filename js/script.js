@@ -612,13 +612,17 @@ function initVariantsCarousel() {
             slidesPerView: 3,
             loop: true,
             loopedSlides: 12,
+            loopAdditionalSlides: 3,
             speed: 8000,
             allowTouchMove: true,
+            observer: true,
+            observeParents: true,
+            watchSlidesProgress: true,
             coverflowEffect: {
                 rotate: 0,
-                stretch: 0,
-                depth: 100,
-                modifier: 2.5,
+                stretch: -20, // Subtle overlap to ensure no gaps
+                depth: 150,
+                modifier: 1,
                 slideShadows: false,
             },
             autoplay: {
