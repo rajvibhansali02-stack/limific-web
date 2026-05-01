@@ -623,14 +623,6 @@ function initVariantsCarousel() {
                 delay: 4000,
                 disableOnInteraction: false,
             },
-            pagination: {
-                el: container.querySelector('.swiper-pagination'),
-                clickable: true,
-            },
-            navigation: {
-                nextEl: container.parentElement.querySelector('.next-variant'),
-                prevEl: container.parentElement.querySelector('.prev-variant'),
-            },
             keyboard: {
                 enabled: true,
             }
