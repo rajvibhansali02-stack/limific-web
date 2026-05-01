@@ -296,18 +296,14 @@
 
         <div class="reveal" style="margin-top: 60px; display: flex; justify-content: center;">
             <form class="contact-form" style="width: 100%; max-width: 800px;">
-                <div style="display: grid; grid-template-columns: 1fr 220px; gap: 20px; align-items: stretch;">
-                    <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <div class="input-group">
-                            <input type="email" name="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="input-group">
-                            <textarea name="message" placeholder="Your Message / Inquiry" rows="3" required style="height: 100%;"></textarea>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-primary form-submit" style="height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; padding: 0 30px;">Send Message</button>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                </div>
+                <div class="input-group" style="margin-top: 15px;">
+                    <textarea name="message" placeholder="Your Message / Inquiry" rows="3" required></textarea>
                 </div>
                 <input type="hidden" name="product" value="Wall Sculptures">
+                <button type="submit" class="btn-primary form-submit" style="width: 100%; margin-top: 25px;">Send Message</button>
                 <div class="form-message" style="margin-top: 15px; display: none; color: var(--accent);">Thank you! Your message has been sent.</div>
             </form>
         </div>

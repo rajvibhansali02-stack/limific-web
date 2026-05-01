@@ -87,8 +87,8 @@ if (mobileToggle) {
 const revealElements = document.querySelectorAll(".reveal");
 revealElements.forEach((el) => {
     // Specialized handling for contact to animate as a single block
-    const isContact = el.classList.contains('contact');
-    const targets = isContact ? [el.querySelector('.contact-container')] : el.querySelectorAll('h2, h3, p, .btn-primary, .ethos-grid');
+    const isContact = el.classList.contains('contact') || el.querySelector('.contact-form');
+    const targets = isContact ? [el.querySelector('.contact-container') || el.querySelector('.contact-form')] : el.querySelectorAll('h2, h3, p, .btn-primary, .ethos-grid');
     const animationTargets = targets.length > 0 ? targets : [el];
 
     gsap.fromTo(animationTargets,
