@@ -598,11 +598,3 @@ contactForms.forEach(form => {
         }
     });
 });
-
-
-// 12. Swiper Variants Carousel replaced by CSS Marquee
-
-
-
-
-

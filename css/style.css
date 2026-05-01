@@ -2175,56 +2175,50 @@ footer {
     margin-top: 50px;
 }
 
-/* Swiper Carousel Integration - Coverflow Style */
-.variants-container {
+/* CSS-Only Infinite Marquee */
+.marquee-container {
+    --gap: 30px;
+    --duration: 40s;
     width: 100%;
-    position: relative;
-    margin-top: 40px;
-    padding-bottom: 20px;
-}
-
-.variantsCarousel {
-    width: 100%;
-    padding: 60px 0 60px !important; /* Extra padding for 3D effect */
-    overflow: hidden !important;
-}
-
-.variantsCarousel .swiper-slide {
-    height: auto;
-    width: 450px; /* Width of the active card */
-    transition: all 0.5s ease;
-}
-
-/* CSS-Only Infinite Scroll Carousel */
-.variants-marquee-container {
     overflow: hidden;
-    width: 100%;
-    padding: 20px 0;
+    padding: 60px 0;
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
     position: relative;
-    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
 }
 
-.variants-marquee-track {
+.marquee-content {
     display: flex;
+    gap: var(--gap);
     width: max-content;
-    gap: 30px;
-    animation: marqueeScroll 30s linear infinite;
+    animation: marquee-scroll var(--duration) linear infinite;
 }
 
-.variants-marquee-container:hover .variants-marquee-track {
+.marquee-content:hover {
     animation-play-state: paused;
 }
 
-@keyframes marqueeScroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+.marquee-item {
+    flex-shrink: 0;
+    width: 420px;
+}
+
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-50% - var(--gap) / 2)); }
+}
+
+@media (max-width: 768px) {
+    .marquee-item {
+        width: 300px;
+    }
+    .marquee-container {
+        --duration: 25s;
+        padding: 40px 0;
+    }
 }
 
 .gallery-card {
-    flex-shrink: 0;
-    width: 350px;
-    /* Rest of existing styles */
     background: #0d0d0d; /* Solid dark background to block overlaps */
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 48px;
