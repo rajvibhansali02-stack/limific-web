@@ -610,7 +610,7 @@ function initVariantsCarousel() {
             grabCursor: true,
             centeredSlides: true,
             slidesPerView: 'auto',
-            loop: false, /* Disabled loop to ensure 100% dot synchronization */
+            loop: true,
             speed: 600,
             coverflowEffect: {
                 rotate: 0,
