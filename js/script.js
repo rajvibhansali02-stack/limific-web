@@ -612,37 +612,21 @@ function initVariantsCarousel() {
             slidesPerView: 3,
             loop: true,
             loopedSlides: 12,
-            loopAdditionalSlides: 3,
-            speed: 8000,
+            speed: 1200,
             allowTouchMove: true,
-            observer: true,
-            observeParents: true,
-            watchSlidesProgress: true,
             coverflowEffect: {
                 rotate: 0,
-                stretch: -20, // Subtle overlap to ensure no gaps
-                depth: 150,
-                modifier: 1,
+                stretch: 0,
+                depth: 100,
+                modifier: 2.5,
                 slideShadows: false,
             },
             autoplay: {
-                delay: 0,
+                delay: 2500,
                 disableOnInteraction: false,
             },
             keyboard: {
                 enabled: true,
-            },
-            // Pure linear movement for infinite treadmill effect
-            on: {
-                init: function() {
-                    this.el.style.transitionTimingFunction = 'linear';
-                },
-                autoplayStop: function() {
-                    this.el.style.transitionTimingFunction = '';
-                },
-                autoplayStart: function() {
-                    this.el.style.transitionTimingFunction = 'linear';
-                }
             }
         });
     });
