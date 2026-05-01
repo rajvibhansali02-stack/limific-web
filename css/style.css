@@ -2191,7 +2191,7 @@ footer {
 
 .variantsCarousel .swiper-slide {
     height: auto;
-    width: 450px; /* Width of the active card */
+    width: 600px; /* Wider slide width for premium flow */
     transition: none !important;
 }
 
