@@ -116,30 +116,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($action == "add_sale") {
-        $product_id = intval($_POST['product_id']);
-        $quantity = intval($_POST['quantity']);
-        $total_amount = $_POST['total_amount'];
+        $order_id = $conn->real_escape_string($_POST['order_id']);
         $customer_name = $conn->real_escape_string($_POST['customer_name']);
+        $products_data = $_POST['products'];
 
-        // Fetch product name for the record
-        $p_res = $conn->query("SELECT name FROM products WHERE id = $product_id");
-        $p_name = ($row = $p_res->fetch_assoc()) ? $row['name'] : "Unknown Product";
+        foreach ($products_data as $p) {
+            $p_id = intval($p['id']);
+            $qty = intval($p['qty']);
+            $total = $conn->real_escape_string($p['total']);
 
-        $sql = "INSERT INTO sales (product_id, product_name, quantity, total_amount, customer_name) 
-                VALUES ($product_id, '$p_name', $quantity, '$total_amount', '$customer_name')";
-        
-        if ($conn->query($sql)) {
-            header("Location: dashboard.php?tab=sales&success=sale");
-            exit;
-        } else {
-            echo "Error: " . $conn->error;
+            // Fetch product name
+            $p_res = $conn->query("SELECT name FROM products WHERE id = $p_id");
+            $p_name = ($row = $p_res->fetch_assoc()) ? $row['name'] : "Unknown Product";
+
+            $sql = "INSERT INTO sales (product_id, product_name, quantity, total_amount, customer_name, order_id) 
+                    VALUES ($p_id, '$p_name', $qty, '$total', '$customer_name', '$order_id')";
+            $conn->query($sql);
         }
+        
+        header("Location: dashboard.php?tab=sales&success=sale");
+        exit;
     }
 
     if ($action == "delete_sale") {
         $id = intval($_POST['id']);
         $conn->query("DELETE FROM sales WHERE id = $id");
         header("Location: dashboard.php?tab=sales&deleted=1");
+        exit;
+    }
+
+    if ($action == "web_checkout") {
+        header('Content-Type: application/json');
+        $order_id = $conn->real_escape_string($_POST['order_id']);
+        $cart = json_decode($_POST['cart'], true);
+        $customer_name = "Web Customer"; // Default for now
+
+        foreach ($cart as $item) {
+            $p_id = intval($item['id']);
+            $qty = intval($item['qty']);
+            $p_name = $conn->real_escape_string($item['name']);
+            $total = $item['price'] * $qty;
+
+            $sql = "INSERT INTO sales (product_id, product_name, quantity, total_amount, customer_name, order_id) 
+                    VALUES ($p_id, '$p_name', $qty, '$total', '$customer_name', '$order_id')";
+            $conn->query($sql);
+        }
+
+        echo json_encode(['success' => true]);
         exit;
     }
 }

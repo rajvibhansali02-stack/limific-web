@@ -62,9 +62,14 @@ $sales_sql = "CREATE TABLE IF NOT EXISTS sales (
     quantity INT(11) DEFAULT 1,
     total_amount DECIMAL(12, 2),
     customer_name VARCHAR(255),
+    order_id VARCHAR(50),
     sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
-)";
+) ";
+
+// Add order_id column if it doesn't exist (for existing tables)
+$conn->query("ALTER TABLE sales ADD COLUMN IF NOT EXISTS order_id VARCHAR(50)");
+
 
 if (!$conn->query($sales_sql)) {
     die("Error creating sales table: " . $conn->error);

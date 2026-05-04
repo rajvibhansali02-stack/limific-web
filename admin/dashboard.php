@@ -327,7 +327,7 @@ function getCountry($phone) {
                             <td><?php echo $c['email']; ?></td>
                             <td><?php echo $c['phone']; ?></td>
                             <td><?php echo $c['total_inquiries']; ?></td>
-                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($c['last_activity'])); ?></td>
+                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y | h:i A', strtotime($c['last_activity'])); ?></td>
                         </tr>
                         <?php endforeach; ?>
                         <?php if(empty($customers)): ?>
@@ -358,12 +358,13 @@ function getCountry($phone) {
                 <div class="section-header"><h3>Sales History</h3></div>
                 <table>
                     <thead>
-                        <tr><th>Date</th><th>Product</th><th>Customer</th><th>Qty</th><th>Total</th><th>Actions</th></tr>
+                        <tr><th>ID</th><th>Date</th><th>Product</th><th>Customer</th><th>Qty</th><th>Total</th><th>Actions</th></tr>
                     </thead>
                     <tbody>
                         <?php foreach($sales as $s): ?>
                         <tr class="inquiry-row">
-                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($s['sale_date'])); ?></td>
+                            <td style="font-weight: 700; color: var(--accent);">#<?php echo !empty($s['order_id']) ? $s['order_id'] : str_pad($s['id'], 4, '0', STR_PAD_LEFT); ?></td>
+                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y | h:i A', strtotime($s['sale_date'])); ?></td>
                             <td style="font-weight: 600;"><?php echo $s['product_name']; ?></td>
                             <td><?php echo $s['customer_name']; ?></td>
                             <td><?php echo $s['quantity']; ?></td>
@@ -460,35 +461,60 @@ function getCountry($phone) {
 
     <!-- Log Sale Modal -->
     <div id="saleModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 600px;">
             <span class="close-modal" onclick="closeSaleModal()">&times;</span>
-            <h2 style="margin-bottom: 30px; font-family: 'Outfit', sans-serif;">Log Offline Sale</h2>
-            <form action="actions.php" method="POST">
+            <h2 style="margin-bottom: 20px; font-family: 'Outfit', sans-serif;">Log Offline Sale</h2>
+            <form action="actions.php" method="POST" id="saleForm">
                 <input type="hidden" name="action" value="add_sale">
+                
+                <div style="margin-bottom: 20px;">
+                    <div class="input-group">
+                        <label>Order ID (Generated)</label>
+                        <input type="text" name="order_id" id="sale_order_id" readonly style="background: rgba(255,255,255,0.05); color: var(--accent); font-weight: 700;">
+                    </div>
+                </div>
+
+                <div id="saleItemsContainer">
+                    <div class="sale-item-row" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <div class="form-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+                            <div class="input-group">
+                                <label>Product</label>
+                                <select name="products[0][id]" required onchange="updateRowPrice(this)">
+                                    <option value="">-- Product --</option>
+                                    <?php foreach($products as $p): ?>
+                                        <option value="<?php echo $p['id']; ?>" data-price="<?php echo $p['price']; ?>"><?php echo $p['name']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Qty</label>
+                                <input type="number" name="products[0][qty]" value="1" min="1" required oninput="calculateRowTotal(this)">
+                            </div>
+                            <div class="input-group">
+                                <label>Amount (₹)</label>
+                                <input type="number" name="products[0][total]" required class="row-total">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-add" style="background: transparent; border: 1px dashed var(--accent); color: var(--accent); width: 100%; margin-bottom: 20px;" onclick="addSaleItem()">
+                    <i class="fa-solid fa-plus"></i> Add Another Item
+                </button>
+
                 <div class="form-grid">
-                    <div class="input-group full-width">
-                        <label>Select Product</label>
-                        <select name="product_id" required onchange="updateSalePrice(this)">
-                            <option value="">-- Choose Product --</option>
-                            <?php foreach($products as $p): ?>
-                                <option value="<?php echo $p['id']; ?>" data-price="<?php echo $p['price']; ?>"><?php echo $p['name']; ?> (₹<?php echo number_format($p['price']); ?>)</option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>Quantity</label>
-                        <input type="number" name="quantity" id="sale_qty" value="1" min="1" required oninput="calculateTotal()">
-                    </div>
-                    <div class="input-group">
-                        <label>Final Total Amount (₹)</label>
-                        <input type="number" name="total_amount" id="sale_total" required>
-                    </div>
                     <div class="input-group full-width">
                         <label>Customer Name</label>
                         <input type="text" name="customer_name" placeholder="Optional">
                     </div>
                 </div>
-                <button type="submit" class="btn-add" style="width: 100%; margin-top: 10px;">Record Sale</button>
+
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; opacity: 0.7;">Grand Total:</span>
+                    <span style="font-size: 1.5rem; font-weight: 700; color: var(--accent);" id="sale_grand_total">₹0</span>
+                </div>
+
+                <button type="submit" class="btn-add" style="width: 100%; margin-top: 20px;">Record Sale</button>
             </form>
         </div>
     </div>
@@ -497,21 +523,73 @@ function getCountry($phone) {
         function openModal() { document.getElementById('productModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('productModal').style.display = 'none'; }
         
-        function openSaleModal() { document.getElementById('saleModal').style.display = 'flex'; }
+        function openSaleModal() { 
+            const date = new Date();
+            const year = date.getFullYear().toString().substr(-2);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const random = Math.floor(Math.random() * 9000 + 1000);
+            document.getElementById('sale_order_id').value = `ORD-${year}${month}-${random}`;
+            document.getElementById('saleModal').style.display = 'flex'; 
+        }
         function closeSaleModal() { document.getElementById('saleModal').style.display = 'none'; }
 
-        function updateSalePrice(select) {
-            const price = select.options[select.selectedIndex].dataset.price;
-            document.getElementById('sale_total').value = price;
-            calculateTotal();
+        let saleItemCount = 1;
+        function addSaleItem() {
+            const container = document.getElementById('saleItemsContainer');
+            const row = document.createElement('div');
+            row.className = 'sale-item-row';
+            row.style.cssText = 'background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; margin-bottom: 15px;';
+            
+            const firstSelect = document.querySelector('.sale-item-row select');
+            const options = firstSelect.innerHTML;
+
+            row.innerHTML = `
+                <div class="form-grid" style="grid-template-columns: 2fr 1fr 1fr auto;">
+                    <div class="input-group">
+                        <label>Product</label>
+                        <select name="products[${saleItemCount}][id]" required onchange="updateRowPrice(this)">
+                            ${options}
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Qty</label>
+                        <input type="number" name="products[${saleItemCount}][qty]" value="1" min="1" required oninput="calculateRowTotal(this)">
+                    </div>
+                    <div class="input-group">
+                        <label>Amount (₹)</label>
+                        <input type="number" name="products[${saleItemCount}][total]" required class="row-total">
+                    </div>
+                    <button type="button" onclick="this.closest('.sale-item-row').remove(); calculateGrandTotal();" style="background:none; border:none; color:#ff4d4d; cursor:pointer; margin-top:20px; font-size: 1.2rem;">
+                        &times;
+                    </button>
+                </div>
+            `;
+            container.appendChild(row);
+            saleItemCount++;
         }
 
-        function calculateTotal() {
-            const select = document.getElementsByName('product_id')[0];
-            if(!select.value) return;
-            const unitPrice = parseFloat(select.options[select.selectedIndex].dataset.price);
-            const qty = parseInt(document.getElementById('sale_qty').value);
-            document.getElementById('sale_total').value = unitPrice * qty;
+        function updateRowPrice(select) {
+            const price = select.options[select.selectedIndex].getAttribute('data-price') || 0;
+            const row = select.closest('.sale-item-row');
+            const qtyInput = row.querySelector('input[type="number"]');
+            row.querySelector('.row-total').value = price * qtyInput.value;
+            calculateGrandTotal();
+        }
+
+        function calculateRowTotal(input) {
+            const row = input.closest('.sale-item-row');
+            const select = row.querySelector('select');
+            const price = select.options[select.selectedIndex].getAttribute('data-price') || 0;
+            row.querySelector('.row-total').value = price * input.value;
+            calculateGrandTotal();
+        }
+
+        function calculateGrandTotal() {
+            let total = 0;
+            document.querySelectorAll('.row-total').forEach(input => {
+                total += parseFloat(input.value || 0);
+            });
+            document.getElementById('sale_grand_total').textContent = '₹' + total.toLocaleString();
         }
 
         function openEditModal(product) {

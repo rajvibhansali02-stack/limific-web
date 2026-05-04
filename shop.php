@@ -36,8 +36,8 @@ foreach ($products as $p) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/shop.css">
+    <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="css/shop.css?v=<?php echo time(); ?>">
     <style>
         @media (min-width: 1024px) {
             body, a, button, .product-card, .filter-btn, .quick-add-btn {
@@ -124,8 +124,8 @@ foreach ($products as $p) {
 
     <div class="shop-layout">
         <aside class="shop-sidebar">
-            <div class="sidebar-section">
-                <h3 class="sidebar-heading">Categories</h3>
+            <div class="sidebar-section" id="sidebarSectionCollections">
+                <h3 class="sidebar-heading">Collections</h3>
                 <ul class="sidebar-nav">
                     <li><button class="filter-btn active" data-filter="all">All Products <span class="count"><?php echo $counts['all']; ?></span></button></li>
                     <li><button class="filter-btn" data-filter="magnetic">Magnetic Systems <span class="count"><?php echo $counts['magnetic']; ?></span></button></li>
@@ -137,7 +137,7 @@ foreach ($products as $p) {
                     <li><button class="filter-btn" data-filter="accessories">Accessories <span class="count"><?php echo $counts['accessories']; ?></span></button></li>
                 </ul>
             </div>
-            <div class="sidebar-section">
+            <div class="sidebar-section" id="sidebarSectionSort">
                 <h3 class="sidebar-heading">Sort By</h3>
                 <ul class="sidebar-nav">
                     <li><button class="filter-btn active-sort" data-sort="featured">Featured</button></li>
@@ -234,18 +234,74 @@ foreach ($products as $p) {
         });
     })();
     </script>
-    <!-- Mobile Sticky Action Bar -->
     <div class="mobile-action-bar">
-        <button class="action-bar-btn" id="mobileFilterBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
-            <span>Collections</span>
+        <button class="action-bar-btn" id="mobileFilterBtn" onclick="openMobileDrawer('filter')">
+            <svg style="pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16m-7 6h7"/></svg>
+            <span style="pointer-events:none;">Collections</span>
         </button>
         <div class="action-bar-divider"></div>
-        <button class="action-bar-btn" id="mobileSortBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12m-3 6h3"/></svg>
-            <span>Sort By</span>
+        <button class="action-bar-btn" id="mobileSortBtn" onclick="openMobileDrawer('sort')">
+            <svg style="pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12m-3 6h3"/></svg>
+            <span style="pointer-events:none;">Sort By</span>
         </button>
     </div>
+
+    <script>
+    // Failsafe Debugger & Mobile Drawer Controller
+    window.openMobileDrawer = function(section) {
+        const drawer = document.getElementById('mobileFilterDrawer');
+        const overlay = document.getElementById('mobileFilterOverlay');
+        const content = document.getElementById('mobileFilterContent');
+        if (!drawer || !content) return;
+
+        const sidebar = document.querySelector('.shop-sidebar');
+        if (sidebar && content.children.length === 0) {
+            content.innerHTML = sidebar.innerHTML;
+            if (window.bindFilterEvents) window.bindFilterEvents();
+        }
+        
+        // Toggle Sections
+        const colSec = content.querySelector('#sidebarSectionCollections');
+        const sortSec = content.querySelector('#sidebarSectionSort');
+        if (section === 'filter') {
+            if (colSec) colSec.style.display = 'block';
+            if (sortSec) sortSec.style.display = 'none';
+        } else {
+            if (colSec) colSec.style.display = 'none';
+            if (sortSec) sortSec.style.display = 'block';
+        }
+
+        if (!drawer.classList.contains('open')) {
+            history.pushState({ drawer: 'open' }, '');
+        }
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeMobileDrawer = function() {
+        const drawer = document.getElementById('mobileFilterDrawer');
+        const overlay = document.getElementById('mobileFilterOverlay');
+        if (drawer && drawer.classList.contains('open')) {
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+            if (history.state && history.state.drawer === 'open') {
+                history.back();
+            }
+        }
+    };
+
+    window.addEventListener('popstate', (e) => {
+        const drawer = document.getElementById('mobileFilterDrawer');
+        const overlay = document.getElementById('mobileFilterOverlay');
+        if (drawer && drawer.classList.contains('open')) {
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
+    </script>
 
     <!-- Mobile Filter/Sort Drawer -->
     <div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
@@ -253,8 +309,8 @@ foreach ($products as $p) {
         <div class="mobile-filter-body" id="mobileFilterContent">
             <!-- Content will be mirrored from sidebar via JS -->
         </div>
-        <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-            <button class="btn-checkout" style="width: 100%;" onclick="closeMobileDrawer()">Apply & Close</button>
+        <div class="mobile-drawer-footer">
+            <button class="btn-drawer-apply" onclick="closeMobileDrawer()">Apply & Close</button>
         </div>
     </aside>
 

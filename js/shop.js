@@ -130,171 +130,115 @@ function bindCartEvents() {
 // Initial render
 renderCart();
 
-// ─── 4. Card Quantity Selector Logic ──────────────────────────────────────────
-document.querySelectorAll('.card-qty-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const numSpan = btn.parentElement.querySelector('.card-qty-num');
-        let current = parseInt(numSpan.textContent);
-        if (btn.dataset.action === 'inc') {
-            numSpan.textContent = ++current;
-        } else {
-            if (current > 1) numSpan.textContent = --current;
-        }
-    });
-});
-
-// ─── 5. Add to Cart Logic + Fly-to-Bag Animation ─────────────────────────────
-document.querySelectorAll('.card-quick-add').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-
-        const id = parseInt(btn.dataset.id);
-        const name = btn.dataset.name;
-        const price = parseFloat(btn.dataset.price);
-        const cat = btn.dataset.cat;
-        const numSpan = btn.parentElement.querySelector('.card-qty-num');
-        const qtyToAdd = parseInt(numSpan.textContent);
-
-        // Capture Image OR SVG from the card for display in cart
-        const card = btn.closest('.product-card');
-        const imgEl = card.querySelector('.product-real-photo');
-        const svgEl = card.querySelector('.product-svg-icon');
-        
-        const imgSrc = (imgEl && imgEl.style.display !== 'none') ? imgEl.getAttribute('src') : null;
-        const svgSnippet = (!imgSrc && svgEl) ? svgEl.outerHTML : '';
-
-        // Add to cart array or increment
-        const existing = cart.find(c => c.id === id);
-        if (existing) {
-            existing.qty += qtyToAdd;
-        } else {
-            cart.push({ id, name, price, cat, qty: qtyToAdd, imgSrc, svgSnippet });
-        }
-
-        // Reset card qty back to 1
-        numSpan.textContent = "1";
-
-        // ─── Fly-to-Bag Animation ───────────────────────────────────────────
-        if (window.gsap && cartToggle) {
-            const imgWrap = card.querySelector('.product-img-wrap');
-            const imgRect = imgWrap.getBoundingClientRect();
-            const cartRect = cartToggle.getBoundingClientRect();
-
-            // Create flying clone
-            const flyEl = document.createElement('div');
-            flyEl.className = 'fly-to-bag-clone';
-            flyEl.style.cssText = `
-                position: fixed;
-                top: ${imgRect.top}px;
-                left: ${imgRect.left}px;
-                width: ${imgRect.width}px;
-                height: ${imgRect.height}px;
-                background: rgba(17,17,17,0.95);
-                border: 1px solid rgba(255,255,255,0.1);
-                border-radius: 4px;
-                z-index: 99999;
-                pointer-events: none;
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                will-change: transform, opacity;
-            `;
-            
-            if (imgSrc) {
-                flyEl.innerHTML = `<img src="${imgSrc}" style="width:100%; height:100%; object-fit:cover;">`;
-            } else {
-                flyEl.innerHTML = svgSnippet;
-            }
-            
-            document.body.appendChild(flyEl);
-
-            gsap.to(flyEl, {
-                top: cartRect.top + 10,
-                left: cartRect.left + 10,
-                width: 20,
-                height: 20,
-                opacity: 0.2,
-                borderRadius: '50%',
-                duration: 0.8,
-                ease: 'power3.in',
-                onComplete: () => {
-                    flyEl.remove();
-                    renderCart();
-
-                    // Cart icon bounce
-                    gsap.fromTo(cartToggle,
-                        { scale: 0.8 },
-                        { scale: 1, duration: 0.5, ease: 'back.out(3)' }
-                    );
-
-                    // Auto-open cart on first item
-                    if (cart.length === 1 && cart[0].qty === 1) {
-                        setTimeout(openCart, 150);
-                    }
+// ─── 4 & 5. Product Card Actions (Delegated) ─────────────────────────────────
+const productGrid = document.getElementById('productGrid');
+if (productGrid) {
+    ['click', 'touchstart'].forEach(evt => {
+        productGrid.addEventListener(evt, (e) => {
+            const qtyBtn = e.target.closest('.card-qty-btn');
+            if (qtyBtn) {
+                if (evt === 'touchstart') e.preventDefault();
+                e.stopPropagation();
+                const numSpan = qtyBtn.parentElement.querySelector('.card-qty-num');
+                let current = parseInt(numSpan.textContent);
+                if (qtyBtn.dataset.action === 'inc') {
+                    numSpan.textContent = ++current;
+                } else {
+                    if (current > 1) numSpan.textContent = --current;
                 }
-            });
-        } else {
-            renderCart();
-        }
-
-        // ─── Button Feedback ────────────────────────────────────────────────
-        btn.classList.add('added');
-        const originalHTML = btn.innerHTML;
-        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Added`;
-
-        setTimeout(() => {
-            btn.classList.remove('added');
-            btn.innerHTML = originalHTML;
-        }, 2000);
-    });
-});
-
-// ─── 4.5 Checkout Button ───────────────────────────────────────────────────
-const checkoutBtn = document.querySelector('.btn-checkout');
-if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', async () => {
-        if (cart.length === 0) return;
-        
-        const originalText = checkoutBtn.innerText;
-        checkoutBtn.innerText = "PROCESSING...";
-        checkoutBtn.disabled = true;
-
-        try {
-            const response = await fetch('process_checkout.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cart: cart })
-            });
-
-            const result = await response.json();
-            if (result.status === 'success') {
-                checkoutBtn.innerText = "ORDER PLACED!";
-                checkoutBtn.style.backgroundColor = "#4CAF50";
-                checkoutBtn.style.color = "#fff";
-                
-                // Clear cart
-                cart.length = 0;
-                renderCart();
-                
-                setTimeout(() => {
-                    checkoutBtn.innerText = originalText;
-                    checkoutBtn.style.backgroundColor = "";
-                    checkoutBtn.style.color = "";
-                    checkoutBtn.disabled = false;
-                    closeCart();
-                }, 3000);
-            } else {
-                throw new Error("Checkout failed");
+                return;
             }
-        } catch (error) {
-            console.error("Checkout Error:", error);
-            checkoutBtn.innerText = "ERROR - RETRY";
-            checkoutBtn.disabled = false;
-        }
+
+            const addBtn = e.target.closest('.card-quick-add');
+            if (addBtn) {
+                if (evt === 'touchstart') e.preventDefault();
+                e.stopPropagation();
+                handleAddToCart(addBtn);
+            }
+        }, { capture: true, passive: evt !== 'touchstart' });
     });
 }
+
+function handleAddToCart(btn) {
+    const id = parseInt(btn.dataset.id);
+    const name = btn.dataset.name;
+    const price = parseFloat(btn.dataset.price);
+    const cat = btn.dataset.cat;
+    const card = btn.closest('.product-card');
+    const numSpan = card.querySelector('.card-qty-num');
+    const qtyToAdd = parseInt(numSpan.textContent);
+
+    const imgEl = card.querySelector('.product-real-photo');
+    const svgEl = card.querySelector('.product-svg-icon');
+    const imgSrc = (imgEl && imgEl.style.display !== 'none') ? imgEl.getAttribute('src') : null;
+    const svgSnippet = (!imgSrc && svgEl) ? svgEl.outerHTML : '';
+
+    const existing = cart.find(c => c.id === id);
+    if (existing) {
+        existing.qty += qtyToAdd;
+    } else {
+        cart.push({ id, name, price, cat, qty: qtyToAdd, imgSrc, svgSnippet });
+    }
+
+    numSpan.textContent = "1";
+
+    // Fly-to-Bag Animation
+    if (window.gsap && cartToggle) {
+        const imgWrap = card.querySelector('.product-img-wrap');
+        const imgRect = imgWrap.getBoundingClientRect();
+        const cartRect = cartToggle.getBoundingClientRect();
+
+        const flyEl = document.createElement('div');
+        flyEl.className = 'fly-to-bag-clone';
+        flyEl.style.cssText = `
+            position: fixed;
+            top: ${imgRect.top}px;
+            left: ${imgRect.left}px;
+            width: ${imgRect.width}px;
+            height: ${imgRect.height}px;
+            background: rgba(17,17,17,0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            z-index: 99999;
+            pointer-events: none;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+        flyEl.innerHTML = imgSrc ? `<img src="${imgSrc}" style="width:100%; height:100%; object-fit:cover;">` : svgSnippet;
+        document.body.appendChild(flyEl);
+
+        gsap.to(flyEl, {
+            top: cartRect.top + 10,
+            left: cartRect.left + 10,
+            width: 20,
+            height: 20,
+            opacity: 0.2,
+            borderRadius: '50%',
+            duration: 0.8,
+            ease: 'power3.in',
+            onComplete: () => {
+                flyEl.remove();
+                renderCart();
+                gsap.fromTo(cartToggle, { scale: 0.8 }, { scale: 1, duration: 0.5, ease: 'back.out(3)' });
+                if (cart.length === 1 && cart[0].qty === 1) setTimeout(openCart, 150);
+            }
+        });
+    } else {
+        renderCart();
+    }
+
+    btn.classList.add('added');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Added`;
+    setTimeout(() => {
+        btn.classList.remove('added');
+        btn.innerHTML = originalHTML;
+    }, 2000);
+}
+
+// ─── 4.5 Checkout Logic (Moved to Section 10) ──────────────────────────────────
 
 // ─── 5. Category Filtering ────────────────────────────────────────────────────
 const filterBtns = document.querySelectorAll('.filter-btn[data-filter]');
@@ -307,7 +251,7 @@ filterBtns.forEach(btn => {
         document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
         document.querySelectorAll(`.filter-btn[data-filter="${filter}"]`).forEach(b => b.classList.add('active'));
         filterProducts(filter);
-        if (typeof closeMobileFilter === 'function') closeMobileFilter();
+        if (typeof closeMobileDrawer === 'function') closeMobileDrawer();
     });
 });
 
@@ -354,31 +298,8 @@ function sortProducts(type) {
     cards.forEach(card => grid.appendChild(card));
 }
 
-// ─── 7. Mobile Filter Drawer ──────────────────────────────────────────────────
-const mobileFilterBtn = document.getElementById('mobileFilterBtn');
-const mobileFilterDrawer = document.getElementById('mobileFilterDrawer');
-const mobileFilterOverlay = document.getElementById('mobileFilterOverlay');
-const mobileFilterClose = document.getElementById('mobileFilterClose');
-
-function openMobileFilter() {
-    if (mobileFilterDrawer) {
-        mobileFilterDrawer.classList.add('open');
-        mobileFilterOverlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function closeMobileFilter() {
-    if (mobileFilterDrawer) {
-        mobileFilterDrawer.classList.remove('open');
-        mobileFilterOverlay.classList.remove('open');
-        document.body.style.overflow = '';
-    }
-}
-
-mobileFilterBtn && mobileFilterBtn.addEventListener('click', openMobileFilter);
-mobileFilterClose && mobileFilterClose.addEventListener('click', closeMobileFilter);
-mobileFilterOverlay && mobileFilterOverlay.addEventListener('click', closeMobileFilter);
+// ─── 7. Mobile Navigation (Handled by Action Bar) ───────────────────────────
+// (Variables moved to section 12 for consolidation)
 
 // ─── 8. Navbar Scroll & Mobile Toggle ─────────────────────────────────────────
 const navbar = document.getElementById('navbar');
@@ -449,6 +370,7 @@ if (mobileToggle) {
 
 // ─── 11. Magnetic Effect ──────────────────────────────────────────────────────
 (function() {
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024) return;
     const magneticElements = document.querySelectorAll('.nav-links li a, .cart-toggle, .filter-btn, .card-quick-add');
     
     function updateMagnetic(e, el) {
@@ -475,7 +397,7 @@ const mobileFilterContent = document.getElementById('mobileFilterContent');
 const mobileFilterBtn = document.getElementById('mobileFilterBtn');
 const mobileSortBtn = document.getElementById('mobileSortBtn');
 
-function openMobileDrawer(section) {
+window.openMobileDrawer = function(section) {
     if (!mobileFilterDrawer || !mobileFilterContent) return;
     
     // Mirror sidebar content if not already done
@@ -497,42 +419,100 @@ function openMobileDrawer(section) {
     } else {
         mobileFilterContent.scrollTop = 0;
     }
-}
+};
 
-function closeMobileDrawer() {
-    mobileFilterDrawer.classList.remove('open');
-    mobileFilterOverlay.classList.remove('open');
+window.closeMobileDrawer = function() {
+    if (mobileFilterDrawer) mobileFilterDrawer.classList.remove('open');
+    if (mobileFilterOverlay) mobileFilterOverlay.classList.remove('open');
     document.body.style.overflow = '';
-}
+};
 
-if (mobileFilterBtn) mobileFilterBtn.addEventListener('click', () => openMobileDrawer('filter'));
-if (mobileSortBtn) mobileSortBtn.addEventListener('click', () => openMobileDrawer('sort'));
+if (mobileFilterBtn) {
+    ['click', 'touchstart'].forEach(evt => {
+        mobileFilterBtn.addEventListener(evt, (e) => {
+            if (evt === 'touchstart') e.preventDefault();
+            openMobileDrawer('filter');
+        }, { passive: evt !== 'touchstart' });
+    });
+}
+if (mobileSortBtn) {
+    ['click', 'touchstart'].forEach(evt => {
+        mobileSortBtn.addEventListener(evt, (e) => {
+            if (evt === 'touchstart') e.preventDefault();
+            openMobileDrawer('sort');
+        }, { passive: evt !== 'touchstart' });
+    });
+}
 if (mobileFilterOverlay) mobileFilterOverlay.addEventListener('click', closeMobileDrawer);
 
-// Helper to re-bind events to cloned elements
-function bindFilterEvents() {
+window.bindFilterEvents = function() {
+    const mobileFilterContent = document.getElementById('mobileFilterContent');
+    if (!mobileFilterContent) return;
     const filterBtns = mobileFilterContent.querySelectorAll('.filter-btn');
     filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
-            const sort = this.getAttribute('data-sort');
-            
-            if (filter) {
-                // Sync with original sidebar
-                document.querySelectorAll(`.shop-sidebar .filter-btn[data-filter="${filter}"]`).forEach(b => b.click());
-                // Update mirrored UI
-                mobileFilterContent.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            }
-            if (sort) {
-                document.querySelectorAll(`.shop-sidebar .filter-btn[data-sort="${sort}"]`).forEach(b => b.click());
-                mobileFilterContent.querySelectorAll('.filter-btn[data-sort]').forEach(b => b.classList.remove('active-sort'));
-                this.classList.add('active-sort');
-            }
+        ['click', 'touchstart'].forEach(evt => {
+            btn.addEventListener(evt, function(e) {
+                if (evt === 'touchstart') e.preventDefault();
+                const filter = this.getAttribute('data-filter');
+                const sort = this.getAttribute('data-sort');
+                
+                if (filter) {
+                    document.querySelectorAll(`.shop-sidebar .filter-btn[data-filter="${filter}"]`).forEach(b => b.click());
+                    mobileFilterContent.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    if (window.closeMobileDrawer) window.closeMobileDrawer();
+                }
+                if (sort) {
+                    document.querySelectorAll(`.shop-sidebar .filter-btn[data-sort="${sort}"]`).forEach(b => b.click());
+                    mobileFilterContent.querySelectorAll('.filter-btn[data-sort]').forEach(b => b.classList.remove('active-sort'));
+                    this.classList.add('active-sort');
+                    if (window.closeMobileDrawer) window.closeMobileDrawer();
+                }
+            }, { passive: evt !== 'touchstart' });
         });
     });
 }
+// ─── 10. Web Checkout Logic ──────────────────────────────────────────────────
+const checkoutBtn = document.querySelector('.btn-checkout');
+if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+        if (cart.length === 0) return;
+        
+        // Visual Feedback
+        const originalText = checkoutBtn.textContent;
+        checkoutBtn.textContent = 'Processing...';
+        checkoutBtn.style.opacity = '0.7';
+        checkoutBtn.style.pointerEvents = 'none';
 
-
-
-
+        const orderId = 'WEB-' + Math.floor(Math.random() * 90000 + 10000);
+        
+        const formData = new FormData();
+        formData.append('action', 'web_checkout');
+        formData.append('order_id', orderId);
+        formData.append('cart', JSON.stringify(cart));
+        
+        fetch('admin/actions.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('Success! Order #' + orderId + ' has been placed.');
+                cart.length = 0;
+                localStorage.removeItem('lumific_cart');
+                renderCart();
+                closeCart();
+            }
+        })
+        .catch(err => {
+            console.error('Checkout error:', err);
+            alert('Something went wrong. Please try again.');
+        })
+        .finally(() => {
+            checkoutBtn.textContent = originalText;
+            checkoutBtn.style.opacity = '1';
+            checkoutBtn.style.pointerEvents = 'all';
+        });
+    });
+}
