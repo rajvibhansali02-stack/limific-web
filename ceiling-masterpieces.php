@@ -1,0 +1,457 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lumific Ceiling Masterpieces - Luminous statement pieces for modern architectures. Redefining the standard of luxury light.">
+    <title>Lumific | Ceiling Masterpieces</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script>
+        if (sessionStorage.getItem('hasSeenEntrance')) {
+            const style = document.createElement('style');
+            style.innerHTML = '.transition-overlay { display: none !important; opacity: 0 !important; visibility: hidden !important; }';
+            document.head.appendChild(style);
+        }
+    </script>
+    <style>
+        /* Product Specific Styles */
+        .details-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .advantages-box {
+            background: rgba(255,255,255,0.03);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .advantages-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .advantages-list li {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .advantages-list svg {
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 24px;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(245, 151, 104, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--accent);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .details-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        .product-hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 180px 8vw 60px;
+            position: relative;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .product-visual {
+            position: relative;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .product-visual img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .product-category {
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .product-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0;
+            letter-spacing: -0.04em;
+        }
+
+        .product-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .product-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .spec-item {
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+
+        .spec-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .spec-value {
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .back-nav {
+            position: absolute;
+            top: 60px;
+            left: 8vw;
+            z-index: 100;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 968px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .product-hero {
+                padding-top: 160px;
+            }
+            .back-nav {
+                top: 80px;
+            }
+        }
+    </style>
+    <script>
+        if (localStorage.getItem('theme') === 'light-mode') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+</head>
+
+<body class="loading">
+
+    <!-- Background Gradients -->
+    <div class="bg-gradients">
+        <div class="gradient-orb orb-purple"></div>
+        <div class="gradient-orb orb-orange"></div>
+        <div class="gradient-orb orb-blue"></div>
+    </div>
+
+    <div class="transition-overlay"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.php#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
+                <li><a href="shop.php" class="glitch-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li>
+                <li><a href="index.php#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
+                <li><a href="https://lumific.in/lumific-2026.pdf" target="_blank" class="glitch-link" data-value="CATALOGUE"><span>CATALOGUE</span><span>CATALOGUE</span></a></li>
+                <li><a href="index.php#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
+                <li><a href="index.php#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                <?php else: ?>
+                    <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
+                <?php endif; ?>
+            </ul>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode" title="Toggle warm light">
+                <span class="toggle-track">
+                    <span class="toggle-thumb">
+                        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        </svg>
+                        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </span>
+                </span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="back-nav">
+        <a href="index.php#ceiling-masterpieces" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            BACK TO COLLECTION
+        </a>
+    </div>
+
+    <section class="product-hero">
+        <div class="product-grid">
+            <div class="product-visual reveal">
+                <img src="images/card_ceiling_master.webp" alt="Ceiling Masterpieces">
+            </div>
+            <div class="product-info reveal">
+                <div class="product-category">Signature Collection</div>
+                <h1 class="product-title text-grad">Ceiling Masterpieces</h1>
+                <p class="product-description">Luminous statement pieces for modern architectures. These large-scale installations are designed to be the crown jewel of any space, combining scale with intricate detail.</p>
+                
+                <div class="product-specs">
+                    <div class="spec-item">
+                        <div class="spec-label">Light Source</div>
+                        <div class="spec-value">Direct/Indirect LED</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Material</div>
+                        <div class="spec-value">Hand-Blown Glass</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Output</div>
+                        <div class="spec-value">Up to 15,000 Lms</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Weight</div>
+                        <div class="spec-value">Custom (Reinforced)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="related-products">
+        <div class="section-header reveal">
+            <h2 class="section-title text-grad" style="font-size: 2.5rem;">Popular Variants</h2>
+            <p class="section-subtitle">Discover the most sought-after designs in the Masterpiece collection.</p>
+        </div>
+        
+        <div class="variants-container reveal">
+            <div class="swiper variantsCarousel">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/gallery_master_1.webp');"></div>
+                            <div class="gallery-info"><h4>Kinetic Ring Chandelier</h4></div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/gallery_master_2.webp');"></div>
+                            <div class="gallery-info"><h4>Minimalist Core</h4></div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/gallery_master_3.webp');"></div>
+                            <div class="gallery-info"><h4>Studio Abby Signature</h4></div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="gallery-img" style="background-image: url('images/gallery_master_4.webp');"></div>
+                            <div class="gallery-info"><h4>Radial Eclipse Bloom</h4></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Combined Details Section -->
+    <section class="details" style="padding-top: 40px; padding-bottom: 120px;">
+        <div class="section-header reveal">
+            <h2 class="section-title text-grad">Grand Scale Art</h2>
+            <p class="section-subtitle">Installations that demand attention and redefine architectural luxury.</p>
+        </div>
+
+        <div class="feature-grid reveal" style="margin-bottom: 100px;">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <h3>Artisanal Glass</h3>
+                <p>Each piece features hand-blown glass elements crafted by master artisans, ensuring that no two installations are ever identical.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                </div>
+                <h3>Structural Integrity</h3>
+                <p>Designed for large-scale stability, our masterpieces include custom-engineered mounting systems for secure, long-term installation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3v4M19 3v4M5 11h14M5 15h14M5 19h14"/></svg>
+                </div>
+                <h3>High-Lumen Output</h3>
+                <p>Delivering up to 15,000 lumens, these fixtures provide powerful illumination suitable for grand halls and commercial lobbies.</p>
+            </div>
+        </div>
+        
+        <div class="about-container reveal">
+            <div class="details-layout">
+                <div class="details-text">
+                    <p style="margin-bottom: 24px;">The Masterpiece series is where our engineering team and artisanal glassblowers push the limits of possibility. Each fixture is a unique installation, often requiring specialized structural support and advanced wiring.</p>
+                    <p>Designed for grand entryways and corporate headquarters, the collection represents the pinnacle of Lumific design. Every component is meticulously tested for visual perfection and electrical safety.</p>
+                </div>
+                <div class="advantages-box">
+                    <h4 style="color: var(--accent); margin-bottom: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem;">Core Advantages</h4>
+                    <ul class="advantages-list">
+                        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <span>Custom Bespoke Sizing Available</span></li>
+                        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <span>Reinforced Aviation-Grade Mounting</span></li>
+                        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <span>Hand-Blown Venetian Glass Elements</span></li>
+                        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <span>Dynamic Light Sequencing Support</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="reveal" style="margin-top: 60px; display: flex; justify-content: center;">
+            <form class="contact-form" style="width: 100%; max-width: 800px;">
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0;">
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <input type="tel" name="phone" placeholder="Phone Number" pattern="[0-9]{10}" title="Please enter a 10-digit phone number" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                </div>
+                <div class="input-group">
+                    <textarea name="message" placeholder="Your Message / Inquiry" rows="3" required></textarea>
+                </div>
+                <input type="hidden" name="product" value="Ceiling Masterpieces">
+                <button type="submit" class="btn-primary form-submit" style="width: 100%;">Send Message</button>
+                <div class="form-message" style="margin-top: 15px; display: none; color: var(--accent);">Thank you! Your message has been sent.</div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Lumific. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/script.js?v=1.2"></script>
+    <script src="js/theme.js"></script>
+    <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.116 1.535 5.845L.057 23.428a.75.75 0 0 0 .916.916l5.638-1.479A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.698 9.698 0 0 1-4.95-1.355l-.355-.21-3.685.966.982-3.594-.23-.368A9.698 9.698 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
+        </svg>
+    </a>
+</body>
+
+</html>

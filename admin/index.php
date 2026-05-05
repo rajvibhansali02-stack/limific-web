@@ -1,3 +1,14 @@
+<?php
+session_start();
+if (isset($_SESSION['admin_logged_in'])) {
+    header("Location: dashboard.php");
+    exit;
+}
+$error = isset($_GET['error']) ? $_GET['error'] : false;
+$error_msg = "";
+if ($error === 'user') $error_msg = "Invalid Admin Username.";
+if ($error === 'pass') $error_msg = "Incorrect Security Key.";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumific | Admin Access</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
             --bg: #050505;
@@ -157,7 +169,8 @@
             border-radius: 8px;
             font-size: 0.9rem;
             margin-bottom: 20px;
-            display: none;
+            display: <?php echo $error ? 'block' : 'none'; ?>;
+            border: 1px solid rgba(244, 67, 54, 0.2);
         }
     </style>
 </head>
@@ -169,7 +182,9 @@
         <span class="brand-logo">LUMIFIC</span>
         <h1>Boutique Management</h1>
 
-        <div class="error-msg" id="errorMsg">Invalid credentials. Access denied.</div>
+        <div class="error-msg" id="errorMsg">
+            <i class="fa-solid fa-circle-exclamation"></i> <?php echo $error_msg; ?>
+        </div>
 
         <form action="auth.php" method="POST">
             <div class="input-group">

@@ -619,24 +619,29 @@ function initVariantsCarousel() {
     swiperContainers.forEach(container => {
         new Swiper(container, {
             slidesPerView: 'auto',
-            spaceBetween: 30,
+            spaceBetween: 20,
             loop: true,
             speed: 8000,
-            allowTouchMove: false, // Smooth flow is best when non-interactive or subtle
+            allowTouchMove: false,
+            simulateTouch: false,
             autoplay: {
                 delay: 0,
                 disableOnInteraction: false,
+                pauseOnMouseEnter: false,
+                stopOnLastSlide: false,
             },
             freeMode: true,
             keyboard: {
                 enabled: true,
-            }
+            },
+            watchSlidesProgress: true,
         });
     });
 }
 
 // Call initialization on load
 window.addEventListener('load', initVariantsCarousel);
+
 
 
 

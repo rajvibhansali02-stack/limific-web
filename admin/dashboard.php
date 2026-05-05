@@ -11,17 +11,21 @@ $products = $prod_res->fetch_all(MYSQLI_ASSOC);
 $inq_res = $conn->query("SELECT * FROM inquiries ORDER BY created_at DESC");
 $inquiries = $inq_res->fetch_all(MYSQLI_ASSOC);
 
-// 3. Fetch Unique Customers
-$cust_res = $conn->query("SELECT email, name, phone, COUNT(*) as total_inquiries, MAX(created_at) as last_activity FROM inquiries GROUP BY email ORDER BY last_activity DESC");
-$customers = $cust_res->fetch_all(MYSQLI_ASSOC);
+// 3. Fetch Registered Users
+$users_res = $conn->query("SELECT *, 'Member' as type FROM users ORDER BY created_at DESC");
+$registered_users = $users_res->fetch_all(MYSQLI_ASSOC);
 
-// 4. Fetch Sales Data
+// 4. Fetch Sales Data (Individual Items)
 $sales_res = $conn->query("SELECT * FROM sales ORDER BY sale_date DESC");
 $sales = $sales_res->fetch_all(MYSQLI_ASSOC);
 
-// 5. Calculate Total Revenue
+// 5. Fetch Master Orders (Grouped Tracking)
+$orders_res = $conn->query("SELECT * FROM orders ORDER BY created_at DESC");
+$orders = $orders_res->fetch_all(MYSQLI_ASSOC);
+
+// 6. Calculate Total Revenue from Orders
 $total_revenue = 0;
-foreach ($sales as $s) { $total_revenue += $s['total_amount']; }
+foreach ($orders as $o) { $total_revenue += $o['total_amount']; }
 
 // 3. Analytics Calculation
 $cat_counts = [];
@@ -133,14 +137,43 @@ function getCountry($phone) {
         .bar-inner { height: 100%; background: var(--accent); border-radius: 6px; }
 
         /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: #111; border: 1px solid var(--border); width: 100%; max-width: 600px; border-radius: 24px; padding: 40px; position: relative; }
-        .close-modal { position: absolute; top: 25px; right: 25px; color: rgba(255,255,255,0.3); cursor: pointer; font-size: 1.5rem; }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.8); 
+            backdrop-filter: blur(10px); 
+            z-index: 1000; 
+            overflow-y: auto; 
+            padding: 40px 20px;
+        }
+        .modal-content { 
+            background: #111; 
+            border: 1px solid var(--border); 
+            width: 100%; 
+            max-width: 650px; 
+            border-radius: 24px; 
+            padding: 40px; 
+            position: relative; 
+            margin: 0 auto;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .input-group { margin-bottom: 20px; }
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .close-modal { position: absolute; top: 25px; right: 25px; color: rgba(255,255,255,0.3); cursor: pointer; font-size: 1.5rem; transition: 0.3s; }
+        .close-modal:hover { color: #fff; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .input-group { margin-bottom: 12px; }
         .full-width { grid-column: span 2; }
-        label { display: block; margin-bottom: 8px; color: rgba(255,255,255,0.6); font-size: 0.85rem; }
+        label { display: block; margin-bottom: 6px; color: rgba(255,255,255,0.6); font-size: 0.85rem; }
         input, select, textarea { width: 100%; background: #1a1a1a; border: 1px solid var(--border); padding: 12px 15px; border-radius: 10px; color: #fff; font-family: inherit; }
 
         /* Notifications */
@@ -166,9 +199,9 @@ function getCountry($phone) {
     <div class="sidebar">
         <div class="logo">LUMIFIC</div>
         <a href="?tab=products" class="nav-item <?php echo $current_tab == 'products' ? 'active' : ''; ?>"><i class="fa-solid fa-cube"></i> Products</a>
+        <a href="?tab=orders" class="nav-item <?php echo $current_tab == 'orders' ? 'active' : ''; ?>"><i class="fa-solid fa-receipt"></i> Orders & Status</a>
         <a href="?tab=customers" class="nav-item <?php echo $current_tab == 'customers' ? 'active' : ''; ?>"><i class="fa-solid fa-users"></i> Customers</a>
         <a href="?tab=inquiries" class="nav-item <?php echo $current_tab == 'inquiries' ? 'active' : ''; ?>"><i class="fa-solid fa-envelope"></i> Inquiries</a>
-        <a href="?tab=sales" class="nav-item <?php echo $current_tab == 'sales' ? 'active' : ''; ?>"><i class="fa-solid fa-receipt"></i> Sales</a>
         <a href="?tab=analytics" class="nav-item <?php echo $current_tab == 'analytics' ? 'active' : ''; ?>"><i class="fa-solid fa-chart-line"></i> Analytics</a>
         <div style="margin-top: auto;">
             <a href="logout.php" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
@@ -261,8 +294,8 @@ function getCountry($phone) {
                     <div class="value"><?php echo count($inquiries); ?></div>
                 </div>
                 <div class="stat-card">
-                    <h3>Active Leads</h3>
-                    <div class="value"><?php echo count($customers); ?></div>
+                    <h3>Total Members</h3>
+                    <div class="value"><?php echo count($registered_users); ?></div>
                 </div>
             </div>
 
@@ -315,73 +348,132 @@ function getCountry($phone) {
             </div>
 
             <div class="content-section">
-                <div class="section-header"><h3>Verified Leads</h3></div>
+                <div class="section-header"><h3>Registered Members</h3></div>
                 <table>
                     <thead>
-                        <tr><th>Name</th><th>Email</th><th>Phone</th><th>Total Inquiries</th><th>Last Activity</th></tr>
+                        <tr><th>Customer ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Joined Date</th><th>Actions</th></tr>
                     </thead>
                     <tbody>
-                        <?php foreach($customers as $c): ?>
+                        <?php foreach($registered_users as $u): ?>
                         <tr class="inquiry-row">
-                            <td style="font-weight: 600;"><?php echo $c['name']; ?></td>
-                            <td><?php echo $c['email']; ?></td>
-                            <td><?php echo $c['phone']; ?></td>
-                            <td><?php echo $c['total_inquiries']; ?></td>
-                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y | h:i A', strtotime($c['last_activity'])); ?></td>
+                            <td style="font-weight: 700; color: var(--accent);">LMC-<?php echo str_pad($u['id'], 4, '0', STR_PAD_LEFT); ?></td>
+                            <td style="font-weight: 600;"><?php echo $u['name']; ?></td>
+                            <td><?php echo $u['email']; ?></td>
+                            <td><?php echo $u['phone']; ?></td>
+                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($u['created_at'])); ?></td>
+                            <td>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="action-btn" onclick='openEditUserModal(<?php echo json_encode($u); ?>)' title="Edit Member">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <form action="actions.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="action" value="delete_user">
+                                        <input type="hidden" name="id" value="<?php echo $u['id']; ?>">
+                                        <button type="submit" class="action-btn" style="color: #f44336;" onclick="return confirm('Delete this member account?')">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
-                        <?php if(empty($customers)): ?>
-                        <tr><td colspan="5" style="text-align: center; padding: 50px; opacity: 0.3;">No customers found.</td></tr>
+                        <?php if(empty($registered_users)): ?>
+                        <tr><td colspan="5" style="text-align: center; padding: 50px; opacity: 0.3;">No registered members yet.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
-        <?php elseif ($current_tab == 'sales'): ?>
+        <?php elseif ($current_tab == 'orders'): ?>
             <div class="header">
-                <h1>Sales Tracking</h1>
-                <button class="btn-add" onclick="openSaleModal()"><i class="fa-solid fa-plus"></i> Log New Sale</button>
+                <h1>Order Management</h1>
+                <button class="btn-add" onclick="openSaleModal()"><i class="fa-solid fa-plus"></i> Log Offline Sale</button>
             </div>
-
+            
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Revenue</h3>
                     <div class="value">₹<?php echo number_format($total_revenue); ?></div>
                 </div>
                 <div class="stat-card">
-                    <h3>Units Sold</h3>
-                    <div class="value"><?php echo array_sum(array_column($sales, 'quantity')); ?></div>
+                    <h3>Active Orders</h3>
+                    <div class="value"><?php echo count(array_filter($orders, function($o) { return $o['order_status'] != 'Delivered' && $o['order_status'] != 'Cancelled'; })); ?></div>
+                </div>
+                <div class="stat-card">
+                    <h3>Unpaid Balance</h3>
+                    <div class="value">₹<?php 
+                        $unpaid = 0;
+                        foreach($orders as $o) { if($o['payment_status'] == 'Unpaid') $unpaid += $o['total_amount']; }
+                        echo number_format($unpaid);
+                    ?></div>
                 </div>
             </div>
 
             <div class="content-section">
-                <div class="section-header"><h3>Sales History</h3></div>
+                <div class="section-header"><h3>Recent Orders</h3></div>
                 <table>
                     <thead>
-                        <tr><th>ID</th><th>Date</th><th>Product</th><th>Customer</th><th>Qty</th><th>Total</th><th>Actions</th></tr>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total Amount</th>
+                            <th>Order Status</th>
+                            <th>Payment</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($sales as $s): ?>
+                        <?php foreach($orders as $o): 
+                            // Get items for this order
+                            $order_items = array_filter($sales, function($s) use ($o) { return $s['order_id'] == $o['order_id']; });
+                        ?>
                         <tr class="inquiry-row">
-                            <td style="font-weight: 700; color: var(--accent);">#<?php echo !empty($s['order_id']) ? $s['order_id'] : str_pad($s['id'], 4, '0', STR_PAD_LEFT); ?></td>
-                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y | h:i A', strtotime($s['sale_date'])); ?></td>
-                            <td style="font-weight: 600;"><?php echo $s['product_name']; ?></td>
-                            <td><?php echo $s['customer_name']; ?></td>
-                            <td><?php echo $s['quantity']; ?></td>
-                            <td style="font-weight: 600; color: var(--accent);">₹<?php echo number_format($s['total_amount']); ?></td>
+                            <td style="font-weight: 700; color: var(--accent);">#<?php echo $o['order_id']; ?></td>
+                            <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($o['created_at'])); ?></td>
                             <td>
-                                <form action="actions.php" method="POST" style="display:inline;">
-                                    <input type="hidden" name="action" value="delete_sale">
-                                    <input type="hidden" name="id" value="<?php echo $s['id']; ?>">
-                                    <button type="submit" class="action-btn" onclick="return confirm('Delete this sale record?')">
-                                        <i class="fa-solid fa-trash-can"></i>
+                                <div style="font-weight: 600;"><?php echo $o['customer_name']; ?></div>
+                                <div style="font-size: 0.75rem; color: rgba(255,255,255,0.4);"><?php echo $o['customer_phone']; ?></div>
+                            </td>
+                            <td>
+                                <div style="font-size: 0.8rem;">
+                                    <?php foreach($order_items as $item): ?>
+                                        <div>• <?php echo $item['product_name']; ?> (x<?php echo $item['quantity']; ?>)</div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </td>
+                            <td style="font-weight: 600; color: var(--accent);">₹<?php echo number_format($o['total_amount']); ?></td>
+                            <td>
+                                <span class="badge-ui" style="background: <?php 
+                                    echo $o['order_status'] == 'Delivered' ? 'rgba(76, 175, 80, 0.1)' : ($o['order_status'] == 'Cancelled' ? 'rgba(244, 67, 54, 0.1)' : 'rgba(226, 176, 78, 0.1)'); 
+                                ?>; color: <?php 
+                                    echo $o['order_status'] == 'Delivered' ? '#4CAF50' : ($o['order_status'] == 'Cancelled' ? '#f44336' : 'var(--accent)'); 
+                                ?>;"><?php echo $o['order_status']; ?></span>
+                            </td>
+                            <td>
+                                <span class="badge-ui" style="border: 1px solid <?php echo $o['payment_status'] == 'Paid' ? '#4CAF50' : '#f44336'; ?>; color: <?php echo $o['payment_status'] == 'Paid' ? '#4CAF50' : '#f44336'; ?>; background: none;">
+                                    <?php echo $o['payment_status']; ?>
+                                </span>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="action-btn" onclick='openUpdateOrderModal(<?php echo json_encode($o); ?>)' title="Update Status">
+                                        <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                </form>
+                                    <form action="actions.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="action" value="delete_order">
+                                        <input type="hidden" name="order_id" value="<?php echo $o['order_id']; ?>">
+                                        <button type="submit" class="action-btn" style="color: #f44336;" onclick="return confirm('Delete this entire order and its items?')">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
-                        <?php if(empty($sales)): ?>
-                        <tr><td colspan="6" style="text-align: center; padding: 50px; opacity: 0.3;">No sales logged yet.</td></tr>
+                        <?php if(empty($orders)): ?>
+                        <tr><td colspan="8" style="text-align: center; padding: 50px; opacity: 0.3;">No orders found.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -427,6 +519,10 @@ function getCountry($phone) {
                     <div class="input-group"><label>Category</label><select name="category"><option value="magnetic">Magnetic Systems</option><option value="downlights">Recessed Downlights</option><option value="spots">Spotlights / COB</option><option value="surface">Surface Mounted</option><option value="outdoor">Outdoor (Garden/Inground)</option><option value="underwater">Underwater Lights</option><option value="accessories">Accessories</option></select></div>
                     <div class="input-group"><label>Price (INR)</label><input type="number" name="price" required></div>
                     <div class="input-group"><label>Finish/Color</label><input type="text" name="color" list="colorOptions" placeholder="e.g. Matte Black"><datalist id="colorOptions"><option value="Matte Black"><option value="Textured White"><option value="Grey / Silver"><option value="Gold"><option value="Rose Gold"><option value="Copper"></datalist></div>
+                    <div class="input-group"><label>Wattage</label><input type="text" name="wattage" placeholder="e.g. 7W / 12W"></div>
+                    <div class="input-group"><label>Beam Angle</label><input type="text" name="beam_angle" placeholder="e.g. 24° / 36°"></div>
+                    <div class="input-group"><label>CRI</label><input type="text" name="cri" placeholder="e.g. Ra>90"></div>
+                    <div class="input-group"><label>IP Rating</label><input type="text" name="ip_rating" placeholder="e.g. IP20 / IP65"></div>
                     <div class="input-group full-width"><label>Product Description</label><textarea name="description" rows="3" placeholder="Enter product features or details..."></textarea></div>
                     <div class="input-group full-width"><label>Product Image</label><input type="file" name="image" accept="image/*" required></div>
                 </div>
@@ -448,6 +544,10 @@ function getCountry($phone) {
                     <div class="input-group"><label>Category</label><select name="category" id="edit_category"><option value="magnetic">Magnetic Systems</option><option value="downlights">Recessed Downlights</option><option value="spots">Spotlights / COB</option><option value="surface">Surface Mounted</option><option value="outdoor">Outdoor (Garden/Inground)</option><option value="underwater">Underwater Lights</option><option value="accessories">Accessories</option></select></div>
                     <div class="input-group"><label>Price (INR)</label><input type="number" name="price" id="edit_price" required></div>
                     <div class="input-group"><label>Finish/Color</label><input type="text" name="color" id="edit_color" list="colorOptions"></div>
+                    <div class="input-group"><label>Wattage</label><input type="text" name="wattage" id="edit_wattage"></div>
+                    <div class="input-group"><label>Beam Angle</label><input type="text" name="beam_angle" id="edit_beam_angle"></div>
+                    <div class="input-group"><label>CRI</label><input type="text" name="cri" id="edit_cri"></div>
+                    <div class="input-group"><label>IP Rating</label><input type="text" name="ip_rating" id="edit_ip_rating"></div>
                     <div class="input-group full-width"><label>Product Description</label><textarea name="description" id="edit_description" rows="3"></textarea></div>
                     <div class="input-group full-width">
                         <label>Change Image (Leave blank to keep current)</label>
@@ -503,9 +603,29 @@ function getCountry($phone) {
                 </button>
 
                 <div class="form-grid">
-                    <div class="input-group full-width">
+                    <div class="input-group">
                         <label>Customer Name</label>
-                        <input type="text" name="customer_name" placeholder="Optional">
+                        <input type="text" name="customer_name" placeholder="Full Name">
+                    </div>
+                    <div class="input-group">
+                        <label>Customer Phone</label>
+                        <input type="text" name="customer_phone" placeholder="e.g. +91 98765 43210">
+                    </div>
+                    <div class="input-group">
+                        <label>Order Status</label>
+                        <select name="order_status">
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Payment Status</label>
+                        <select name="payment_status">
+                            <option value="Paid">Paid</option>
+                            <option value="Unpaid">Unpaid</option>
+                        </select>
                     </div>
                 </div>
 
@@ -598,10 +718,92 @@ function getCountry($phone) {
             document.getElementById('edit_category').value = product.category;
             document.getElementById('edit_price').value = product.price;
             document.getElementById('edit_color').value = product.color;
+            document.getElementById('edit_wattage').value = product.wattage || '';
+            document.getElementById('edit_beam_angle').value = product.beam_angle || '';
+            document.getElementById('edit_cri').value = product.cri || '';
+            document.getElementById('edit_ip_rating').value = product.ip_rating || '';
             document.getElementById('edit_description').value = product.description;
             document.getElementById('editModal').style.display = 'flex';
         }
         function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+
+        function openUpdateOrderModal(order) {
+            document.getElementById('update_order_id').value = order.order_id;
+            document.getElementById('update_order_status').value = order.order_status;
+            document.getElementById('update_payment_status').value = order.payment_status;
+            document.getElementById('updateOrderModal').style.display = 'flex';
+        }
+        function openEditUserModal(user) {
+            document.getElementById('edit_user_id').value = user.id;
+            document.getElementById('edit_user_name').value = user.name;
+            document.getElementById('edit_user_email').value = user.email;
+            document.getElementById('edit_user_phone').value = user.phone || '';
+            document.getElementById('editUserModal').style.display = 'flex';
+        }
+        function closeEditUserModal() { document.getElementById('editUserModal').style.display = 'none'; }
     </script>
+
+    <!-- Update Order Status Modal -->
+    <div id="updateOrderModal" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <span class="close-modal" onclick="closeUpdateOrderModal()">&times;</span>
+            <h2 style="margin-bottom: 25px; font-family: 'Outfit', sans-serif;">Update Order Status</h2>
+            <form action="actions.php" method="POST">
+                <input type="hidden" name="action" value="update_order">
+                <input type="hidden" name="order_id" id="update_order_id">
+                
+                <div class="input-group">
+                    <label>Order Status</label>
+                    <select name="order_status" id="update_order_status">
+                        <option value="Pending">Pending</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>Payment Status</label>
+                    <select name="payment_status" id="update_payment_status">
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Refunded">Refunded</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-add" style="width: 100%; margin-top: 30px;">Update Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <span class="close-modal" onclick="closeEditUserModal()">&times;</span>
+            <h2 style="margin-bottom: 25px; font-family: 'Outfit', sans-serif;">Edit Member Details</h2>
+            <form action="actions.php" method="POST">
+                <input type="hidden" name="action" value="edit_user">
+                <input type="hidden" name="id" id="edit_user_id">
+                
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" id="edit_user_name" required>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Email Address</label>
+                    <input type="email" name="email" id="edit_user_email" required>
+                </div>
+
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>Phone Number</label>
+                    <input type="text" name="phone" id="edit_user_phone" required>
+                </div>
+
+                <button type="submit" class="btn-add" style="width: 100%; margin-top: 30px;">Update Member</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

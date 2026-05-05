@@ -1,0 +1,681 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lumific - Illuminate Beyond Ordinary. Premium luxury lighting brand.">
+    <title>Lumific | Luxury Lighting</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lumific.com/">
+    <meta property="og:title" content="Lumific | Luxury Lighting">
+    <meta property="og:description"
+        content="Illuminate Beyond Ordinary. Premium luxury lighting systems engineered for modern living.">
+    <meta property="og:image" content="https://lumific.com/images/hero_bg.webp">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://lumific.com/">
+    <meta property="twitter:title" content="Lumific | Luxury Lighting">
+    <meta property="twitter:description"
+        content="Illuminate Beyond Ordinary. Premium luxury lighting systems engineered for modern living.">
+    <meta property="twitter:image" content="https://lumific.com/images/hero_bg.webp">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="images/logo.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <link rel="stylesheet" href="css/ecommerce.css">
+    <script>
+        // Critical: Remove black delay immediately on navigation
+        if (sessionStorage.getItem('hasSeenEntrance')) {
+            document.documentElement.classList.add('instant-load');
+            const style = document.createElement('style');
+            style.innerHTML = '.transition-overlay { display: none !important; opacity: 0 !important; visibility: hidden !important; }';
+            document.head.appendChild(style);
+        }
+
+        // Finalize Theme State before body renders
+        if (localStorage.getItem('theme') === 'light-mode') {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+</head>
+
+<body class="loading">
+
+    <!-- Background Gradients -->
+    <div class="bg-gradients">
+        <div class="gradient-orb orb-purple"></div>
+        <div class="gradient-orb orb-orange"></div>
+        <div class="gradient-orb orb-blue"></div>
+    </div>
+
+    <!-- Page Transition Overlay -->
+
+    <div class="transition-overlay"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">
+                <span class="line"></span>
+                <span class="line"></span>
+            </button>
+
+
+            <ul class="nav-links">
+                <li><a href="#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
+                <li><a href="shop.php" class="glitch-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li>
+                <li><a href="#shop" class="glitch-link"
+                        data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
+                <li><a href="https://lumific.in/lumific-2026.pdf" target="_blank" class="glitch-link"
+                        data-value="CATALOGUE"><span>CATALOGUE</span><span>CATALOGUE</span></a></li>
+                <li><a href="#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a>
+                </li>
+                <li><a href="#contact" class="glitch-link"
+                        data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                <?php else: ?>
+                    <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
+                <?php endif; ?>
+            </ul>
+            <!-- Light Mode Toggle Button -->
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle Light Mode" title="Toggle warm light">
+                <span class="toggle-track">
+                    <span class="toggle-thumb">
+                        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path
+                                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                        </svg>
+                        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg>
+                    </span>
+                </span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="ambient-glow" id="ambientGlow"></div>
+        <div class="bokeh-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+        <div class="hero-bg-wrapper">
+            <div class="hero-bg" style="background-image: url('images/hero_bg.webp')"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-glow"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" fill="none" class="hero-logo">
+                <defs>
+                    <linearGradient id="luxeWhite" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="100%" stop-color="rgba(255,255,255,0.4)" />
+                    </linearGradient>
+                    <filter id="premiumGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="4" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Outer Prism -->
+                <path d="M 30 5 L 55 30 L 30 55 L 5 30 Z" stroke="url(#luxeWhite)" stroke-width="1"
+                    stroke-dasharray="4 6" stroke-linecap="round" filter="url(#premiumGlow)" opacity="0.6" />
+                <!-- Inner Solid Prism -->
+                <path d="M 30 14 L 46 30 L 30 46 L 14 30 Z" stroke="url(#luxeWhite)" stroke-width="1.5"
+                    stroke-linecap="round" filter="url(#premiumGlow)" />
+                <!-- Central L Spark -->
+                <path d="M 26 22 L 26 36 L 36 36" stroke="#fff" stroke-width="2" stroke-linecap="square"
+                    stroke-linejoin="miter" filter="url(#premiumGlow)" />
+                <!-- Floating Light Particles -->
+                <circle cx="30" cy="8" r="1.5" fill="url(#luxeWhite)" filter="url(#premiumGlow)" />
+                <circle cx="52" cy="30" r="1.5" fill="url(#luxeWhite)" filter="url(#premiumGlow)" />
+                <circle cx="30" cy="52" r="1.5" fill="url(#luxeWhite)" filter="url(#premiumGlow)" />
+                <circle cx="8" cy="30" r="1.5" fill="url(#luxeWhite)" filter="url(#premiumGlow)" />
+
+            </svg>
+            <h1 class="hero-title">
+                <div class="text-mask"><span>LUMIFIC</span></div>
+            </h1>
+            <div class="hero-tagline reveal-tagline">
+                <div class="text-mask headline"><span>Intelligent lighting systems for architecturally designed
+                        spaces</span></div>
+                <div class="text-mask subheadline"><span>Smart systems engineered for modern living</span></div>
+            </div>
+        </div>
+
+        <a href="#shop" class="scroll-indicator">
+            <span>Discover</span>
+            <div class="line"></div>
+        </a>
+    </section>
+
+    <!-- Product Collections -->
+    <section id="shop" class="collections">
+        <div class="section-header reveal">
+            <span class="lumi-eyebrow">The Boutique</span>
+            <h2 class="section-title text-grad">Masterpiece Collections</h2>
+            <p class="section-subtitle">Sculpting modern spaces with visionary luminescence.</p>
+        </div>
+
+        <div class="cards-container">
+            <div class="cards-stack">
+                <!-- Product Card 1 -->
+                <div class="card card-1" id="ceiling" style="z-index: 10;">
+                    <div class="card-glow"></div>
+                    <div class="card-image" style="background-image: url('images/card_ceiling.webp');">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="m12.83 2.18a2 2 0 0 0-1.66 0L2.1 6.13a2 2 0 0 0 0 3.65l9.07 3.95a2 2 0 0 0 1.66 0l9.07-3.95a2 2 0 0 0 0-3.65z" />
+                                <path d="m2.1 14.71 1.05.46a2 2 0 0 0 1.66 0L12 11.21" />
+                                <path d="m12 11.21.31.25a2 2 0 0 0 1.66 0L22 7.15" />
+                                <path d="m2.1 18.71 1.05.46a2 2 0 0 0 1.66 0L12 15.21" />
+                                <path d="m12 15.21.31.25a2 2 0 0 0 1.66 0L22 11.15" />
+                            </svg>
+                        </div>
+                        <h3 class="text-mask text-grad"><span>Ceiling</span></h3>
+                        <p class="text-mask text-grad"><span>Elevate heights with suspended brilliance. We engineer
+                                light that transforms architectural volume.</span></p>
+                        <a href="ceiling.php" class="card-link">
+                            <span>Explore Details</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="card card-2" id="wall-sculptures" style="z-index: 20;">
+                    <div class="card-glow"></div>
+                    <div class="card-image" style="background-image: url('images/card_wall.webp');">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="18" height="18" x="3" y="3" rx="2" />
+                                <path d="M3 9h18" />
+                                <path d="M3 15h18" />
+                                <path d="M9 3v18" />
+                                <path d="M15 3v18" />
+                            </svg>
+                        </div>
+                        <h3 class="text-mask text-grad"><span>Wall Sculptures</span></h3>
+                        <p class="text-mask text-grad"><span>Diffused brilliance for sophisticated interiors. Every
+                                piece is a testament to minimalist design.</span></p>
+                        <a href="wall-sculptures.php" class="card-link">
+                            <span>Explore Details</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="card card-3" id="ceiling-masterpieces" style="z-index: 30;">
+                    <div class="card-glow"></div>
+                    <div class="card-image" style="background-image: url('images/card_ceiling_master.webp');">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 3h12l4 6-10 12L2 9z" />
+                                <path d="M11 3 8 9l4 12 4-12-3-6" />
+                                <path d="M2 9h20" />
+                            </svg>
+                        </div>
+                        <h3 class="text-mask text-grad"><span>Ceiling Masterpieces</span></h3>
+                        <p class="text-mask text-grad"><span>Luminous statement pieces for modern architectures.
+                                Redefining the standard of luxury light.</span></p>
+                        <a href="ceiling-masterpieces.php" class="card-link">
+                            <span>Explore Details</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="card card-4" id="smart-lighting" style="z-index: 40;">
+                    <div class="card-glow"></div>
+                    <div class="card-image" style="background-image: url('images/card_smart.webp');">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-mask text-grad"><span>Smart Lighting</span></h3>
+                        <p class="text-mask text-grad"><span>Intuitive atmospheres, responsive elegance. Intelligence,
+                                Reimagined With AI for your home.</span></p>
+                        <a href="smart-lighting.php" class="card-link">
+                            <span>Explore Details</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div> <!-- cards-stack -->
+        </div> <!-- cards-container -->
+    </section>
+
+
+
+    <!-- Smart Lighting Interaction Section -->
+    <section id="smart-as-it-gets" class="smart-interaction reveal">
+        <div class="smart-grid">
+            <div class="smart-text-content">
+                <span class="lumi-eyebrow">Interactive Ecosystem</span>
+                <h2 class="section-title"><span class="text-grad">Smart</span><br>as it gets</h2>
+                <p class="section-subtitle">Adjust brightness, tune into perfect ambiance, and control your lighting
+                    remotely with ease.</p>
+            </div>
+
+            <div class="smart-interactive-wrapper">
+                <!-- Light Fixture -->
+                <div class="fixture-container">
+                    <div class="ceiling-strip"></div>
+                    <div class="fixture-body">
+                        <div class="fixture-chip" id="sourceChip"></div>
+                    </div>
+                    <!-- The Beam -->
+                    <div class="light-beam" id="lightBeam"></div>
+                    <!-- Ambient Spill -->
+                    <div class="ambient-spill" id="ambientSpill"></div>
+                </div>
+
+                <!-- Phone Mockup -->
+                <div class="phone-mockup">
+                    <div class="dynamic-island"></div>
+                    <div class="app-ui">
+                        <div class="app-header">
+                            <div>
+                                <h4 class="room-name">Main Room</h4>
+                                <span class="status-indicator" id="statusLabel">On • 85%</span>
+                            </div>
+                            <button class="toggle-switch active" id="smartToggle">
+                                <div class="switch-handle"></div>
+                            </button>
+                        </div>
+
+                        <div class="app-controls" id="appControls">
+                            <!-- Brightness Control -->
+                            <div class="control-group">
+                                <div class="control-label">
+                                    <span>🔆 Brightness</span>
+                                    <span id="brLabel">85%</span>
+                                </div>
+                                <div class="custom-slider" id="brSlider">
+                                    <div class="slider-track">
+                                        <div class="slider-fill" id="brFill" style="width: 85%;"></div>
+                                    </div>
+                                    <div class="slider-thumb" id="brThumb">
+                                        <div class="thumb-detail"></div>
+                                    </div>
+                                    <input type="range" min="1" max="100" value="85" class="slider-input" id="brInput">
+                                </div>
+                            </div>
+
+                            <!-- CCT Control -->
+                            <div class="control-group">
+                                <div class="control-label">
+                                    <span>🌡 CCT</span>
+                                    <span id="cctLabel">4000K</span>
+                                </div>
+                                <div class="custom-slider cct-slider" id="cctSlider">
+                                    <div class="slider-track cct-track"></div>
+                                    <div class="slider-thumb" id="cctThumb">
+                                        <div class="thumb-detail"></div>
+                                    </div>
+                                    <input type="range" min="2700" max="6500" step="50" value="4000"
+                                        class="slider-input" id="cctInput">
+                                </div>
+                            </div>
+
+                            <!-- Scene Settings -->
+                            <div class="scenes-grid">
+                                <div class="scenes-label">Scenes</div>
+                                <div class="scenes-buttons">
+                                    <button class="scene-btn" data-br="100" data-cct="6000" data-icon="🎯">
+                                        <span class="scene-icon">🎯</span>
+                                        <span class="scene-name">Focus</span>
+                                    </button>
+                                    <button class="scene-btn active" data-br="85" data-cct="4000" data-icon="🛋️">
+                                        <span class="scene-icon">🛋️</span>
+                                        <span class="scene-name">Relax</span>
+                                    </button>
+                                    <button class="scene-btn" data-br="70" data-cct="4500" data-icon="📖">
+                                        <span class="scene-icon">📖</span>
+                                        <span class="scene-name">Reading</span>
+                                    </button>
+                                    <button class="scene-btn" data-br="15" data-cct="2700" data-icon="🌙">
+                                        <span class="scene-icon">🌙</span>
+                                        <span class="scene-name">Night</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Entry Section -->
+    <section id="boutique" class="shop-entry-section">
+        <div class="shop-entry-inner reveal">
+            <span class="shop-entry-eyebrow">Our Catalog</span>
+            <h2 class="shop-entry-title">Browse the Collection</h2>
+            <p class="shop-entry-subtitle">113 architectural luminaires — from precision spotlights to statement ceiling
+                rings. Filter by category, explore the full range.</p>
+
+            <div class="shop-entry-categories">
+                <!-- <a href="shop.php?cat=tracklights" class="shop-cat-card"> -->
+                <a href="javascript:void(0)" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="5" y="18" width="50" height="4" rx="2" fill="#333" />
+                            <rect x="27" y="22" width="6" height="14" rx="2" fill="#444" />
+                            <ellipse cx="30" cy="42" rx="10" ry="13" fill="#2a2a2a" stroke="#555" stroke-width="1" />
+                            <ellipse cx="30" cy="51" rx="5" ry="3" fill="rgba(245,151,104,0.8)" />
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Tracklights</span>
+                    <span class="shop-cat-count">24 PRODUCTS</span>
+                </a>
+                <!-- <a href="shop.php?cat=downlights" class="shop-cat-card"> -->
+                <a href="javascript:void(0)" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="26" r="18" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1" />
+                            <circle cx="30" cy="26" r="10" fill="#111" />
+                            <circle cx="30" cy="26" r="5" fill="rgba(255,220,100,0.85)" />
+                            <circle cx="30" cy="26" r="18" stroke="rgba(255,220,100,0.2)" stroke-width="2"
+                                fill="none" />
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Downlights</span>
+                    <span class="shop-cat-count">18 PRODUCTS</span>
+                </a>
+                <!-- <a href="shop.php?cat=spots" class="shop-cat-card"> -->
+                <a href="javascript:void(0)" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="30" cy="28" r="16" fill="#1e1e1e" stroke="#444" stroke-width="1" />
+                            <path d="M19 28 A11 11 0 0 1 30 17 A11 11 0 0 1 41 28" fill="#222" />
+                            <circle cx="30" cy="28" r="6" fill="#111" />
+                            <circle cx="30" cy="28" r="3.5" fill="rgba(255,160,100,0.9)" />
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Spots</span>
+                    <span class="shop-cat-count">31 PRODUCTS</span>
+                </a>
+                <!-- <a href="shop.php?cat=outdoor" class="shop-cat-card"> -->
+                <a href="javascript:void(0)" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="30" cy="26" rx="20" ry="6" fill="#2a2a2a" stroke="#444" stroke-width="1" />
+                            <rect x="25" y="16" width="10" height="12" rx="2" fill="#2a2a2a" stroke="#444"
+                                stroke-width="0.5" />
+                            <ellipse cx="30" cy="26" rx="10" ry="3" fill="rgba(130,200,130,0.8)" />
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Outdoor</span>
+                    <span class="shop-cat-count">14 PRODUCTS</span>
+                </a>
+                <!-- <a href="shop.php?cat=profiles" class="shop-cat-card"> -->
+                <a href="javascript:void(0)" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="5" y="25" width="50" height="8" rx="3" fill="#222" stroke="#444"
+                                stroke-width="1" />
+                            <rect x="5" y="27" width="50" height="4" rx="2" fill="rgba(180,140,255,0.85)" />
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Profiles</span>
+                    <span class="shop-cat-count">16 PRODUCTS</span>
+                </a>
+                <!-- <a href="shop.php?cat=ceiling" class="shop-cat-card"> -->
+                <a href="javascript:void(0)" class="shop-cat-card">
+                    <div class="shop-cat-icon">
+                        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="27" y="5" width="6" height="10" rx="2" fill="#333" />
+                            <circle cx="30" cy="38" r="18" stroke="#333" stroke-width="5" fill="none" />
+                            <circle cx="30" cy="38" r="18" stroke="rgba(255,240,180,0.9)" stroke-width="2"
+                                fill="none" />
+                        </svg>
+                    </div>
+                    <span class="shop-cat-name">Studio Abby</span>
+                    <span class="shop-cat-count">10 PRODUCTS</span>
+                </a>
+            </div>
+
+            <a href="shop.php" class="shop-entry-cta">
+                <span>Browse All Products</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats Section (Lumen Stats) -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number-wrapper">
+                    <span class="stat-number" data-target="500">0</span><span class="stat-plus">+</span>
+                </div>
+                <p class="stat-label">Architectural Projects</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number-wrapper">
+                    <span class="stat-number" data-target="12">0</span><span class="stat-plus">+</span>
+                </div>
+                <p class="stat-label">Years of Innovation</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number-wrapper">
+                    <span class="stat-number" data-target="1000">0</span><span class="stat-plus">+</span>
+                </div>
+                <p class="stat-label">Global Clients</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+
+    <section id="about" class="experience">
+        <div class="exp-bg-wrapper">
+            <div class="exp-bg" style="background-image: url('images/experience_bg.webp')"></div>
+        </div>
+        <div class="exp-overlay"></div>
+        <div class="exp-content reveal" style="max-width: 1200px;">
+            <span class="lumi-eyebrow"
+                style="margin-bottom: 15px; display: block; color: #E8A04A; letter-spacing: 0.25em;">About
+                Lumific</span>
+            <h2 class="section-title">
+                <div class="text-mask"><span>Transform Your Space</span></div>
+            </h2>
+
+            <p
+                style="font-size: 1.15rem; line-height: 1.6; color: rgba(255,255,255,0.8); max-width: 800px; margin: 0 auto 40px;">
+                Rooted in minimalism, crafted for the opulent. We blend cutting-edge optical engineering with timeless
+                artisanal design to diffuse light with absolute perfection.</p>
+
+            <div class="ethos-grid" style="margin-bottom: 40px;">
+                <div class="ethos-card"
+                    style="background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08);">
+                    <span class="ethos-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                            <path d="M2 2l5 5" />
+                            <path d="m9.5 9.5 5 5" />
+                        </svg>
+                    </span>
+                    <h3 style="color: #fff;">Artisanal Curation</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.7); margin-bottom: 0;">
+                        Each fixture is a masterwork of hand-finished materials, meticulously designed to complement the
+                        unique geometry of your architectural space.</p>
+                </div>
+                <div class="ethos-card"
+                    style="background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08);">
+                    <span class="ethos-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                            <rect x="9" y="9" width="6" height="6" />
+                            <path d="M15 2v2" />
+                            <path d="M15 20v2" />
+                            <path d="M2 15h2" />
+                            <path d="M2 9h2" />
+                            <path d="M20 15h2" />
+                            <path d="M20 9h2" />
+                            <path d="M9 2v2" />
+                            <path d="M9 20v2" />
+                        </svg>
+                    </span>
+                    <h3 style="color: #fff;">Digital Intelligence</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.7); margin-bottom: 0;">
+                        Beyond illumination. Our systems synchronize with your circadian rhythm and smart home ecosystem
+                        through intuitive, adaptive AI.</p>
+                </div>
+                <div class="ethos-card"
+                    style="background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08);">
+                    <span class="ethos-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                            <path d="M2 21c0-3 1.85-5.36 5.08-6C10.9 14.52 12 13.84 14 11.45" />
+                        </svg>
+                    </span>
+                    <h3 style="color: #fff;">Ecological Integrity</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.7); margin-bottom: 0;">
+                        Engineering for a better future. 100% circular materials and low-impact production, because true
+                        luxury should never cost the Earth.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact reveal">
+        <div class="contact-container">
+            <div class="section-header">
+                <span class="lumi-eyebrow">Inquiry</span>
+                <h2 class="section-title">
+                    <div class="text-mask"><span>Let's Illuminate Your World</span></div>
+                </h2>
+                <p class="text-mask"><span>Begin your transformation. Our designers are ready to curate a</span></p>
+                <p class="text-mask"><span>lighting identity that transcends ordinary architecture.</span></p>
+            </div>
+            <div class="contact-info"
+                style="margin-bottom: 30px; margin-top: 20px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                <p style="font-size: 1.1rem; color: #fff; margin-bottom: 0;">📞 +91 98981 03966</p>
+                <p style="font-size: 1.1rem; color: #fff; margin-bottom: 0;">✉️ lumificlighting@gmail.com</p>
+            </div>
+            <form class="contact-form">
+                <div class="form-row"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0;">
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <input type="tel" name="phone" placeholder="Phone Number" pattern="[0-9]{10}"
+                            title="Please enter a 10-digit phone number" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                </div>
+                <div class="input-group">
+                    <textarea name="message" placeholder="Your Message / Inquiry" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary form-submit">Send Inquiry</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Lumific. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="js/script.js?v=1.2"></script>
+    <script src="js/theme.js"></script>
+    <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+            <path
+                d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.116 1.535 5.845L.057 23.428a.75.75 0 0 0 .916.916l5.638-1.479A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.698 9.698 0 0 1-4.95-1.355l-.355-.21-3.685.966.982-3.594-.23-.368A9.698 9.698 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z" />
+        </svg>
+    </a>
+
+    <?php if(isset($_SESSION['login_success'])): ?>
+    <div class="toast-container">
+        <div class="toast" id="loginToast">
+            <div class="toast-icon">✓</div>
+            <div class="toast-text"><?php echo $_SESSION['login_success']; ?></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toast = document.getElementById('loginToast');
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.parentElement.remove(), 600);
+            }, 3500);
+        });
+    </script>
+    <?php unset($_SESSION['login_success']); ?>
+    <?php endif; ?>
+</body>
+
+</html>

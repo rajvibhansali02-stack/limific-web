@@ -477,6 +477,13 @@ const checkoutBtn = document.querySelector('.btn-checkout');
 if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
         if (cart.length === 0) return;
+
+        // Check if user is logged in
+        if (!window.isUserLoggedIn) {
+            alert('Please login to place an order.');
+            window.location.href = 'login.php';
+            return;
+        }
         
         // Visual Feedback
         const originalText = checkoutBtn.textContent;

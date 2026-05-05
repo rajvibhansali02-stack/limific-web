@@ -32,7 +32,7 @@ foreach ($products as $p) {
     <meta name="description" content="Lumific Shop — Browse our premium architectural lighting catalog.">
     <title>Lumific | Shop — The Collection</title>
 
-    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="icon" type="image/webp" href="images/logo.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
@@ -49,6 +49,8 @@ foreach ($products as $p) {
         if (localStorage.getItem('theme') === 'light-mode') {
             document.documentElement.classList.add('light-mode');
         }
+        window.isUserLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+        window.userId = <?php echo $_SESSION['user_id'] ?? 'null'; ?>;
     </script>
 </head>
 
@@ -66,11 +68,16 @@ foreach ($products as $p) {
                 <span class="line"></span>
             </button>
             <ul class="nav-links">
-                <li><a href="index.html#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
-                <li><a href="index.html#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
+                <li><a href="index.php#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
+                <li><a href="index.php#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
                 <li><a href="https://lumific.in/lumific-2026.pdf" target="_blank" class="glitch-link" data-value="CATALOGUE"><span>CATALOGUE</span><span>CATALOGUE</span></a></li>
-                <li><a href="index.html#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
-                <li><a href="index.html#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
+                <li><a href="index.php#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
+                <li><a href="index.php#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                <?php else: ?>
+                    <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
+                <?php endif; ?>
             </ul>
 
             <button id="cartToggle" class="cart-toggle" aria-label="View Cart (0 items)">
@@ -154,7 +161,7 @@ foreach ($products as $p) {
                 <article class="product-card" data-cat="<?php echo strtolower($p['category']); ?>" data-price="<?php echo $p['price']; ?>" data-id="<?php echo $p['id']; ?>">
                     <div class="product-img-wrap">
                         <div class="product-img-bg product-real-img">
-                            <img src="<?php echo $p['image_url']; ?>" alt="<?php echo $p['name']; ?>" class="product-real-photo" onerror="this.src='images/logo.png'; this.style.padding='20%'">
+                            <img src="<?php echo $p['image_url']; ?>" alt="<?php echo $p['name']; ?>" class="product-real-photo" onerror="this.src='images/logo.webp'; this.style.padding='20%'">
                         </div>
                         <div class="product-hover-glow"></div>
                     </div>
