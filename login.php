@@ -385,7 +385,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
                 <button type="submit" class="btn-submit">Create Account</button>
             </form>
 
-            <a href="index.html" class="back-link">
+            <a href="index.php" class="back-link">
                 <i class="fa-solid fa-arrow-left"></i> Return to Site
             </a>
         </div>
