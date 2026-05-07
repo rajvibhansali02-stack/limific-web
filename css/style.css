@@ -1856,26 +1856,27 @@ footer {
 }
 
 .light-mode .orb-purple {
-    background: radial-gradient(circle, #4A2610 0%, transparent 70%);
+    background: radial-gradient(circle, #3a0a1a 0%, transparent 70%);
 }
 
 .light-mode .orb-orange {
-    background: radial-gradient(circle, #7B522A 0%, transparent 70%);
+    background: radial-gradient(circle, #5a2a0a 0%, transparent 70%);
 }
 
 .light-mode .orb-blue {
-    background: radial-gradient(circle, #5A361A 0%, transparent 70%);
+    background: radial-gradient(circle, #3a0a2a 0%, transparent 70%);
 }
 
 .light-mode nav {
-    background: rgba(15, 8, 4, 0.85) !important;
-    border-color: rgba(212, 160, 96, 0.20) !important;
+    background: rgba(26, 8, 10, 0.85) !important;
+    border-color: rgba(212, 122, 96, 0.20) !important;
 }
 
 .light-mode nav.scrolled {
-    background: rgba(10, 5, 2, 0.95) !important;
+    background: rgba(20, 5, 8, 0.95) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
+
 
 .light-mode .glitch-link {
     color: var(--text-secondary);
@@ -1891,8 +1892,9 @@ footer {
 }
 
 .light-mode .hero::after {
-    background: radial-gradient(circle at center, transparent 0%, #2C1A0E 80%);
+    background: radial-gradient(circle at center, transparent 0%, #1a080a 80%);
 }
+
 
 .light-mode .card {
     background: #241414; /* Burnt Umber Graphite */
