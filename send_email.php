@@ -24,36 +24,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sssss", $name, $email, $phone, $product, $message);
     $db_saved = $stmt->execute();
 
-    $subject = "New Inquiry: " . $product;
+    // --- EMAIL SENDING (PHPMailer) ---
+    require_once 'includes/mailer.php';
     
-    // Create the email content
-    $email_content = "New inquiry from Lumific Luxury Lighting Boutique:\n\n";
-    $email_content .= "Client Name: $name\n";
-    $email_content .= "Client Email: $email\n";
-    $email_content .= "Client Phone: $phone\n";
-    $email_content .= "Interest: $product\n";
-    $email_content .= "Message:\n$message\n\n";
-    $email_content .= "--- End of Message ---";
+    $subject = "New Inquiry: " . $product;
+    $body = "
+        <div style='font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee;'>
+            <h2 style='color: #2d241e;'>New Inquiry from Lumific</h2>
+            <p><strong>Name:</strong> $name</p>
+            <p><strong>Email:</strong> $email</p>
+            <p><strong>Phone:</strong> $phone</p>
+            <p><strong>Interest:</strong> $product</p>
+            <p><strong>Message:</strong></p>
+            <div style='background: #f9f9f9; padding: 15px; border-left: 4px solid #2d241e;'>$message</div>
+        </div>
+    ";
 
-    // Build the email headers
-    $headers = "From: Lumific Boutique <noreply@lumific.in>\r\n";
-    $headers .= "Reply-To: $email\r\n";
-    $headers .= "X-Mailer: PHP/" . phpversion();
+    $is_demo = true; // Set to FALSE when you have entered your SMTP credentials in includes/mailer.php
 
-    // Check if we are running locally (XAMPP/Localhost)
-    $is_local = ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1');
-
-    if (mail($to, $subject, $email_content, $headers)) {
-        echo json_encode(["status" => "success", "message" => "Your inquiry has been sent successfully!"]);
-    } elseif ($db_saved) {
-        // If DB save was successful, we consider it a success for local testing even if mail() fails
-        echo json_encode([
-            "status" => "success", 
-            "message" => "Your inquiry has been received (Local Mode)."
-        ]);
+    if (!$is_demo) {
+        $mail_result = sendMail($to, $subject, $body);
+        if ($mail_result['success']) {
+            echo json_encode(["status" => "success", "message" => "Your inquiry has been sent successfully!"]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "message" => "Mail Error: " . $mail_result['message']]);
+        }
     } else {
-        http_response_code(500);
-        echo json_encode(["status" => "error", "message" => "Something went wrong. Please try again later."]);
+        // Local/Demo Mode
+        if ($db_saved) {
+            echo json_encode([
+                "status" => "success", 
+                "message" => "Inquiry received! (Demo Mode: Data saved to database)"
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "message" => "Database error."]);
+        }
     }
 } else {
     http_response_code(403);

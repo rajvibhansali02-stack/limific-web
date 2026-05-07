@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <link rel="stylesheet" href="css/style.css?v=1.9">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script>
         if (sessionStorage.getItem('hasSeenEntrance')) {
@@ -106,6 +106,30 @@
             .details-layout {
                 grid-template-columns: 1fr;
                 gap: 30px;
+            }
+            .product-hero {
+                padding: 120px 5vw 40px;
+            }
+            .product-info {
+                text-align: center;
+                align-items: center;
+                gap: 16px;
+            }
+            .product-title {
+                font-size: 2rem !important;
+            }
+            .product-description {
+                font-size: 0.95rem !important;
+                line-height: 1.6;
+            }
+            .details-text p {
+                font-size: 0.95rem !important;
+                text-align: center;
+                line-height: 1.6;
+            }
+            .product-specs {
+                grid-template-columns: 1fr;
+                width: 100%;
             }
         }
 
@@ -261,7 +285,7 @@
                 <li><a href="index.php#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
                 <li><a href="index.php#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
                 <?php if(isset($_SESSION['user_id'])): ?>
-                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT" onclick="return confirmLogout(event)"><span>LOGOUT</span><span>LOGOUT</span></a></li>
                 <?php else: ?>
                     <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
                 <?php endif; ?>
@@ -444,7 +468,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="js/script.js?v=1.2"></script>
+    <script src="js/script.js?v=1.4"></script>
     <script src="js/theme.js"></script>
     <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

@@ -6,23 +6,25 @@ $result = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
 $products = $result->fetch_all(MYSQLI_ASSOC);
 
 // Calculate dynamic counts based on new catalog categories
-$counts = [
-    'all' => count($products),
-    'magnetic' => 0,
-    'downlights' => 0,
-    'spots' => 0,
-    'surface' => 0,
-    'outdoor' => 0,
-    'underwater' => 0,
-    'accessories' => 0
-];
-
+$counts = ['all' => count($products)];
 foreach ($products as $p) {
-    $cat = strtolower($p['category']);
-    if (isset($counts[$cat])) {
-        $counts[$cat]++;
+    $cat = strtolower(trim($p['category']));
+    if (!isset($counts[$cat])) {
+        $counts[$cat] = 0;
     }
+    $counts[$cat]++;
 }
+
+$displayNames = [
+    'magnetic' => 'Magnetic Systems',
+    'downlights' => 'Recessed Downlights',
+    'spots' => 'Spotlights / COB',
+    'surface' => 'Surface Mounted',
+    'outdoor' => 'Garden / Inground',
+    'underwater' => 'Underwater Lights',
+    'accessories' => 'Accessories',
+    'ceiling masterpieces' => 'Ceiling Masterpieces'
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +76,7 @@ foreach ($products as $p) {
                 <li><a href="index.php#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
                 <li><a href="index.php#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
                 <?php if(isset($_SESSION['user_id'])): ?>
-                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT" onclick="return confirmLogout(event)"><span>LOGOUT</span><span>LOGOUT</span></a></li>
                 <?php else: ?>
                     <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
                 <?php endif; ?>
@@ -135,13 +137,22 @@ foreach ($products as $p) {
                 <h3 class="sidebar-heading">Collections</h3>
                 <ul class="sidebar-nav">
                     <li><button class="filter-btn active" data-filter="all">All Products <span class="count"><?php echo $counts['all']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="magnetic">Magnetic Systems <span class="count"><?php echo $counts['magnetic']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="downlights">Recessed Downlights <span class="count"><?php echo $counts['downlights']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="spots">Spotlights / COB <span class="count"><?php echo $counts['spots']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="surface">Surface Mounted <span class="count"><?php echo $counts['surface']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="outdoor">Garden / Inground <span class="count"><?php echo $counts['outdoor']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="underwater">Underwater Lights <span class="count"><?php echo $counts['underwater']; ?></span></button></li>
-                    <li><button class="filter-btn" data-filter="accessories">Accessories <span class="count"><?php echo $counts['accessories']; ?></span></button></li>
+                    <?php 
+                        // Order the categories based on our mapping for better UX
+                        $ordered_cats = array_keys($displayNames);
+                        foreach($ordered_cats as $cat): 
+                            if(!isset($counts[$cat])) continue;
+                    ?>
+                        <li><button class="filter-btn" data-filter="<?php echo $cat; ?>"><?php echo $displayNames[$cat]; ?> <span class="count"><?php echo $counts[$cat]; ?></span></button></li>
+                    <?php endforeach; ?>
+                    
+                    <?php 
+                        // Show any other categories not in the displayNames mapping
+                        foreach($counts as $cat => $count): 
+                            if($cat == 'all' || isset($displayNames[$cat])) continue;
+                    ?>
+                        <li><button class="filter-btn" data-filter="<?php echo $cat; ?>"><?php echo ucwords($cat); ?> <span class="count"><?php echo $count; ?></span></button></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
             <div class="sidebar-section" id="sidebarSectionSort">
@@ -158,7 +169,7 @@ foreach ($products as $p) {
         <main class="shop-main">
             <div class="product-grid cols-3" id="productGrid">
                 <?php foreach ($products as $p): ?>
-                <article class="product-card" data-cat="<?php echo strtolower($p['category']); ?>" data-price="<?php echo $p['price']; ?>" data-id="<?php echo $p['id']; ?>">
+                <article class="product-card" data-cat="<?php echo strtolower($p['category']); ?>" data-price="<?php echo $p['price']; ?>" data-id="<?php echo $p['id']; ?>" onclick='openProductDetail(<?php echo json_encode($p); ?>)'>
                     <div class="product-img-wrap">
                         <div class="product-img-bg product-real-img">
                             <img src="<?php echo $p['image_url']; ?>" alt="<?php echo $p['name']; ?>" class="product-real-photo" onerror="this.src='images/logo.webp'; this.style.padding='20%'">
@@ -167,12 +178,12 @@ foreach ($products as $p) {
                     </div>
                     <div class="product-info">
                         <div class="product-details-top">
-                            <span class="product-cat-tag"><?php echo $p['category']; ?></span>
                             <h2 class="product-title"><?php echo $p['name']; ?></h2>
+                            <p class="product-card-desc"><?php echo $p['description']; ?></p>
                         </div>
                         <div class="product-details-bottom">
                             <p class="product-price-tag">₹<?php echo number_format($p['price'], 0); ?></p>
-                            <div class="card-qty-wrapper">
+                            <div class="card-qty-wrapper" onclick="event.stopPropagation();">
                                 <div class="card-qty-controls">
                                     <button class="card-qty-btn" data-action="dec">−</button>
                                     <span class="card-qty-num">1</span>
@@ -186,13 +197,20 @@ foreach ($products as $p) {
                     </div>
                 </article>
                 <?php endforeach; ?>
+                
+                <!-- No Products Message -->
+                <div id="noProductsMessage" class="no-results" style="display: none;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><path d="m16 16-4-4-4 4"/><path d="M12 12v-8"/>
+                    </svg>
+                    <h3>Collection Under Maintenance</h3>
+                    <p>We're currently curating new designs for this collection. Please explore our other categories or check back soon!</p>
+                </div>
             </div>
         </main>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="js/shop.js?v=<?php echo time(); ?>"></script>
-    <script src="js/theme.js"></script>
     <script>
     (function initializeSpectralCursor() {
         if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024) return;
@@ -235,11 +253,50 @@ foreach ($products as $p) {
             requestAnimationFrame(animate);
         }
         animate();
-        document.querySelectorAll('a, button, .product-card, .filter-btn').forEach(el => {
-            el.addEventListener('mouseenter', () => glow.classList.add('active'));
-            el.addEventListener('mouseleave', () => glow.classList.remove('active'));
-        });
     })();
+
+    // Global Modal Functions
+    function openProductDetail(p) {
+        const modal = document.getElementById('productDetailModal');
+        document.getElementById('modal_img').src = p.image_url;
+        document.getElementById('modal_cat').textContent = p.category;
+        document.getElementById('modal_title').textContent = p.name;
+        document.getElementById('modal_price').textContent = "₹" + parseFloat(p.price).toLocaleString();
+        document.getElementById('modal_color').textContent = p.color;
+        document.getElementById('modal_wattage').textContent = p.wattage || 'N/A';
+        document.getElementById('modal_beam').textContent = p.beam_angle || 'N/A';
+        document.getElementById('modal_cri').textContent = (p.cri || 'N/A') + " | " + (p.ip_rating || 'N/A');
+        document.getElementById('modal_desc').textContent = p.description;
+        
+        modal.classList.add('active');
+        document.body.classList.add('modal-active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductDetail() {
+        const modal = document.getElementById('productDetailModal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeProductDetail();
+    });
+
+    // Initialize Modal Click listener
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('productDetailModal');
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target.id === 'productDetailModal') closeProductDetail();
+            });
+        }
+    });
+
     </script>
     <div class="mobile-action-bar">
         <button class="action-bar-btn" id="mobileFilterBtn" onclick="openMobileDrawer('filter')">
@@ -254,50 +311,10 @@ foreach ($products as $p) {
     </div>
 
     <script>
-    // Failsafe Debugger & Mobile Drawer Controller
-    window.openMobileDrawer = function(section) {
-        const drawer = document.getElementById('mobileFilterDrawer');
+    document.addEventListener('DOMContentLoaded', () => {
         const overlay = document.getElementById('mobileFilterOverlay');
-        const content = document.getElementById('mobileFilterContent');
-        if (!drawer || !content) return;
-
-        const sidebar = document.querySelector('.shop-sidebar');
-        if (sidebar && content.children.length === 0) {
-            content.innerHTML = sidebar.innerHTML;
-            if (window.bindFilterEvents) window.bindFilterEvents();
-        }
-        
-        // Toggle Sections
-        const colSec = content.querySelector('#sidebarSectionCollections');
-        const sortSec = content.querySelector('#sidebarSectionSort');
-        if (section === 'filter') {
-            if (colSec) colSec.style.display = 'block';
-            if (sortSec) sortSec.style.display = 'none';
-        } else {
-            if (colSec) colSec.style.display = 'none';
-            if (sortSec) sortSec.style.display = 'block';
-        }
-
-        if (!drawer.classList.contains('open')) {
-            history.pushState({ drawer: 'open' }, '');
-        }
-        drawer.classList.add('open');
-        overlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    };
-
-    window.closeMobileDrawer = function() {
-        const drawer = document.getElementById('mobileFilterDrawer');
-        const overlay = document.getElementById('mobileFilterOverlay');
-        if (drawer && drawer.classList.contains('open')) {
-            drawer.classList.remove('open');
-            overlay.classList.remove('open');
-            document.body.style.overflow = '';
-            if (history.state && history.state.drawer === 'open') {
-                history.back();
-            }
-        }
-    };
+        if (overlay) overlay.addEventListener('click', window.closeMobileDrawer);
+    });
 
     window.addEventListener('popstate', (e) => {
         const drawer = document.getElementById('mobileFilterDrawer');
@@ -313,11 +330,11 @@ foreach ($products as $p) {
     <!-- Mobile Filter/Sort Drawer -->
     <div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
     <aside class="mobile-filter-drawer" id="mobileFilterDrawer">
+        <div class="cart-drawer-header">
+            <h2>Filter & Sort</h2>
+        </div>
         <div class="mobile-filter-body" id="mobileFilterContent">
             <!-- Content will be mirrored from sidebar via JS -->
-        </div>
-        <div class="mobile-drawer-footer">
-            <button class="btn-drawer-apply" onclick="closeMobileDrawer()">Apply & Close</button>
         </div>
     </aside>
 
@@ -327,5 +344,47 @@ foreach ($products as $p) {
             <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.116 1.535 5.845L.057 23.428a.75.75 0 0 0 .916.916l5.638-1.479A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.698 9.698 0 0 1-4.95-1.355l-.355-.21-3.685.966.982-3.594-.23-.368A9.698 9.698 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
         </svg>
     </a>
+    <script src="js/shop.js?v=<?php echo time(); ?>"></script>
+    <script src="js/theme.js"></script>
+    </aside>
+
+    <!-- Product Detail Modal -->
+    <div class="detail-modal" id="productDetailModal">
+        <div class="detail-modal-content">
+            <button class="detail-modal-close" onclick="closeProductDetail()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+            <div class="detail-img-side">
+                <img id="modal_img" src="" alt="Product Detail">
+            </div>
+            <div class="detail-info-side">
+                <div id="modal_cat" class="detail-cat"></div>
+                <h2 id="modal_title" class="detail-title"></h2>
+                <div id="modal_price" class="detail-price"></div>
+                
+                <div class="detail-specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">Finish / Color</span>
+                        <div id="modal_color" class="spec-value"></div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Wattage</span>
+                        <div id="modal_wattage" class="spec-value"></div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Beam Angle</span>
+                        <div id="modal_beam" class="spec-value"></div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">CRI | IP Rating</span>
+                        <div id="modal_cri" class="spec-value"></div>
+                    </div>
+                </div>
+
+                <div class="detail-desc-label">Product Description</div>
+                <p id="modal_desc" class="detail-desc"></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

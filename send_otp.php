@@ -21,24 +21,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'expires' => time() + 300
     ];
 
-    // Simulate sending
-    // In production, use PHPMailer or SMS API here
+    // --- LIVE INTEGRATION ---
+    require_once 'includes/mailer.php';
+    
     $success = true;
     $message = "OTP sent successfully.";
+    $is_demo = true; // Set to FALSE when you have entered your SMTP credentials in includes/mailer.php
 
-    // Example of how you would send email if mail() works:
-    if ($type === 'email') {
-        $to = $target;
-        $subject = "Your Lumific Verification Code";
-        $body = "Your verification code is: $otp\n\nValid for 5 minutes.";
-        $headers = "From: no-reply@lumific.in";
-        // @mail($to, $subject, $body, $headers); // Uncomment in production
+    if (!$is_demo) {
+        if ($type === 'email') {
+            $subject = "Your Lumific Verification Code";
+            $body = "
+                <div style='font-family: Arial, sans-serif; padding: 20px; color: #333;'>
+                    <h2 style='color: #000;'>Lumific Boutique Verification</h2>
+                    <p>Your verification code is:</p>
+                    <div style='font-size: 32px; font-weight: bold; letter-spacing: 5px; margin: 20px 0;'>$otp</div>
+                    <p>This code is valid for 5 minutes. Do not share it with anyone.</p>
+                </div>
+            ";
+            $result = sendMail($target, $subject, $body);
+            $success = $result['success'];
+            $message = $result['message'];
+        } else {
+            // SMS logic would go here (requires SMS API)
+            $message = "SMS OTP simulation: $otp";
+        }
     }
 
-    echo json_encode([
+    $response = [
         'success' => $success,
-        'message' => $message,
-        'otp' => $otp // Sending OTP in response for DEMO purposes ONLY
-    ]);
+        'message' => $message
+    ];
+
+    // ONLY send OTP in response if in demo mode
+    if ($is_demo) {
+        $response['otp'] = $otp;
+        $response['message'] .= " (Demo Mode)";
+    }
+
+    echo json_encode($response);
 }
 ?>

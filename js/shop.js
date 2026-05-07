@@ -264,7 +264,16 @@ function filterProducts(filter) {
         if (show) visible++;
     });
     
+    // Toggle "No Products" message
+    const noProductsMsg = document.getElementById('noProductsMessage');
+    if (noProductsMsg) {
+        noProductsMsg.style.display = (visible === 0) ? 'flex' : 'none';
+    }
 
+    // Update results count if it exists
+    if (resultsCount) {
+        resultsCount.textContent = `${visible} item${visible !== 1 ? 's' : ''} found`;
+    }
 }
 
 // ─── 5.5 Sorting Logic ────────────────────────────────────────────────────────
@@ -408,17 +417,25 @@ window.openMobileDrawer = function(section) {
         bindFilterEvents();
     }
     
+    // Toggle Sections Visibility
+    const colSec = mobileFilterContent.querySelector('#sidebarSectionCollections');
+    const sortSec = mobileFilterContent.querySelector('#sidebarSectionSort');
+    const drawerTitle = mobileFilterDrawer.querySelector('.cart-drawer-header h2');
+
+    if (section === 'sort') {
+        if (colSec) colSec.style.display = 'none';
+        if (sortSec) sortSec.style.display = 'block';
+        if (drawerTitle) drawerTitle.textContent = 'Sort By';
+    } else {
+        if (colSec) colSec.style.display = 'block';
+        if (sortSec) sortSec.style.display = 'none';
+        if (drawerTitle) drawerTitle.textContent = 'Collections';
+    }
+    
     mobileFilterDrawer.classList.add('open');
     mobileFilterOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
-    
-    // Scroll to section
-    if (section === 'sort') {
-        const sortHeader = Array.from(mobileFilterContent.querySelectorAll('.sidebar-heading')).find(h => h.textContent.includes('Sort'));
-        if (sortHeader) sortHeader.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        mobileFilterContent.scrollTop = 0;
-    }
+    mobileFilterContent.scrollTop = 0;
 };
 
 window.closeMobileDrawer = function() {

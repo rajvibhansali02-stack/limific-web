@@ -413,7 +413,8 @@ gsap.to(".orb-orange", {
     }
     animate();
 
-    // Interaction Listeners (Visual Feedback Only)
+    // Interaction Listeners disabled to keep cursor consistent
+    /*
     function bindInteractions() {
         const links = document.querySelectorAll('a, button, .card, .glitch-link, .scene-btn');
         links.forEach(link => {
@@ -422,6 +423,7 @@ gsap.to(".orb-orange", {
         });
     }
     bindInteractions();
+    */
 })();
 
 
@@ -641,6 +643,19 @@ function initVariantsCarousel() {
 
 // Call initialization on load
 window.addEventListener('load', initVariantsCarousel);
+
+// 13. Logout Confirmation Function
+function confirmLogout(event) {
+    const confirmed = confirm("Are you sure you want to log out?");
+    if (!confirmed) {
+        if (event) event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+// Ensure the global function is accessible
+window.confirmLogout = confirmLogout;
 
 
 

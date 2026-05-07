@@ -31,7 +31,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <link rel="stylesheet" href="css/style.css?v=1.9">
     <link rel="stylesheet" href="css/ecommerce.css">
     <script>
         // Critical: Remove black delay immediately on navigation
@@ -84,7 +84,7 @@
                 <li><a href="#contact" class="glitch-link"
                         data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
                 <?php if(isset($_SESSION['user_id'])): ?>
-                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT" onclick="return confirmLogout(event)"><span>LOGOUT</span><span>LOGOUT</span></a></li>
                 <?php else: ?>
                     <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
                 <?php endif; ?>
@@ -297,11 +297,11 @@
 
 
     <!-- Smart Lighting Interaction Section -->
-    <section id="smart-as-it-gets" class="smart-interaction reveal">
+    <section id="smart-as-it-gets" class="smart-interaction">
         <div class="smart-grid">
             <div class="smart-text-content">
                 <span class="lumi-eyebrow">Interactive Ecosystem</span>
-                <h2 class="section-title"><span class="text-grad">Smart</span><br>as it gets</h2>
+                <h2 class="section-title"><span class="text-grad">Smart</span> <br>as it gets</h2>
                 <p class="section-subtitle">Adjust brightness, tune into perfect ambiance, and control your lighting
                     remotely with ease.</p>
             </div>
@@ -402,7 +402,7 @@
         <div class="shop-entry-inner reveal">
             <span class="shop-entry-eyebrow">Our Catalog</span>
             <h2 class="shop-entry-title">Browse the Collection</h2>
-            <p class="shop-entry-subtitle">113 architectural luminaires — from precision spotlights to statement ceiling
+            <p class="shop-entry-subtitle">architectural luminaires — from precision spotlights to statement ceiling
                 rings. Filter by category, explore the full range.</p>
 
             <div class="shop-entry-categories">
@@ -526,22 +526,16 @@
             <div class="exp-bg" style="background-image: url('images/experience_bg.webp')"></div>
         </div>
         <div class="exp-overlay"></div>
-        <div class="exp-content reveal" style="max-width: 1200px;">
-            <span class="lumi-eyebrow"
-                style="margin-bottom: 15px; display: block; color: #E8A04A; letter-spacing: 0.25em;">About
-                Lumific</span>
-            <h2 class="section-title">
-                <div class="text-mask"><span>Transform Your Space</span></div>
-            </h2>
+        <div class="exp-content" style="max-width: 1200px;">
+            <span class="lumi-eyebrow">About Lumific</span>
+            <h2 class="section-title">Transform Your Space</h2>
 
-            <p
-                style="font-size: 1.15rem; line-height: 1.6; color: rgba(255,255,255,0.8); max-width: 800px; margin: 0 auto 40px;">
-                Rooted in minimalism, crafted for the opulent. We blend cutting-edge optical engineering with timeless
-                artisanal design to diffuse light with absolute perfection.</p>
+            <p class="exp-text">
+                Lumific Boutique is more than just a lighting store; it's a sanctuary for design enthusiasts. We believe that light is the soul of an interior, and our mission is to provide you with fixtures that are not only functional but also works of art.
+            </p>
 
-            <div class="ethos-grid" style="margin-bottom: 40px;">
-                <div class="ethos-card"
-                    style="background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08);">
+            <div class="ethos-grid">
+                <div class="ethos-card">
                     <span class="ethos-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -551,13 +545,12 @@
                             <path d="m9.5 9.5 5 5" />
                         </svg>
                     </span>
-                    <h3 style="color: #fff;">Artisanal Curation</h3>
-                    <p style="font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.7); margin-bottom: 0;">
-                        Each fixture is a masterwork of hand-finished materials, meticulously designed to complement the
-                        unique geometry of your architectural space.</p>
+                    <h3>Artisanal Curation</h3>
+                    <p class="ethos-card-p">
+                        Each piece is handcrafted with precision, ensuring a unique masterpiece for your space.
+                    </p>
                 </div>
-                <div class="ethos-card"
-                    style="background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08);">
+                <div class="ethos-card">
                     <span class="ethos-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -573,13 +566,12 @@
                             <path d="M9 20v2" />
                         </svg>
                     </span>
-                    <h3 style="color: #fff;">Digital Intelligence</h3>
-                    <p style="font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.7); margin-bottom: 0;">
-                        Beyond illumination. Our systems synchronize with your circadian rhythm and smart home ecosystem
-                        through intuitive, adaptive AI.</p>
+                    <h3>Digital Intelligence</h3>
+                    <p class="ethos-card-p">
+                        Intelligent lighting that adapts to your presence, mood, and the time of day.
+                    </p>
                 </div>
-                <div class="ethos-card"
-                    style="background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08);">
+                <div class="ethos-card">
                     <span class="ethos-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -588,10 +580,10 @@
                             <path d="M2 21c0-3 1.85-5.36 5.08-6C10.9 14.52 12 13.84 14 11.45" />
                         </svg>
                     </span>
-                    <h3 style="color: #fff;">Ecological Integrity</h3>
-                    <p style="font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.7); margin-bottom: 0;">
-                        Engineering for a better future. 100% circular materials and low-impact production, because true
-                        luxury should never cost the Earth.</p>
+                    <h3>Ecological Integrity</h3>
+                    <p class="ethos-card-p">
+                        High-efficiency LED technology paired with sustainable materials for a greener future.
+                    </p>
                 </div>
             </div>
 
@@ -606,13 +598,11 @@
                 <h2 class="section-title">
                     <div class="text-mask"><span>Let's Illuminate Your World</span></div>
                 </h2>
-                <p class="text-mask"><span>Begin your transformation. Our designers are ready to curate a</span></p>
-                <p class="text-mask"><span>lighting identity that transcends ordinary architecture.</span></p>
+                <p class="text-mask"><span>Begin your transformation. Our designers are ready to curate a<br class="desktop-br"> lighting identity that transcends ordinary architecture.</span></p>
             </div>
-            <div class="contact-info"
-                style="margin-bottom: 30px; margin-top: 20px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
-                <p style="font-size: 1.1rem; color: #fff; margin-bottom: 0;">📞 +91 98981 03966</p>
-                <p style="font-size: 1.1rem; color: #fff; margin-bottom: 0;">✉️ lumificlighting@gmail.com</p>
+            <div class="contact-info">
+                <p>📞 +91 98981 03966</p>
+                <p>✉️ lumificlighting@gmail.com</p>
             </div>
             <form class="contact-form">
                 <div class="form-row"
@@ -646,7 +636,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
-    <script src="js/script.js?v=1.2"></script>
+    <script src="js/script.js?v=1.4"></script>
     <script src="js/theme.js"></script>
     <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

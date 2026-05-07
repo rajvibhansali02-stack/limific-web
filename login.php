@@ -1,11 +1,25 @@
 <?php
 session_start();
 if (isset($_SESSION['user_id'])) {
-    header("Location: index.html");
+    header("Location: index.php");
     exit;
 }
 $error = isset($_GET['error']) ? $_GET['error'] : false;
 $success = isset($_GET['success']) ? $_GET['success'] : false;
+
+// Determine where to redirect after login
+$redirect = 'index.php';
+if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
+    $redirect = $_GET['redirect'];
+} elseif (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
+    // Only use referer if it's not the login or signup process pages
+    $referer = $_SERVER['HTTP_REFERER'];
+    if (strpos($referer, 'login.php') === false && 
+        strpos($referer, 'auth_user.php') === false && 
+        strpos($referer, 'signup_process.php') === false) {
+        $redirect = $referer;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -169,15 +183,22 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
 
         .input-wrapper {
             position: relative;
+            display: flex;
+            align-items: center;
         }
 
-        .input-wrapper i {
+        .input-wrapper > input {
+            flex: 1;
+        }
+
+        .input-wrapper i:not(.eye-btn i) {
             position: absolute;
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: rgba(255,255,255,0.2);
             font-size: 0.85rem;
+            pointer-events: none;
         }
 
         .otp-btn {
@@ -202,11 +223,35 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
             cursor: not-allowed;
         }
 
+        .eye-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: color 0.3s;
+            z-index: 2;
+        }
+
+        .eye-btn:hover {
+            color: var(--accent);
+        }
+
         input {
             width: 100%;
             background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
-            padding: 12px 16px 12px 42px;
+            padding: 12px 44px 12px 42px;
             border-radius: 12px;
             color: #fff;
             font-family: inherit;
@@ -294,7 +339,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
 
     <div class="container">
         <div class="auth-card">
-            <a href="index.html" class="brand-logo">LUMIFIC</a>
+            <a href="index.php" class="brand-logo">LUMIFIC</a>
             <p class="tagline">Illuminate Your Lifestyle</p>
 
             <?php if($error): ?>
@@ -319,6 +364,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
 
             <!-- Login Form -->
             <form id="loginForm" class="auth-form active" action="auth_user.php" method="POST">
+                <input type="hidden" name="redirect" value="<?php echo htmlspecialchars($redirect); ?>">
                 <div class="input-group">
                     <label>Email Address</label>
                     <div class="input-wrapper">
@@ -330,7 +376,10 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
                     <label>Security Key</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" name="password" placeholder="••••••••" required>
+                        <input type="password" id="loginPassword" name="password" placeholder="••••••••" required>
+                        <button type="button" class="eye-btn" onclick="togglePassword('loginPassword', this)" aria-label="Show password">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
                     </div>
                 </div>
                 <button type="submit" class="btn-submit">Enter Boutique</button>
@@ -338,6 +387,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
 
             <!-- Sign Up Form -->
             <form id="signupForm" class="auth-form" action="signup_process.php" method="POST">
+                <input type="hidden" name="redirect" value="<?php echo htmlspecialchars($redirect); ?>">
                 <div class="input-group">
                     <label>Full Name</label>
                     <div class="input-wrapper">
@@ -364,22 +414,17 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
                     <label>Phone Number</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-phone"></i>
-                        <input type="tel" id="signupPhone" name="phone" placeholder="10-digit number" pattern="[0-9]{10}" required>
-                        <button type="button" class="otp-btn" onclick="sendOTP('phone')">Verify</button>
-                    </div>
-                </div>
-                <div class="input-group" id="phoneOtpGroup" style="display:none">
-                    <label>Phone OTP</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-key"></i>
-                        <input type="text" name="phone_otp" placeholder="6-digit code">
+                        <input type="tel" id="signupPhone" name="phone" placeholder="10-digit number" pattern="[0-9]{10}" title="Please enter exactly 10 digits" required style="padding-right: 15px;">
                     </div>
                 </div>
                 <div class="input-group">
                     <label>Create Password</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" name="password" placeholder="••••••••" required>
+                        <input type="password" id="signupPassword" name="password" placeholder="••••••••" required>
+                        <button type="button" class="eye-btn" onclick="togglePassword('signupPassword', this)" aria-label="Show password">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
                     </div>
                 </div>
                 <button type="submit" class="btn-submit">Create Account</button>
@@ -413,10 +458,31 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
             }
         }
 
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
         // Auto-switch to signup if coming from signup error or similar
         <?php if(isset($_GET['mode']) && $_GET['mode'] === 'signup'): ?>
             switchTab('signup');
         <?php endif; ?>
+
+        let emailOTPSent = false;
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            if (!emailOTPSent) {
+                e.preventDefault();
+                alert('Verify your email');
+            }
+        });
 
         async function sendOTP(type) {
             const email = document.getElementById('signupEmail').value;
@@ -441,6 +507,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : false;
                 const data = await response.json();
                 
                 if (data.success) {
+                    if (type === 'email') emailOTPSent = true;
                     document.getElementById(`${type}OtpGroup`).style.display = 'block';
                     btn.textContent = 'Sent';
                     alert(`OTP sent to your ${type}. (Check console for demo code)`);

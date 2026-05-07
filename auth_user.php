@@ -14,14 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['login_success'] = "Login successfully";
-            header("Location: index.php");
+            $redirect = isset($_POST['redirect']) && !empty($_POST['redirect']) ? $_POST['redirect'] : 'index.php';
+            header("Location: " . $redirect);
             exit;
         } else {
-            header("Location: login.php?error=Incorrect password.");
+            $redirect_query = isset($_POST['redirect']) ? "&redirect=" . urlencode($_POST['redirect']) : "";
+            header("Location: login.php?error=Incorrect password." . $redirect_query);
             exit;
         }
     } else {
-        header("Location: login.php?error=User not found.");
+        $redirect_query = isset($_POST['redirect']) ? "&redirect=" . urlencode($_POST['redirect']) : "";
+        header("Location: login.php?error=User not found." . $redirect_query);
         exit;
     }
 }

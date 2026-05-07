@@ -54,18 +54,16 @@
 
     <!-- Navigation -->
     <nav id="navbar">
-        <div class="nav-container">
             <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">
                 <span class="line"></span>
                 <span class="line"></span>
             </button>
             <ul class="nav-links">
-                <li><a href="index.html#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
-                <!-- <li><a href="shop.php" class="glitch-link active-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li> -->
-                <li><a href="index.html#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
+                <li><a href="index.php#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
+                <li><a href="index.php#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
                 <li><a href="https://lumific.in/lumific-2026.pdf" target="_blank" class="glitch-link" data-value="CATALOGUE"><span>CATALOGUE</span><span>CATALOGUE</span></a></li>
-                <li><a href="index.html#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
-                <li><a href="index.html#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
+                <li><a href="index.php#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
+                <li><a href="index.php#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
                 <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
             </ul>
 
@@ -484,9 +482,6 @@
     <aside class="mobile-filter-drawer" id="mobileFilterDrawer">
         <div class="cart-drawer-header">
             <h2>Filter</h2>
-            <button class="cart-close-btn" id="mobileFilterClose">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-            </button>
         </div>
         <div class="mobile-filter-body">
             <div class="sidebar-section">
@@ -585,10 +580,12 @@
         }
         animate();
 
+        /* Interaction Listeners disabled for consistency
         document.querySelectorAll('a, button, .product-card, .filter-btn').forEach(el => {
             el.addEventListener('mouseenter', () => glow.classList.add('active'));
             el.addEventListener('mouseleave', () => glow.classList.remove('active'));
         });
+        */
     })();
 
     // ─── Handle Hash Navigation (About/Contact Jump) ───
@@ -610,7 +607,7 @@
             // Close mobile menu on click
             if (navbar) navbar.classList.remove("active");
 
-            if (href.startsWith('index.html#')) {
+            if (href.startsWith('index.php#')) {
                 // Browser handles jump
             } else if (href.startsWith('#')) {
                 e.preventDefault();
