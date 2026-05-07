@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Lumific Boutique - Database Configuration
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
@@ -100,7 +101,6 @@ if (!$conn->query($sales_sql)) {
 }
 
 // Admin Session Helper
-session_start();
 function checkAuth() {
     if (!isset($_SESSION['admin_logged_in'])) {
         header("Location: index.php");

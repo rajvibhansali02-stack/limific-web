@@ -1,6 +1,5 @@
 <?php
 require_once 'config.php';
-session_start();
 
 // Simple Authentication for Lumific Boutique
 // You can change these credentials here
@@ -22,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $_SESSION['admin_logged_in'] = true;
-    header("Location: dashboard.php");
+    header("Location: dashboard.php?init=1");
     exit;
 }
 ?>

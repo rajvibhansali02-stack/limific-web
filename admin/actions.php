@@ -155,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $conn->query("INSERT INTO orders (order_id, customer_name, customer_phone, total_amount, order_status, payment_status) 
                       VALUES ('$order_id', '$customer_name', '$customer_phone', '$grand_total', '$status', '$payment')");
         
-        header("Location: dashboard.php?tab=sales&success=sale");
+        header("Location: dashboard.php?tab=orders&success=sale");
         exit;
     }
 
@@ -165,14 +165,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $payment = $conn->real_escape_string($_POST['payment_status']);
 
         $conn->query("UPDATE orders SET order_status='$status', payment_status='$payment' WHERE order_id='$order_id'");
-        header("Location: dashboard.php?tab=sales&updated=order");
+        header("Location: dashboard.php?tab=orders&updated=order");
         exit;
     }
 
     if ($action == "delete_sale") {
         $id = intval($_POST['id']);
         $conn->query("DELETE FROM sales WHERE id = $id");
-        header("Location: dashboard.php?tab=sales&deleted=1");
+        header("Location: dashboard.php?tab=orders&deleted=1");
         exit;
     }
 
@@ -180,7 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $order_id = $conn->real_escape_string($_POST['order_id']);
         $conn->query("DELETE FROM orders WHERE order_id = '$order_id'");
         $conn->query("DELETE FROM sales WHERE order_id = '$order_id'");
-        header("Location: dashboard.php?tab=sales&deleted=order");
+        header("Location: dashboard.php?tab=orders&deleted=order");
         exit;
     }
 

@@ -96,38 +96,48 @@ function getCountry($phone) {
         .nav-item i { width: 20px; text-align: center; }
 
         /* Main Content */
-        .main-content { margin-left: 260px; flex: 1; padding: 50px; }
+        .main-content { margin-left: 260px; flex: 1; padding: 30px; }
 
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .header h1 { font-family: 'Outfit', sans-serif; font-weight: 400; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
-        .stat-card { background: var(--glass); border: 1px solid var(--border); padding: 30px; border-radius: 20px; text-align: left; }
-        .stat-card h3 { color: rgba(255,255,255,0.4); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; }
-        .stat-card .value { font-size: 2rem; font-weight: 600; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: var(--glass); border: 1px solid var(--border); padding: 20px; border-radius: 16px; text-align: left; }
+        .stat-card h3 { color: rgba(255,255,255,0.4); font-size: 0.7rem; text-transform: uppercase; margin-bottom: 8px; }
+        .stat-card .value { font-size: 1.6rem; font-weight: 600; }
 
         /* Content Sections */
-        .content-section { background: var(--glass); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; margin-bottom: 30px; }
-        .section-header { padding: 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .content-section { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; margin-bottom: 25px; }
+        .section-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { padding: 20px 25px; color: rgba(255,255,255,0.4); font-weight: 400; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
-        td { padding: 20px 25px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        th { padding: 12px 20px; color: rgba(255,255,255,0.4); font-weight: 400; font-size: 0.75rem; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 1px; }
+        td { padding: 12px 20px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 0.85rem; }
 
-        .prod-img { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; background: #222; }
-        .badge-ui { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .prod-img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; background: #222; }
+        .badge-ui { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; white-space: nowrap; display: inline-block; }
         .badge-popular { background: rgba(76, 175, 80, 0.1); color: #4CAF50; }
         .badge-new { background: rgba(33, 150, 243, 0.1); color: #2196F3; }
 
         .btn-add { background: var(--accent); color: #000; padding: 12px 24px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(226, 176, 78, 0.2); }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1); filter: brightness(1.1); }
 
         .action-btn { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
         .action-btn:hover { color: #f44336; }
 
         /* Inquiry Card */
-        .inquiry-row:hover { background: rgba(255,255,255,0.02); }
-        .inquiry-msg { font-size: 0.9rem; color: rgba(255,255,255,0.7); max-width: 400px; line-height: 1.5; }
+        .inquiry-row { transition: background 0.2s ease; }
+        .inquiry-row:hover { background: rgba(255,255,255,0.04); cursor: pointer; }
+        .inquiry-msg { 
+            font-size: 0.85rem; 
+            color: rgba(255,255,255,0.6); 
+            max-width: 350px; 
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
         /* Analytics Chart Simulation */
         .chart-container { padding: 40px; display: flex; flex-direction: column; gap: 30px; }
@@ -148,7 +158,9 @@ function getCountry($phone) {
             backdrop-filter: blur(10px); 
             z-index: 1000; 
             overflow-y: auto; 
-            padding: 40px 20px;
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
         }
         .modal-content { 
             background: #111; 
@@ -158,8 +170,7 @@ function getCountry($phone) {
             border-radius: 24px; 
             padding: 40px; 
             position: relative; 
-            margin: 0 auto;
-            max-height: calc(100vh - 80px);
+            max-height: 90vh;
             overflow-y: auto;
         }
 
@@ -177,14 +188,16 @@ function getCountry($phone) {
         input, select, textarea { width: 100%; background: #1a1a1a; border: 1px solid var(--border); padding: 12px 15px; border-radius: 10px; color: #fff; font-family: inherit; }
 
         /* Notifications */
-        .notification {
-            padding: 15px 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .notification { 
+            padding: 15px 25px; 
+            border-radius: 12px; 
+            margin-bottom: 30px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            font-size: 0.9rem;
             animation: slideIn 0.5s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
         .notif-success { background: rgba(76, 175, 80, 0.1); border: 1px solid rgba(76, 175, 80, 0.2); color: #4CAF50; }
         .notif-error { background: rgba(244, 67, 54, 0.1); border: 1px solid rgba(244, 67, 54, 0.2); color: #f44336; }
@@ -194,6 +207,25 @@ function getCountry($phone) {
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
+    <script>
+        // Tab-Specific Session Security
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('init') === '1') {
+                // First load after login - mark this tab as authorized
+                sessionStorage.setItem('admin_tab_active', 'true');
+                // Clean up the URL
+                const url = new URL(window.location);
+                url.searchParams.delete('init');
+                window.history.replaceState({}, '', url);
+            } else {
+                // Re-visiting or new tab - check if authorized
+                if (!sessionStorage.getItem('admin_tab_active')) {
+                    window.location.href = 'logout.php';
+                }
+            }
+        })();
+    </script>
 </head>
 <body>
     <div class="sidebar">
@@ -211,13 +243,25 @@ function getCountry($phone) {
     <div class="main-content">
         <?php if (isset($_GET['success'])): ?>
             <div class="notification notif-success">
-                <i class="fa-solid fa-circle-check"></i> Product added successfully!
+                <i class="fa-solid fa-circle-check"></i> Action completed successfully!
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['deleted'])): ?>
+            <div class="notification notif-success" style="background: rgba(244, 67, 54, 0.1); border-color: rgba(244, 67, 54, 0.2); color: #f44336;">
+                <i class="fa-solid fa-trash-can"></i> Record deleted successfully.
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['updated'])): ?>
+            <div class="notification notif-success">
+                <i class="fa-solid fa-pen-to-square"></i> Record updated successfully.
             </div>
         <?php endif; ?>
 
         <?php if (isset($_GET['error']) && $_GET['error'] == 'duplicate'): ?>
             <div class="notification notif-error">
-                <i class="fa-solid fa-triangle-exclamation"></i> Error: A product with this name already exists.
+                <i class="fa-solid fa-triangle-exclamation"></i> Error: A duplicate entry was detected.
             </div>
         <?php endif; ?>
 
@@ -253,7 +297,7 @@ function getCountry($phone) {
                     </thead>
                     <tbody>
                         <?php foreach($products as $p): ?>
-                        <tr class="inquiry-row">
+                        <tr class="inquiry-row" onclick='openProductViewModal(<?php echo json_encode($p); ?>)'>
                             <td style="display: flex; align-items: center; gap: 15px;">
                                 <img src="../<?php echo $p['image_url']; ?>" class="prod-img">
                                 <div>
@@ -266,10 +310,10 @@ function getCountry($phone) {
                             <td><div style="font-size: 0.8rem; color: rgba(255,255,255,0.4); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?php echo $p['description']; ?></div></td>
                             <td>
                                 <div style="display: flex; gap: 10px;">
-                                    <button class="action-btn" onclick='openEditModal(<?php echo json_encode($p); ?>)' title="Edit Product">
+                                    <button class="action-btn" onclick='event.stopPropagation(); openEditModal(<?php echo json_encode($p); ?>)'>
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <form action="actions.php" method="POST" style="display:inline;">
+                                    <form action="actions.php" method="POST" style="display:inline;" onclick="event.stopPropagation();">
                                         <input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?php echo $p['id']; ?>">
                                         <button type="submit" class="action-btn" style="color: #f44336;" onclick="return confirm('Delete this product?')">
                                             <i class="fa-solid fa-trash-can"></i>
@@ -307,31 +351,33 @@ function getCountry($phone) {
                     </thead>
                     <tbody>
                         <?php foreach($inquiries as $iq): ?>
-                        <tr class="inquiry-row">
+                        <tr class="inquiry-row" onclick='openInquiryModal(<?php echo json_encode($iq); ?>)'>
                             <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y | H:i', strtotime($iq['created_at'])); ?></td>
                             <td>
                                 <div style="font-weight: 600;"><?php echo $iq['name']; ?></div>
                                 <div style="font-size: 0.75rem; color: rgba(255,255,255,0.4);"><?php echo $iq['email']; ?></div>
                             </td>
                             <td><span class="badge-ui" style="background: rgba(226,176,78,0.1); color: var(--accent);"><?php echo $iq['product']; ?></span></td>
-                            <td class="inquiry-msg"><?php echo $iq['message']; ?></td>
+                            <td><div class="inquiry-msg"><?php echo $iq['message']; ?></div></td>
                             <td>
                                 <div style="font-weight: 600; display: flex; align-items: center; gap: 8px;">
                                     <?php echo $iq['phone']; ?>
                                     <?php if(strlen(preg_replace('/[^0-9]/', '', $iq['phone'])) != 10): ?>
-                                        <i class="fa-solid fa-circle-exclamation" style="color: #f44336; font-size: 0.7rem;" title="Not 10 digits"></i>
+                                        <i class="fa-solid fa-circle-exclamation" style="color: #f44336; font-size: 0.7rem;"></i>
                                     <?php endif; ?>
                                 </div>
                                 <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4);"><?php echo getCountry($iq['phone']); ?></div>
                             </td>
                             <td>
-                                <form action="actions.php" method="POST" style="display:inline;">
-                                    <input type="hidden" name="action" value="delete_inquiry">
-                                    <input type="hidden" name="id" value="<?php echo $iq['id']; ?>">
-                                    <button type="submit" class="action-btn" style="color: rgba(255,255,255,0.3);" onclick="return confirm('Delete this inquiry?')" title="Delete Inquiry">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </form>
+                                <div style="display: flex; gap: 10px;">
+                                    <form action="actions.php" method="POST" style="display:inline;" onclick="event.stopPropagation();">
+                                        <input type="hidden" name="action" value="delete_inquiry">
+                                        <input type="hidden" name="id" value="<?php echo $iq['id']; ?>">
+                                        <button type="submit" class="action-btn" style="color: rgba(255,255,255,0.3);" onclick="return confirm('Delete this inquiry?')">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -363,7 +409,7 @@ function getCountry($phone) {
                             <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($u['created_at'])); ?></td>
                             <td>
                                 <div style="display: flex; gap: 10px;">
-                                    <button class="action-btn" onclick='openEditUserModal(<?php echo json_encode($u); ?>)' title="Edit Member">
+                                    <button class="action-btn" onclick='openEditUserModal(<?php echo json_encode($u); ?>)'>
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <form action="actions.php" method="POST" style="display:inline;">
@@ -429,7 +475,7 @@ function getCountry($phone) {
                             // Get items for this order
                             $order_items = array_filter($sales, function($s) use ($o) { return $s['order_id'] == $o['order_id']; });
                         ?>
-                        <tr class="inquiry-row">
+                        <tr class="inquiry-row" onclick='openOrderDetailsModal(<?php echo json_encode($o); ?>, <?php echo json_encode(array_values($order_items)); ?>)'>
                             <td style="font-weight: 700; color: var(--accent);">#<?php echo $o['order_id']; ?></td>
                             <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($o['created_at'])); ?></td>
                             <td>
@@ -437,31 +483,49 @@ function getCountry($phone) {
                                 <div style="font-size: 0.75rem; color: rgba(255,255,255,0.4);"><?php echo $o['customer_phone']; ?></div>
                             </td>
                             <td>
-                                <div style="font-size: 0.8rem;">
-                                    <?php foreach($order_items as $item): ?>
-                                        <div>• <?php echo $item['product_name']; ?> (x<?php echo $item['quantity']; ?>)</div>
-                                    <?php endforeach; ?>
+                                <div class="inquiry-msg" style="max-width: 200px;">
+                                    <?php 
+                                        $item_texts = [];
+                                        foreach($order_items as $item) { $item_texts[] = $item['product_name'] . " (x" . $item['quantity'] . ")"; }
+                                        echo implode(", ", $item_texts);
+                                    ?>
                                 </div>
                             </td>
                             <td style="font-weight: 600; color: var(--accent);">₹<?php echo number_format($o['total_amount']); ?></td>
                             <td>
                                 <span class="badge-ui" style="background: <?php 
-                                    echo $o['order_status'] == 'Delivered' ? 'rgba(76, 175, 80, 0.1)' : ($o['order_status'] == 'Cancelled' ? 'rgba(244, 67, 54, 0.1)' : 'rgba(226, 176, 78, 0.1)'); 
+                                    if($o['order_status'] == 'Delivered') echo 'rgba(76, 175, 80, 0.1)';
+                                    elseif($o['order_status'] == 'Cancelled') echo 'rgba(244, 67, 54, 0.1)';
+                                    elseif($o['order_status'] == 'Processing') echo 'rgba(156, 39, 176, 0.1)';
+                                    elseif($o['order_status'] == 'Shipped') echo 'rgba(0, 188, 212, 0.1)';
+                                    else echo 'rgba(226, 176, 78, 0.1)'; 
                                 ?>; color: <?php 
-                                    echo $o['order_status'] == 'Delivered' ? '#4CAF50' : ($o['order_status'] == 'Cancelled' ? '#f44336' : 'var(--accent)'); 
+                                    if($o['order_status'] == 'Delivered') echo '#4CAF50';
+                                    elseif($o['order_status'] == 'Cancelled') echo '#f44336';
+                                    elseif($o['order_status'] == 'Processing') echo '#9c27b0';
+                                    elseif($o['order_status'] == 'Shipped') echo '#00BCD4';
+                                    else echo '#E2B04E'; 
                                 ?>;"><?php echo $o['order_status']; ?></span>
                             </td>
-                            <td>
-                                <span class="badge-ui" style="border: 1px solid <?php echo $o['payment_status'] == 'Paid' ? '#4CAF50' : '#f44336'; ?>; color: <?php echo $o['payment_status'] == 'Paid' ? '#4CAF50' : '#f44336'; ?>; background: none;">
+                             <td>
+                                <span class="badge-ui" style="border: 1px solid <?php 
+                                    if($o['payment_status'] == 'Paid') echo '#4CAF50';
+                                    elseif($o['payment_status'] == 'Refunded') echo '#b388ff';
+                                    else echo '#f44336';
+                                ?>; color: <?php 
+                                    if($o['payment_status'] == 'Paid') echo '#4CAF50';
+                                    elseif($o['payment_status'] == 'Refunded') echo '#b388ff';
+                                    else echo '#f44336';
+                                ?>; background: none;">
                                     <?php echo $o['payment_status']; ?>
                                 </span>
                             </td>
                             <td>
                                 <div style="display: flex; gap: 10px;">
-                                    <button class="action-btn" onclick='openUpdateOrderModal(<?php echo json_encode($o); ?>)' title="Update Status">
+                                    <button class="action-btn" onclick='event.stopPropagation(); openUpdateOrderModal(<?php echo json_encode($o); ?>)'>
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <form action="actions.php" method="POST" style="display:inline;">
+                                    <form action="actions.php" method="POST" style="display:inline;" onclick="event.stopPropagation();">
                                         <input type="hidden" name="action" value="delete_order">
                                         <input type="hidden" name="order_id" value="<?php echo $o['order_id']; ?>">
                                         <button type="submit" class="action-btn" style="color: #f44336;" onclick="return confirm('Delete this entire order and its items?')">
@@ -733,6 +797,7 @@ function getCountry($phone) {
             document.getElementById('update_payment_status').value = order.payment_status;
             document.getElementById('updateOrderModal').style.display = 'flex';
         }
+        function closeUpdateOrderModal() { document.getElementById('updateOrderModal').style.display = 'none'; }
         function openEditUserModal(user) {
             document.getElementById('edit_user_id').value = user.id;
             document.getElementById('edit_user_name').value = user.name;
@@ -741,6 +806,78 @@ function getCountry($phone) {
             document.getElementById('editUserModal').style.display = 'flex';
         }
         function closeEditUserModal() { document.getElementById('editUserModal').style.display = 'none'; }
+
+        function openInquiryModal(iq) {
+            document.getElementById('view_iq_date').textContent = iq.created_at;
+            document.getElementById('view_iq_name').textContent = iq.name;
+            document.getElementById('view_iq_email').textContent = iq.email;
+            document.getElementById('view_iq_phone').textContent = iq.phone;
+            document.getElementById('view_iq_product').textContent = iq.product;
+            document.getElementById('view_iq_message').textContent = iq.message;
+            document.getElementById('inquiryViewModal').style.display = 'flex';
+        }
+        function closeInquiryModal() { document.getElementById('inquiryViewModal').style.display = 'none'; }
+
+        function openProductViewModal(p) {
+            document.getElementById('view_prod_img').src = '../' + p.image_url;
+            document.getElementById('view_prod_name').textContent = p.name;
+            document.getElementById('view_prod_cat').textContent = p.category;
+            document.getElementById('view_prod_price').textContent = "₹" + parseFloat(p.price).toLocaleString();
+            document.getElementById('view_prod_color').textContent = p.color;
+            document.getElementById('view_prod_wattage').textContent = p.wattage || 'N/A';
+            document.getElementById('view_prod_beam').textContent = p.beam_angle || 'N/A';
+            document.getElementById('view_prod_cri').textContent = p.cri || 'N/A';
+            document.getElementById('view_prod_ip').textContent = p.ip_rating || 'N/A';
+            document.getElementById('view_prod_desc').textContent = p.description;
+            document.getElementById('productViewModal').style.display = 'flex';
+        }
+        function closeProductViewModal() { document.getElementById('productViewModal').style.display = 'none'; }
+
+        function openOrderDetailsModal(order, items) {
+            document.getElementById('view_order_id').textContent = order.order_id;
+            document.getElementById('view_order_date').textContent = order.created_at;
+            document.getElementById('view_order_customer').textContent = order.customer_name;
+            document.getElementById('view_order_phone').textContent = order.customer_phone;
+            document.getElementById('view_order_total').textContent = "₹" + parseFloat(order.total_amount).toLocaleString();
+            document.getElementById('view_order_status').textContent = order.order_status;
+            document.getElementById('view_order_payment').textContent = order.payment_status;
+            
+            const itemsList = document.getElementById('view_order_items_list');
+            itemsList.innerHTML = '';
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.style.padding = '10px 0';
+                div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.innerHTML = `<span>${item.product_name}</span> <span style="font-weight: 600; color: var(--accent);">x${item.quantity}</span>`;
+                itemsList.appendChild(div);
+            });
+
+            document.getElementById('orderDetailsModal').style.display = 'flex';
+        }
+        function closeOrderDetailsModal() { document.getElementById('orderDetailsModal').style.display = 'none'; }
+
+        // Auto-hide notifications after 4 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const notifications = document.querySelectorAll('.notification');
+            if (notifications.length > 0) {
+                setTimeout(() => {
+                    notifications.forEach(notif => {
+                        notif.style.opacity = '0';
+                        notif.style.transform = 'translateY(-10px)';
+                        setTimeout(() => notif.style.display = 'none', 500);
+                    });
+                    // Clean up URL parameters without reloading
+                    const url = new URL(window.location);
+                    url.searchParams.delete('success');
+                    url.searchParams.delete('deleted');
+                    url.searchParams.delete('updated');
+                    url.searchParams.delete('error');
+                    window.history.replaceState({}, '', url);
+                }, 1500);
+            }
+        });
     </script>
 
     <!-- Update Order Status Modal -->
@@ -803,6 +940,152 @@ function getCountry($phone) {
 
                 <button type="submit" class="btn-add" style="width: 100%; margin-top: 30px;">Update Member</button>
             </form>
+        </div>
+    </div>
+    <!-- View Inquiry Modal -->
+    <div id="inquiryViewModal" class="modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <span class="close-modal" onclick="closeInquiryModal()">&times;</span>
+            <h2 style="margin-bottom: 25px; font-family: 'Outfit', sans-serif;">Inquiry Details</h2>
+            
+            <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 18px; border: 1px solid var(--border);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <label>Client Name</label>
+                        <div id="view_iq_name" style="font-weight: 600; color: #fff;"></div>
+                    </div>
+                    <div>
+                        <label>Date Received</label>
+                        <div id="view_iq_date" style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"></div>
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <div id="view_iq_email" style="font-size: 0.9rem;"></div>
+                    </div>
+                    <div>
+                        <label>Phone</label>
+                        <div id="view_iq_phone" style="font-size: 0.9rem;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <label>Interest / Category</label>
+                    <span id="view_iq_product" class="badge-ui" style="background: rgba(226,176,78,0.1); color: var(--accent); display: inline-block;"></span>
+                </div>
+
+                <div>
+                    <label>Message</label>
+                    <div id="view_iq_message" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid var(--border); font-size: 0.95rem; line-height: 1.6; color: rgba(255,255,255,0.8); white-space: pre-wrap;"></div>
+                </div>
+            </div>
+
+            <button class="btn-add" style="width: 100%; margin-top: 30px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); display: none;" onclick="closeInquiryModal()">Close Details</button>
+        </div>
+    </div>
+    <script>
+        // Global listener to close modals on overlay click
+        window.addEventListener('click', function(e) {
+            const modals = [
+                { id: 'inquiryViewModal', close: closeInquiryModal },
+                { id: 'orderDetailsModal', close: closeOrderDetailsModal },
+                { id: 'updateOrderModal', close: closeUpdateOrderModal },
+                { id: 'editModal', close: closeEditModal },
+                { id: 'saleModal', close: closeSaleModal },
+                { id: 'editUserModal', close: closeEditUserModal },
+                { id: 'productViewModal', close: closeProductViewModal },
+                { id: 'productModal', close: closeModal }
+            ];
+
+            modals.forEach(m => {
+                const modalEl = document.getElementById(m.id);
+                if (modalEl && e.target === modalEl) {
+                    m.close();
+                }
+            });
+        });
+    </script>
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <span class="close-modal" onclick="closeOrderDetailsModal()">&times;</span>
+            <h2 style="margin-bottom: 10px; font-family: 'Outfit', sans-serif;">Order Summary</h2>
+            <div id="view_order_id" style="color: var(--accent); font-weight: 700; margin-bottom: 25px; font-size: 1.2rem;"></div>
+            
+            <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 20px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display:block; font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 5px;">Customer</label>
+                        <div id="view_order_customer" style="font-weight: 600;"></div>
+                        <div id="view_order_phone" style="font-size: 0.8rem; color: rgba(255,255,255,0.5);"></div>
+                    </div>
+                    <div style="text-align: right;">
+                        <label style="display:block; font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 5px;">Order Date</label>
+                        <div id="view_order_date" style="font-size: 0.85rem;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 10px;">Purchased Items</label>
+                    <div id="view_order_items_list" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid var(--border);"></div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <div>
+                        <label style="display:block; font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-bottom: 5px;">Total Amount</label>
+                        <div id="view_order_total" style="font-weight: 700; color: var(--accent); font-size: 1.1rem;"></div>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-bottom: 5px;">Order Status</label>
+                        <div id="view_order_status" style="font-size: 0.85rem; font-weight: 600; color: #fff;"></div>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-bottom: 5px;">Payment</label>
+                        <div id="view_order_payment" style="font-size: 0.85rem; font-weight: 600; color: #fff;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-add" style="width: 100%; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); display: none;" onclick="closeOrderDetailsModal()">Close Details</button>
+        </div>
+    </div>
+    <!-- Product View Modal -->
+    <div id="productViewModal" class="modal">
+        <div class="modal-content" style="max-width: 800px; padding: 0; overflow: hidden;">
+            <span class="close-modal" onclick="closeProductViewModal()" style="z-index: 10; background: rgba(0,0,0,0.5); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; top: 20px; right: 20px;">&times;</span>
+            <div style="display: grid; grid-template-columns: 1fr 1.2fr;">
+                <div style="background: #000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                    <img id="view_prod_img" src="" style="width: 100%; height: auto; border-radius: 12px; object-fit: contain; max-height: 400px;">
+                </div>
+                <div style="padding: 40px; background: #111;">
+                    <div id="view_prod_cat" style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem; color: var(--accent); margin-bottom: 10px; font-weight: 600;"></div>
+                    <h2 id="view_prod_name" style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; margin-bottom: 15px;"></h2>
+                    <div id="view_prod_price" style="font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 25px;"></div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                        <div style="padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px;">
+                            <label style="margin: 0; opacity: 0.5; font-size: 0.65rem;">FINISH</label>
+                            <div id="view_prod_color" style="font-size: 0.9rem; font-weight: 500;"></div>
+                        </div>
+                        <div style="padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px;">
+                            <label style="margin: 0; opacity: 0.5; font-size: 0.65rem;">WATTAGE</label>
+                            <div id="view_prod_wattage" style="font-size: 0.9rem; font-weight: 500;"></div>
+                        </div>
+                        <div style="padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px;">
+                            <label style="margin: 0; opacity: 0.5; font-size: 0.65rem;">BEAM ANGLE</label>
+                            <div id="view_prod_beam" style="font-size: 0.9rem; font-weight: 500;"></div>
+                        </div>
+                        <div style="padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px;">
+                            <label style="margin: 0; opacity: 0.5; font-size: 0.65rem;">CRI / IP</label>
+                            <div style="display: flex; gap: 10px; font-size: 0.9rem; font-weight: 500;">
+                                <span id="view_prod_cri"></span> | <span id="view_prod_ip"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label style="opacity: 0.5;">DESCRIPTION</label>
+                    <p id="view_prod_desc" style="font-size: 0.9rem; line-height: 1.6; color: rgba(255,255,255,0.7); margin-top: 5px;"></p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
