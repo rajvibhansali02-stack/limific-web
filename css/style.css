@@ -1842,7 +1842,7 @@ footer {
    WARM LIGHT MODE  (.light-mode)
    ============================================================ */
 .light-mode {
-    --bg-color: #ec96cc;
+    --bg-color: #eccf96;
     /* Deep Espresso Brown - Less orange */
     --text-primary: #F5ECD7;
     --text-secondary: rgba(123, 7, 107, 0.7);
