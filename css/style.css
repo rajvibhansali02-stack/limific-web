@@ -1842,16 +1842,14 @@ footer {
    WARM LIGHT MODE  (.light-mode)
    ============================================================ */
 .light-mode {
-    --bg-color: #573621;
-    /* Deep Espresso Brown - Less orange */
-    --text-primary: #F5ECD7;
+    --bg-color: #0d1a16; /* Midnight Jade */
+    --text-primary: #f5ecd7;
     --text-secondary: rgba(245, 236, 215, 0.70);
-    --accent: #D4A060;
-    /* Soft Champagne Gold - Less orange */
+    --accent: #d4a060; /* Champagne Gold */
     --accent-glow: rgba(212, 160, 96, 0.30);
     --card-bg: rgba(255, 240, 210, 0.06);
-    --border-color: rgba(255, 230, 180, 0.14);
-    --nav-bg: rgba(15, 8, 4, 0.85);
+    --border-color: rgba(212, 160, 96, 0.14);
+    --nav-bg: rgba(13, 26, 22, 0.85);
     background-color: var(--bg-color);
     color: var(--text-primary);
     transition: background-color 0.6s ease, color 0.4s ease;
@@ -1897,25 +1895,15 @@ footer {
 }
 
 .light-mode .card {
-    background: #835b40;
-    border-color: rgba(220, 170, 90, 0.12);
+    background: #142420; /* Deep Forest Graphite */
+    border-color: rgba(212, 160, 96, 0.12);
 }
 
-.light-mode .card-1 {
-    border-top-color: rgba(180, 100, 40, 0.45);
-}
+.light-mode .card-1 { border-top-color: #d4a060; }
+.light-mode .card-2 { border-top-color: #f5ecd7; }
+.light-mode .card-3 { border-top-color: #d4a060; }
+.light-mode .card-4 { border-top-color: #f5ecd7; }
 
-.light-mode .card-2 {
-    border-top-color: rgba(232, 160, 74, 0.45);
-}
-
-.light-mode .card-3 {
-    border-top-color: rgba(200, 140, 60, 0.45);
-}
-
-.light-mode .card-4 {
-    border-top-color: rgba(160, 90, 30, 0.45);
-}
 
 .light-mode .card h3,
 .light-mode .card h3 span {
@@ -1936,7 +1924,7 @@ footer {
 }
 
 .light-mode .text-grad {
-    background: linear-gradient(135deg, #F5ECD7 0%, #D4A060 100%);
+    background: linear-gradient(135deg, #f5ecd7 0%, #d4a060 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -2096,10 +2084,11 @@ footer {
 
 .light-mode .card .text-grad {
     background: none !important;
-    -webkit-text-fill-color: #ffffff !important;
-    color: #ffffff !important;
+    -webkit-text-fill-color: #f5ecd7 !important;
+    color: #f5ecd7 !important;
     opacity: 1 !important;
 }
+
 
 .light-mode .card p.text-grad,
 .light-mode .card p .text-grad {
@@ -2325,8 +2314,9 @@ footer {
    ============================================================ */
 .smart-interaction {
     padding: 120px 8vw;
-    background: radial-gradient(circle at 20% 50%, rgba(245, 151, 104, 0.05) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 50%, rgba(13, 26, 22, 0.2) 0%, transparent 50%);
 }
+
 
 .smart-grid {
     display: grid;
