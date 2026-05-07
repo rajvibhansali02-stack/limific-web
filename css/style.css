@@ -1398,15 +1398,19 @@ section {
 
 .ethos-card {
     padding: 30px 25px;
-    background: transparent;
-    border: none;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
-    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    backdrop-filter: blur(10px);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.3s ease;
 }
 
 .ethos-card:hover {
     transform: translateY(-5px);
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.06);
 }
+
 
 .ethos-icon {
     font-size: 1.8rem;
