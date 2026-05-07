@@ -406,8 +406,7 @@
                 rings. Filter by category, explore the full range.</p>
 
             <div class="shop-entry-categories">
-                <!-- <a href="shop.php?cat=tracklights" class="shop-cat-card"> -->
-                <a href="javascript:void(0)" class="shop-cat-card">
+                <a href="shop.php?cat=tracklights" class="shop-cat-card">
                     <div class="shop-cat-icon">
                         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="5" y="18" width="50" height="4" rx="2" fill="#333" />
@@ -419,8 +418,7 @@
                     <span class="shop-cat-name">Tracklights</span>
                     <span class="shop-cat-count">24 PRODUCTS</span>
                 </a>
-                <!-- <a href="shop.php?cat=downlights" class="shop-cat-card"> -->
-                <a href="javascript:void(0)" class="shop-cat-card">
+                <a href="shop.php?cat=downlights" class="shop-cat-card">
                     <div class="shop-cat-icon">
                         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="30" cy="26" r="18" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1" />
@@ -433,8 +431,7 @@
                     <span class="shop-cat-name">Downlights</span>
                     <span class="shop-cat-count">18 PRODUCTS</span>
                 </a>
-                <!-- <a href="shop.php?cat=spots" class="shop-cat-card"> -->
-                <a href="javascript:void(0)" class="shop-cat-card">
+                <a href="shop.php?cat=spots" class="shop-cat-card">
                     <div class="shop-cat-icon">
                         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="30" cy="28" r="16" fill="#1e1e1e" stroke="#444" stroke-width="1" />
@@ -446,8 +443,7 @@
                     <span class="shop-cat-name">Spots</span>
                     <span class="shop-cat-count">31 PRODUCTS</span>
                 </a>
-                <!-- <a href="shop.php?cat=outdoor" class="shop-cat-card"> -->
-                <a href="javascript:void(0)" class="shop-cat-card">
+                <a href="shop.php?cat=outdoor" class="shop-cat-card">
                     <div class="shop-cat-icon">
                         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <ellipse cx="30" cy="26" rx="20" ry="6" fill="#2a2a2a" stroke="#444" stroke-width="1" />
@@ -459,8 +455,7 @@
                     <span class="shop-cat-name">Outdoor</span>
                     <span class="shop-cat-count">14 PRODUCTS</span>
                 </a>
-                <!-- <a href="shop.php?cat=profiles" class="shop-cat-card"> -->
-                <a href="javascript:void(0)" class="shop-cat-card">
+                <a href="shop.php?cat=profiles" class="shop-cat-card">
                     <div class="shop-cat-icon">
                         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="5" y="25" width="50" height="8" rx="3" fill="#222" stroke="#444"
@@ -471,8 +466,7 @@
                     <span class="shop-cat-name">Profiles</span>
                     <span class="shop-cat-count">16 PRODUCTS</span>
                 </a>
-                <!-- <a href="shop.php?cat=ceiling" class="shop-cat-card"> -->
-                <a href="javascript:void(0)" class="shop-cat-card">
+                <a href="shop.php?cat=ceiling" class="shop-cat-card">
                     <div class="shop-cat-icon">
                         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="27" y="5" width="6" height="10" rx="2" fill="#333" />
