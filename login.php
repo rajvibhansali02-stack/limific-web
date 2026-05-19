@@ -399,15 +399,7 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
                     <label>Email Address</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-envelope"></i>
-                        <input type="email" id="signupEmail" name="email" placeholder="name@domain.com" required>
-                        <button type="button" class="otp-btn" onclick="sendOTP('email')">Verify</button>
-                    </div>
-                </div>
-                <div class="input-group" id="emailOtpGroup" style="display:none">
-                    <label>Email OTP</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-key"></i>
-                        <input type="text" name="email_otp" placeholder="6-digit code">
+                        <input type="email" id="signupEmail" name="email" placeholder="name@domain.com" required style="padding-right: 15px;">
                     </div>
                 </div>
                 <div class="input-group">
@@ -475,54 +467,6 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
             switchTab('signup');
         <?php endif; ?>
 
-        let emailOTPSent = false;
-
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            if (!emailOTPSent) {
-                e.preventDefault();
-                alert('Verify your email');
-            }
-        });
-
-        async function sendOTP(type) {
-            const email = document.getElementById('signupEmail').value;
-            const phone = document.getElementById('signupPhone').value;
-            const target = type === 'email' ? email : phone;
-            const btn = event.target;
-
-            if (!target) {
-                alert(`Please enter your ${type} first.`);
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = 'Sending...';
-
-            try {
-                const response = await fetch('send_otp.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `type=${type}&target=${encodeURIComponent(target)}`
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    if (type === 'email') emailOTPSent = true;
-                    document.getElementById(`${type}OtpGroup`).style.display = 'block';
-                    btn.textContent = 'Sent';
-                    alert(`OTP sent to your ${type}. (Check console for demo code)`);
-                    console.log(`[DEMO] ${type.toUpperCase()} OTP: ${data.otp}`);
-                } else {
-                    alert(data.message || 'Failed to send OTP.');
-                    btn.disabled = false;
-                    btn.textContent = 'Verify';
-                }
-            } catch (err) {
-                alert('Network error. Try again.');
-                btn.disabled = false;
-                btn.textContent = 'Verify';
-            }
-        }
     </script>
 </body>
 </html>

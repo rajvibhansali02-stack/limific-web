@@ -77,10 +77,19 @@ window.addEventListener("scroll", () => {
 });
 
 if (mobileToggle) {
-    mobileToggle.addEventListener("click", () => {
+    mobileToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
         navbar.classList.toggle("active");
     });
 }
+
+document.addEventListener("click", (e) => {
+    if (navbar && navbar.classList.contains("active")) {
+        if (!navbar.contains(e.target)) {
+            navbar.classList.remove("active");
+        }
+    }
+});
 
 
 // 3. Scroll Content Reveal (General Sections)
@@ -542,6 +551,9 @@ gsap.to(".orb-orange", {
 // 11. Custom Smooth Navigation & Form Logic
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        // Exclude account/dashboard tab links to prevent undesired scrolling effects
+        if (this.classList.contains('side-nav-link')) return;
+
         e.preventDefault();
         const target = this.getAttribute('href');
 
@@ -623,7 +635,7 @@ function initVariantsCarousel() {
             slidesPerView: 'auto',
             spaceBetween: 20,
             loop: true,
-            speed: 8000,
+            speed: 4000, // Reduced from 8000 to make the seamless marquee glide faster
             allowTouchMove: false,
             simulateTouch: false,
             autoplay: {
@@ -646,6 +658,12 @@ window.addEventListener('load', initVariantsCarousel);
 
 // 13. Logout Confirmation Function
 function confirmLogout(event) {
+    const alertModal = document.getElementById('customLogoutAlert');
+    if (alertModal) {
+        if (event) event.preventDefault();
+        alertModal.classList.add('show');
+        return false;
+    }
     const confirmed = confirm("Are you sure you want to log out?");
     if (!confirmed) {
         if (event) event.preventDefault();
@@ -654,8 +672,175 @@ function confirmLogout(event) {
     return true;
 }
 
-// Ensure the global function is accessible
+function closeCustomAlert() {
+    const alertModal = document.getElementById('customLogoutAlert');
+    if (alertModal) {
+        alertModal.classList.remove('show');
+    }
+}
+
+function proceedLogout() {
+    window.location.href = "logout_user.php";
+}
+
+// Ensure the global functions are accessible
 window.confirmLogout = confirmLogout;
+window.closeCustomAlert = closeCustomAlert;
+window.proceedLogout = proceedLogout;
+
+// Close alert on backdrop click
+window.addEventListener('DOMContentLoaded', () => {
+    const alertOverlay = document.getElementById('customLogoutAlert');
+    if (alertOverlay) {
+        alertOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCustomAlert();
+            }
+        });
+    }
+});
+
+// ─── 14. Global Custom Glassmorphic Alert System ──────────────────────────────
+window.showCustomAlert = function(title, message, type = 'info') {
+    let alertEl = document.getElementById('globalCustomAlert');
+    if (!alertEl) {
+        alertEl = document.createElement('div');
+        alertEl.id = 'globalCustomAlert';
+        alertEl.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 4, 5, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 500000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        `;
+        
+        alertEl.innerHTML = `
+            <div class="custom-alert-box" style="
+                background: radial-gradient(circle at top right, rgba(46, 16, 20, 0.98), rgba(26, 8, 10, 0.99));
+                border: 1px solid rgba(212, 122, 96, 0.2);
+                padding: 24px 36px;
+                border-radius: 24px;
+                max-width: 400px;
+                width: 90%;
+                text-align: center;
+                box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                transform: translateY(20px) scale(0.95);
+                transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            ">
+                <h3 style="
+                    font-family: 'Syncopate', sans-serif;
+                    font-size: 1.05rem;
+                    font-weight: 700;
+                    margin-bottom: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+                    letter-spacing: 2px;
+                " id="globalAlertTitle">NOTICE</h3>
+                <p style="
+                    font-family: 'Outfit', sans-serif;
+                    font-size: 0.95rem;
+                    color: rgba(255, 255, 255, 0.75);
+                    line-height: 1.5;
+                    margin-bottom: 20px;
+                    font-weight: 300;
+                " id="globalAlertMessage"></p>
+                <div style="display: flex; justify-content: center;">
+                    <button class="custom-alert-btn btn-confirm" style="
+                        font-family: 'Outfit', sans-serif;
+                        font-weight: 500;
+                        font-size: 0.85rem;
+                        letter-spacing: 1px;
+                        padding: 12px 36px;
+                        border-radius: 30px;
+                        cursor: pointer;
+                        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                        background: linear-gradient(135deg, #d47a60 0%, #b85e44 100%);
+                        border: none;
+                        color: #fff;
+                        box-shadow: 0 4px 15px rgba(212, 122, 96, 0.3);
+                    " id="globalAlertBtn">OK</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(alertEl);
+        
+        const closeBtn = alertEl.querySelector('#globalAlertBtn');
+        closeBtn.addEventListener('click', () => {
+            alertEl.style.opacity = '0';
+            alertEl.style.pointerEvents = 'none';
+            alertEl.querySelector('.custom-alert-box').style.transform = 'translateY(20px) scale(0.95)';
+        });
+        
+        closeBtn.addEventListener('mouseenter', () => {
+            closeBtn.style.transform = 'scale(1.04)';
+            closeBtn.style.boxShadow = '0 6px 20px rgba(212, 122, 96, 0.45)';
+        });
+        closeBtn.addEventListener('mouseleave', () => {
+            closeBtn.style.transform = 'scale(1)';
+            closeBtn.style.boxShadow = '0 4px 15px rgba(212, 122, 96, 0.3)';
+        });
+        
+        alertEl.addEventListener('click', (e) => {
+            if (e.target === alertEl) {
+                closeBtn.click();
+            }
+        });
+    }
+    
+    const titleEl = alertEl.querySelector('#globalAlertTitle');
+    const msgEl = alertEl.querySelector('#globalAlertMessage');
+    const boxEl = alertEl.querySelector('.custom-alert-box');
+    
+    msgEl.textContent = message;
+    titleEl.innerHTML = '';
+    
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes('success') || lowerMessage.includes('placed') || lowerMessage.includes('sent') || lowerMessage.includes('completed')) {
+        titleEl.style.color = '#2ecc71';
+        titleEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #2ecc71; font-size: 1.2rem;"></i> SUCCESS`;
+    } else if (lowerMessage.includes('error') || lowerMessage.includes('wrong') || lowerMessage.includes('fail') || lowerMessage.includes('required')) {
+        titleEl.style.color = '#e74c3c';
+        titleEl.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color: #e74c3c; font-size: 1.2rem;"></i> ALERT`;
+    } else {
+        titleEl.style.color = '#d47a60';
+        titleEl.innerHTML = `<i class="fa-solid fa-circle-info" style="color: #d47a60; font-size: 1.2rem;"></i> INFO`;
+    }
+    
+    // Animate display gracefully
+    setTimeout(() => {
+        alertEl.style.opacity = '1';
+        alertEl.style.pointerEvents = 'auto';
+        boxEl.style.transform = 'translateY(0) scale(1)';
+    }, 50);
+};
+
+// Intercept standard window.alert calls
+window.alert = function(message) {
+    let title = 'NOTICE';
+    let type = 'info';
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes('success') || lowerMessage.includes('placed') || lowerMessage.includes('sent') || lowerMessage.includes('completed')) {
+        title = 'SUCCESS';
+        type = 'success';
+    } else if (lowerMessage.includes('error') || lowerMessage.includes('wrong') || lowerMessage.includes('fail') || lowerMessage.includes('required')) {
+        title = 'ERROR';
+        type = 'error';
+    }
+    window.showCustomAlert(title, message, type);
+};
+
 
 
 

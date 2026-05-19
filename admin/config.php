@@ -49,6 +49,32 @@ $conn->query("ALTER TABLE products ADD COLUMN IF NOT EXISTS beam_angle VARCHAR(5
 $conn->query("ALTER TABLE products ADD COLUMN IF NOT EXISTS cri VARCHAR(20) AFTER beam_angle");
 $conn->query("ALTER TABLE products ADD COLUMN IF NOT EXISTS ip_rating VARCHAR(20) AFTER cri");
 
+// Auto-populate premium lighting specs for products where they are currently missing
+$conn->query("UPDATE products SET wattage = '12W', beam_angle = '24°', cri = 'Ra > 90', ip_rating = 'IP20' WHERE name LIKE 'Spotboy%' AND (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+$conn->query("UPDATE products SET wattage = '15W', beam_angle = '36°', cri = 'Ra > 92', ip_rating = 'IP20' WHERE name LIKE 'Barrel%' AND (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+$conn->query("UPDATE products SET wattage = '8W', beam_angle = '120°', cri = 'Ra > 90', ip_rating = 'IP44' WHERE name LIKE 'Halo%' AND (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+$conn->query("UPDATE products SET wattage = '12W', beam_angle = '120°', cri = 'Ra > 90', ip_rating = 'IP20' WHERE name LIKE 'AllRounder%' AND (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+$conn->query("UPDATE products SET wattage = '10W', beam_angle = '24°', cri = 'Ra > 95', ip_rating = 'IP20' WHERE name LIKE 'Go Pro%' AND (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+$conn->query("UPDATE products SET wattage = '12W', beam_angle = '45°', cri = 'Ra > 85', ip_rating = 'IP65' WHERE name LIKE 'Baylight%' AND (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+$conn->query("UPDATE products SET wattage = '18W/m', beam_angle = '120°', cri = 'Ra > 90', ip_rating = 'IP20' WHERE name LIKE 'Iskim%' AND (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+$conn->query("UPDATE products SET wattage = '24W', beam_angle = '120°', cri = 'Ra > 90', ip_rating = 'IP20' WHERE name LIKE 'Enso%' AND (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+
+// General fallbacks in case any generic or new products are missing metadata
+$conn->query("UPDATE products SET wattage = '12W' WHERE (wattage IS NULL OR wattage = '' OR wattage = 'N/A')");
+$conn->query("UPDATE products SET beam_angle = '24°' WHERE (beam_angle IS NULL OR beam_angle = '' OR beam_angle = 'N/A')");
+$conn->query("UPDATE products SET cri = 'Ra > 90' WHERE (cri IS NULL OR cri = '' OR cri = 'N/A')");
+$conn->query("UPDATE products SET ip_rating = 'IP20' WHERE (ip_rating IS NULL OR ip_rating = '' OR ip_rating = 'N/A')");
+
+// Auto-update descriptions to luxury architectural lighting copy
+$conn->query("UPDATE products SET description = 'An architectural masterpiece designed for dynamic galleries and high-end residential spaces. Spotboy 338 features an adjustable zoom lens with a precision-milled knurled gold accent ring, allowing you to seamlessly customize the beam angle while delivering an absolute glare-free, museum-grade light beam.' WHERE name LIKE 'Spotboy%'");
+$conn->query("UPDATE products SET description = 'Forged from heavy-duty architectural-grade aluminum, the Barrel 320 delivers a pristine, ultra-minimalist cylinder aesthetic. Its high-efficiency COB engine is recessed deep within an anti-glare dark baffle, casting high-contrast architectural accents while remaining completely hidden from the direct line of sight.' WHERE name LIKE 'Barrel%'");
+$conn->query("UPDATE products SET description = 'A revolutionary recessed downlight featuring Lumific\'s signature gold-plated dual-ring optics. The Halo 394 blends secondary ambient ceiling wash with a concentrated primary beam, creating a luxurious \'warm halo\' ceiling effect while eliminating the harsh shadows typical of standard downlights.' WHERE name LIKE 'Halo%'");
+$conn->query("UPDATE products SET description = 'The absolute standard in luxury general ambient illumination. Featuring a signature micro-prismatic diffuser, the AllRounder 392 distributes an exceptionally soft, shadowless, and uniform warm-luxe glow across living areas, corridors, and premium lobbies, making spaces feel expansive and inviting.' WHERE name LIKE 'AllRounder%'");
+$conn->query("UPDATE products SET description = 'A professional-grade deep-spot luminaire engineered for elite interior accents. Featuring a brushed gold bezel and custom-engineered spot reflectors, the Go Pro 168 projects a highly-concentrated, intensely saturated beam of light that brings out the richest textures and colors of luxury interior elements.' WHERE name LIKE 'Go Pro%'");
+$conn->query("UPDATE products SET description = 'A masterpiece of weatherproof engineering, the Baylight 418 is sculpted from marine-grade anodized aluminum to withstand coastal and highly humid environments. It projects a soft, luxury downward wash, seamlessly illuminating exterior columns, premium landscape pathways, and oceanfront patios.' WHERE name LIKE 'Baylight%'");
+$conn->query("UPDATE products SET description = 'An elegant, ultra-slim linear profile designed for seamless integration. The Iskim 126 features a high-density, dot-free architectural LED strip housed inside a sandblasted gold extrusion. It is the perfect choice for high-end cabinetry, floating shelves, and continuous false-ceiling cove lighting.' WHERE name LIKE 'Iskim%'");
+$conn->query("UPDATE products SET description = 'A breathtaking, large-format suspended ceiling sculpture from the legendary Studio Abby series. The Enso 30 features a hand-burnished Ember Gold circular frame that radiates a warm, diffused 360-degree ambient glow, instantly transforming high-ceiling dining rooms and luxury lobbies into modern art sanctuaries.' WHERE name LIKE 'Enso%'");
+
 // Orders Table Setup - NEW for status and payment tracking
 $orders_sql = "CREATE TABLE IF NOT EXISTS orders (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
@@ -99,6 +125,9 @@ $sales_sql = "CREATE TABLE IF NOT EXISTS sales (
 if (!$conn->query($sales_sql)) {
     die("Error creating sales table: " . $conn->error);
 }
+
+// Ensure address column exists in users table
+$conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT AFTER phone");
 
 // Admin Session Helper
 function checkAuth() {

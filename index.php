@@ -31,8 +31,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2.1">
-    <link rel="stylesheet" href="css/ecommerce.css">
+    <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="css/ecommerce.css?v=<?php echo time(); ?>">
     <script>
         // Critical: Remove black delay immediately on navigation
         if (sessionStorage.getItem('hasSeenEntrance')) {
@@ -84,7 +84,7 @@
                 <li><a href="#contact" class="glitch-link"
                         data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
                 <?php if(isset($_SESSION['user_id'])): ?>
-                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT" onclick="return confirmLogout(event)"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                    <li><a href="account.php" class="nav-icon-link" aria-label="My Account" title="My Account"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg></a></li>
                 <?php else: ?>
                     <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
                 <?php endif; ?>
@@ -630,7 +630,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
-    <script src="js/script.js?v=1.4"></script>
+    <script src="js/script.js?v=<?php echo time(); ?>"></script>
     <script src="js/theme.js"></script>
     <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

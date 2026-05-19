@@ -7,15 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = $conn->real_escape_string($_POST['phone']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    $email_otp = $_POST['email_otp'] ?? '';
-    $phone_otp = $_POST['phone_otp'] ?? '';
-
-    // Verify Email OTP
-    if (!isset($_SESSION['otp_email']) || $_SESSION['otp_email']['code'] != $email_otp || $_SESSION['otp_email']['expires'] < time()) {
-        $redirect_query = isset($_POST['redirect']) ? "&redirect=" . urlencode($_POST['redirect']) : "";
-        header("Location: login.php?mode=signup&error=Invalid or expired Email OTP." . $redirect_query);
-        exit;
-    }
 
 
     // Check if user already exists

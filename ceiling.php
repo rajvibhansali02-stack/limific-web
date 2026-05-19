@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2.1">
+    <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script>
         if (sessionStorage.getItem('hasSeenEntrance')) {
@@ -23,38 +23,9 @@
     <style>
         /* Product Specific Styles */
         .details-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: start;
-        }
-
-        .advantages-box {
-            background: rgba(255,255,255,0.03);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-        }
-
-        .advantages-list {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .advantages-list li {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .advantages-list svg {
-            color: var(--accent);
-            flex-shrink: 0;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .feature-grid {
@@ -103,10 +74,7 @@
         }
 
         @media (max-width: 768px) {
-            .details-layout {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
+
             .product-hero {
                 padding: 120px 5vw 40px;
             }
@@ -252,7 +220,7 @@
                 padding-top: 160px;
             }
             .back-nav {
-                top: 80px;
+                top: 110px;
             }
         }
     </style>
@@ -281,11 +249,10 @@
                 <li><a href="index.php#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
                 <li><a href="shop.php" class="glitch-link" data-value="SHOP"><span>SHOP</span><span>SHOP</span></a></li>
                 <li><a href="index.php#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
-                <li><a href="https://lumific.in/lumific-2026.pdf" target="_blank" class="glitch-link" data-value="CATALOGUE"><span>CATALOGUE</span><span>CATALOGUE</span></a></li>
                 <li><a href="index.php#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
                 <li><a href="index.php#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
                 <?php if(isset($_SESSION['user_id'])): ?>
-                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT" onclick="return confirmLogout(event)"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                    <li><a href="account.php" class="nav-icon-link" aria-label="My Account" title="My Account"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg></a></li>
                 <?php else: ?>
                     <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
                 <?php endif; ?>
@@ -357,28 +324,28 @@
             <div class="swiper variantsCarousel">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                        <div class="gallery-card">
+                        <a href="shop.php" class="gallery-card">
                             <div class="gallery-img" style="background-image: url('images/cat_downlights.webp');"></div>
                             <div class="gallery-info"><h4>Deep Series Downlight</h4></div>
-                        </div>
+                        </a>
                     </div>
                     <div class="swiper-slide">
-                        <div class="gallery-card">
+                        <a href="shop.php" class="gallery-card">
                             <div class="gallery-img" style="background-image: url('images/cat_profiles.webp');"></div>
                             <div class="gallery-info"><h4>Linear Magnetic Profile</h4></div>
-                        </div>
+                        </a>
                     </div>
                     <div class="swiper-slide">
-                        <div class="gallery-card">
+                        <a href="shop.php" class="gallery-card">
                             <div class="gallery-img" style="background-image: url('images/cat_tracklights.webp');"></div>
                             <div class="gallery-info"><h4>Spotboy Track Focus</h4></div>
-                        </div>
+                        </a>
                     </div>
                     <div class="swiper-slide">
-                        <div class="gallery-card">
+                        <a href="shop.php" class="gallery-card">
                             <div class="gallery-img" style="background-image: url('images/cat_spots.webp');"></div>
                             <div class="gallery-info"><h4>Adjustable Recessed Spot</h4></div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -392,7 +359,7 @@
             <p class="section-subtitle">Engineered for performance, designed for luxury.</p>
         </div>
 
-        <div class="feature-grid reveal" style="margin-bottom: 100px;">
+        <div class="feature-grid reveal" style="margin-bottom: 50px;">
             <div class="feature-card">
                 <div class="feature-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -415,26 +382,8 @@
                 <p>Boasting a CRI &gt; 95, our fixtures reveal the true texture and color of your architectural materials and artwork.</p>
             </div>
         </div>
-        
-        <div class="about-container reveal">
-            <div class="details-layout">
-                <div class="details-text">
-                    <p style="margin-bottom: 24px;">The Ceiling series is the result of years of research into how light interacts with vertical space. By utilizing high-transmission acrylic optics and custom-heat-sinked LED modules, we've created a series that offers unparalleled brightness without the glare often associated with high-output fixtures.</p>
-                    <p>Designed for grand atriums and intimate dining spaces alike, the collection bridges the gap between functional illumination and artistic expression. Every component is machined to sub-millimeter tolerances to ensure a seamless fit into any architectural context.</p>
-                </div>
-                <div class="advantages-box">
-                    <h4 style="color: var(--accent); margin-bottom: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem;">Core Advantages</h4>
-                    <ul class="advantages-list">
-                        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <span>Seamless Smart Home Integration</span></li>
-                        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <span>Flicker-Free Dimming (0.1% - 100%)</span></li>
-                        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <span>Sustainable Low-Carbon Build</span></li>
-                        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <span>Tunable White Spectrum Control</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
 
-        <div class="reveal" style="margin-top: 60px; display: flex; justify-content: center;">
+        <div class="reveal" style="margin-top: 10px; display: flex; justify-content: center;">
             <form class="contact-form" style="width: 100%; max-width: 800px;">
                 <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0;">
                     <div class="input-group" style="margin-bottom: 0;">
@@ -468,7 +417,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="js/script.js?v=1.4"></script>
+    <script src="js/script.js?v=<?php echo time(); ?>"></script>
     <script src="js/theme.js"></script>
     <a href="https://wa.me/919898103966" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

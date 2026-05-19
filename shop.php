@@ -42,7 +42,7 @@ $displayNames = [
     <link rel="stylesheet" href="css/shop.css?v=<?php echo time(); ?>">
     <style>
         @media (min-width: 1024px) {
-            body, a, button, .product-card, .filter-btn, .quick-add-btn {
+            *, *::before, *::after {
                 cursor: none !important;
             }
         }
@@ -72,11 +72,11 @@ $displayNames = [
             <ul class="nav-links">
                 <li><a href="index.php#home" class="glitch-link" data-value="HOME"><span>HOME</span><span>HOME</span></a></li>
                 <li><a href="index.php#shop" class="glitch-link" data-value="COLLECTIONS"><span>COLLECTIONS</span><span>COLLECTIONS</span></a></li>
-                <li><a href="https://lumific.in/lumific-2026.pdf" target="_blank" class="glitch-link" data-value="CATALOGUE"><span>CATALOGUE</span><span>CATALOGUE</span></a></li>
+
                 <li><a href="index.php#about" class="glitch-link" data-value="ABOUT"><span>ABOUT</span><span>ABOUT</span></a></li>
                 <li><a href="index.php#contact" class="glitch-link" data-value="CONTACT"><span>CONTACT</span><span>CONTACT</span></a></li>
                 <?php if(isset($_SESSION['user_id'])): ?>
-                    <li><a href="logout_user.php" class="glitch-link" data-value="LOGOUT" onclick="return confirmLogout(event)"><span>LOGOUT</span><span>LOGOUT</span></a></li>
+                    <li><a href="account.php" class="nav-icon-link" aria-label="My Account" title="My Account"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg></a></li>
                 <?php else: ?>
                     <li><a href="login.php" class="glitch-link" data-value="LOGIN"><span>LOGIN</span><span>LOGIN</span></a></li>
                 <?php endif; ?>
@@ -169,7 +169,7 @@ $displayNames = [
         <main class="shop-main">
             <div class="product-grid cols-3" id="productGrid">
                 <?php foreach ($products as $p): ?>
-                <article class="product-card" data-cat="<?php echo strtolower($p['category']); ?>" data-price="<?php echo $p['price']; ?>" data-id="<?php echo $p['id']; ?>" onclick='openProductDetail(<?php echo json_encode($p); ?>)'>
+                <article class="product-card" data-cat="<?php echo strtolower($p['category']); ?>" data-price="<?php echo $p['price']; ?>" data-id="<?php echo $p['id']; ?>" onclick="openProductDetail(<?php echo htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8'); ?>)">
                     <div class="product-img-wrap">
                         <div class="product-img-bg product-real-img">
                             <img src="<?php echo $p['image_url']; ?>" alt="<?php echo $p['name']; ?>" class="product-real-photo" onerror="this.src='images/logo.webp'; this.style.padding='20%'">
@@ -190,7 +190,7 @@ $displayNames = [
                                     <button class="card-qty-btn" data-action="inc">+</button>
                                 </div>
                                 <button class="card-quick-add" data-id="<?php echo $p['id']; ?>" data-name="<?php echo $p['name']; ?>" data-price="<?php echo $p['price']; ?>" data-cat="<?php echo $p['category']; ?>">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add
+                                    Add
                                 </button>
                             </div>
                         </div>
@@ -259,14 +259,86 @@ $displayNames = [
     function openProductDetail(p) {
         const modal = document.getElementById('productDetailModal');
         document.getElementById('modal_img').src = p.image_url;
-        document.getElementById('modal_cat').textContent = p.category;
-        document.getElementById('modal_title').textContent = p.name;
-        document.getElementById('modal_price').textContent = "₹" + parseFloat(p.price).toLocaleString();
-        document.getElementById('modal_color').textContent = p.color;
-        document.getElementById('modal_wattage').textContent = p.wattage || 'N/A';
-        document.getElementById('modal_beam').textContent = p.beam_angle || 'N/A';
-        document.getElementById('modal_cri').textContent = (p.cri || 'N/A') + " | " + (p.ip_rating || 'N/A');
+        
+        // Beautiful category formatting matching the premium dark mode mockup
+        let categoryName = p.category || '';
+        const displayNames = {
+            'magnetic': 'Magnetic Systems',
+            'downlights': 'Recessed Downlights',
+            'spots': 'Tracklights',
+            'surface': 'Surface Mounted',
+            'outdoor': 'Garden / Inground',
+            'underwater': 'Underwater Lights',
+            'accessories': 'Accessories',
+            'ceiling masterpieces': 'Ceiling Masterpieces'
+        };
+        const mappedCat = displayNames[categoryName.toLowerCase()] || categoryName;
+        document.getElementById('modal_cat').innerHTML = mappedCat.toUpperCase() + ' <span class="cat-bullet">•</span>';
+        
+        // Title formatting to trim long technical suffixes for a clean designer-label title
+        let titleText = p.name || '';
+        titleText = titleText.replace(/\b(Track Light|Technical Spotlight|Recessed Light|Downlight|Garden Bollard|Inground Uplight|Underwater Spot|Surface Sconce|Architectural Disk)\b/gi, '').trim();
+        document.getElementById('modal_title').textContent = titleText;
+        
+        // High-end integer formatted price (e.g. ₹420)
+        document.getElementById('modal_price').textContent = "₹" + parseInt(p.price).toLocaleString();
+        
+        // Handle empty or N/A fields with smart premium defaults based on product type
+        const name = (p.name || '').toLowerCase();
+        const cat = (p.category || '').toLowerCase();
+        
+        let wattage = p.wattage;
+        if (!wattage || wattage === 'N/A') {
+            if (name.includes('enso') || name.includes('ceiling')) wattage = '24W';
+            else if (name.includes('barrel')) wattage = '15W';
+            else if (name.includes('gopro') || name.includes('spot')) wattage = '10W';
+            else if (name.includes('halo') || name.includes('downlight')) wattage = '8W';
+            else if (name.includes('iskim') || name.includes('profile')) wattage = '18W/m';
+            else wattage = '12W';
+        }
+        
+        let beam = p.beam_angle;
+        if (!beam || beam === 'N/A') {
+            if (name.includes('halo') || name.includes('allrounder') || name.includes('enso') || name.includes('iskim') || cat.includes('downlights') || cat.includes('profiles') || cat.includes('ceiling')) {
+                beam = '120°';
+            } else if (name.includes('barrel') || name.includes('baylight') || cat.includes('outdoor')) {
+                beam = '36°';
+            } else {
+                beam = '24°';
+            }
+        }
+        
+        let cri = p.cri;
+        if (!cri || cri === 'N/A') {
+            cri = (cat.includes('outdoor') || name.includes('baylight')) ? 'Ra > 85' : 'Ra > 90';
+        }
+        
+        let ip = p.ip_rating;
+        if (!ip || ip === 'N/A') {
+            if (cat.includes('underwater') || name.includes('aqua')) ip = 'IP68';
+            else if (cat.includes('outdoor') || name.includes('baylight') || name.includes('garden')) ip = 'IP65';
+            else if (name.includes('halo') || cat.includes('downlights')) ip = 'IP44';
+            else ip = 'IP20';
+        }
+
+        document.getElementById('modal_color').textContent = p.color || 'Black / Gold';
+        document.getElementById('modal_wattage').textContent = wattage;
+        document.getElementById('modal_beam').textContent = beam;
+        document.getElementById('modal_cri').textContent = cri + " | " + ip;
         document.getElementById('modal_desc').textContent = p.description;
+        
+        // Dynamically populate modal Add button data attributes and reset quantity to 1
+        const modalAddBtn = document.getElementById('modal_add_btn');
+        if (modalAddBtn) {
+            modalAddBtn.dataset.id = p.id;
+            modalAddBtn.dataset.name = p.name;
+            modalAddBtn.dataset.price = p.price;
+            modalAddBtn.dataset.cat = p.category;
+        }
+        const modalQtyNum = document.getElementById('modal_qty_num');
+        if (modalQtyNum) {
+            modalQtyNum.textContent = "1";
+        }
         
         modal.classList.add('active');
         document.body.classList.add('modal-active');
@@ -383,8 +455,99 @@ $displayNames = [
 
                 <div class="detail-desc-label">Product Description</div>
                 <p id="modal_desc" class="detail-desc"></p>
+                
+                <div class="card-qty-wrapper" style="margin-top: 12px; display: inline-flex; max-width: fit-content;">
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" data-action="dec">−</button>
+                        <span class="card-qty-num" id="modal_qty_num">1</span>
+                        <button class="card-qty-btn" data-action="inc">+</button>
+                    </div>
+                    <button class="card-quick-add" id="modal_add_btn" data-id="" data-name="" data-price="" data-cat="">
+                        Add
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Custom Premium Success Glassmorphic Modal Markup -->
+    <div class="custom-success-overlay" id="customSuccessAlert">
+        <div class="custom-success-box">
+            <h3><i class="fa-solid fa-circle-check" style="color: #2ecc71; margin-right: 8px; font-size: 1.1rem;"></i>SUCCESS</h3>
+            <p id="customSuccessAlertMessage">Success! Your order has been placed.</p>
+            <div class="custom-success-buttons">
+                <button class="custom-success-btn btn-ok" onclick="closeSuccessAlert()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Premium Info/Warning Glassmorphic Modal Markup -->
+    <div class="custom-info-overlay" id="customLoginAlert">
+        <div class="custom-info-box">
+            <h3><i class="fa-solid fa-circle-info" style="color: var(--accent); margin-right: 8px; font-size: 1.1rem;"></i>LOGIN REQUIRED</h3>
+            <p>Please login to your Lumific account to place this order.</p>
+            <div class="custom-info-buttons">
+                <button class="custom-info-btn btn-cancel" onclick="closeLoginAlert()">Cancel</button>
+                <button class="custom-info-btn btn-login" onclick="proceedToLogin()">LOGIN</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSuccessAlert(message) {
+            const alertMsg = document.getElementById('customSuccessAlertMessage');
+            const alertModal = document.getElementById('customSuccessAlert');
+            if (alertMsg) alertMsg.textContent = message;
+            if (alertModal) {
+                alertModal.classList.add('show');
+            }
+        }
+
+        function closeSuccessAlert() {
+            const alertModal = document.getElementById('customSuccessAlert');
+            if (alertModal) {
+                alertModal.classList.remove('show');
+            }
+        }
+
+        function showLoginAlert() {
+            const loginModal = document.getElementById('customLoginAlert');
+            if (loginModal) {
+                loginModal.classList.add('show');
+            }
+        }
+
+        function closeLoginAlert() {
+            const loginModal = document.getElementById('customLoginAlert');
+            if (loginModal) {
+                loginModal.classList.remove('show');
+            }
+        }
+
+        function proceedToLogin() {
+            window.location.href = 'login.php';
+        }
+
+        // Close alerts on backdrop click
+        window.addEventListener('DOMContentLoaded', () => {
+            const alertOverlay = document.getElementById('customSuccessAlert');
+            if (alertOverlay) {
+                alertOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeSuccessAlert();
+                    }
+                });
+            }
+
+            const loginOverlay = document.getElementById('customLoginAlert');
+            if (loginOverlay) {
+                loginOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeLoginAlert();
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

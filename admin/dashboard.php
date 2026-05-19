@@ -234,7 +234,7 @@ function getCountry($phone) {
         <a href="?tab=orders" class="nav-item <?php echo $current_tab == 'orders' ? 'active' : ''; ?>"><i class="fa-solid fa-receipt"></i> Orders & Status</a>
         <a href="?tab=customers" class="nav-item <?php echo $current_tab == 'customers' ? 'active' : ''; ?>"><i class="fa-solid fa-users"></i> Customers</a>
         <a href="?tab=inquiries" class="nav-item <?php echo $current_tab == 'inquiries' ? 'active' : ''; ?>"><i class="fa-solid fa-envelope"></i> Inquiries</a>
-        <a href="?tab=analytics" class="nav-item <?php echo $current_tab == 'analytics' ? 'active' : ''; ?>"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+
         <div style="margin-top: auto;">
             <a href="logout.php" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         </div>
@@ -297,7 +297,7 @@ function getCountry($phone) {
                     </thead>
                     <tbody>
                         <?php foreach($products as $p): ?>
-                        <tr class="inquiry-row" onclick='openProductViewModal(<?php echo json_encode($p); ?>)'>
+                        <tr class="inquiry-row" onclick="openProductViewModal(<?php echo htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8'); ?>)">
                             <td style="display: flex; align-items: center; gap: 15px;">
                                 <img src="../<?php echo $p['image_url']; ?>" class="prod-img">
                                 <div>
@@ -310,7 +310,7 @@ function getCountry($phone) {
                             <td><div style="font-size: 0.8rem; color: rgba(255,255,255,0.4); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?php echo $p['description']; ?></div></td>
                             <td>
                                 <div style="display: flex; gap: 10px;">
-                                    <button class="action-btn" onclick='event.stopPropagation(); openEditModal(<?php echo json_encode($p); ?>)'>
+                                    <button class="action-btn" onclick="event.stopPropagation(); openEditModal(<?php echo htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8'); ?>)">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <form action="actions.php" method="POST" style="display:inline;" onclick="event.stopPropagation();">
@@ -351,7 +351,7 @@ function getCountry($phone) {
                     </thead>
                     <tbody>
                         <?php foreach($inquiries as $iq): ?>
-                        <tr class="inquiry-row" onclick='openInquiryModal(<?php echo json_encode($iq); ?>)'>
+                        <tr class="inquiry-row" onclick="openInquiryModal(<?php echo htmlspecialchars(json_encode($iq), ENT_QUOTES, 'UTF-8'); ?>)">
                             <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y | H:i', strtotime($iq['created_at'])); ?></td>
                             <td>
                                 <div style="font-weight: 600;"><?php echo $iq['name']; ?></div>
@@ -409,7 +409,7 @@ function getCountry($phone) {
                             <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($u['created_at'])); ?></td>
                             <td>
                                 <div style="display: flex; gap: 10px;">
-                                    <button class="action-btn" onclick='openEditUserModal(<?php echo json_encode($u); ?>)'>
+                                    <button class="action-btn" onclick="openEditUserModal(<?php echo htmlspecialchars(json_encode($u), ENT_QUOTES, 'UTF-8'); ?>)">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <form action="actions.php" method="POST" style="display:inline;">
@@ -475,7 +475,7 @@ function getCountry($phone) {
                             // Get items for this order
                             $order_items = array_filter($sales, function($s) use ($o) { return $s['order_id'] == $o['order_id']; });
                         ?>
-                        <tr class="inquiry-row" onclick='openOrderDetailsModal(<?php echo json_encode($o); ?>, <?php echo json_encode(array_values($order_items)); ?>)'>
+                        <tr class="inquiry-row" onclick="openOrderDetailsModal(<?php echo htmlspecialchars(json_encode($o), ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars(json_encode(array_values($order_items)), ENT_QUOTES, 'UTF-8'); ?>)">
                             <td style="font-weight: 700; color: var(--accent);">#<?php echo $o['order_id']; ?></td>
                             <td style="font-size: 0.85rem; color: rgba(255,255,255,0.5);"><?php echo date('M d, Y', strtotime($o['created_at'])); ?></td>
                             <td>
@@ -522,7 +522,7 @@ function getCountry($phone) {
                             </td>
                             <td>
                                 <div style="display: flex; gap: 10px;">
-                                    <button class="action-btn" onclick='event.stopPropagation(); openUpdateOrderModal(<?php echo json_encode($o); ?>)'>
+                                    <button class="action-btn" onclick="event.stopPropagation(); openUpdateOrderModal(<?php echo htmlspecialchars(json_encode($o), ENT_QUOTES, 'UTF-8'); ?>)">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <form action="actions.php" method="POST" style="display:inline;" onclick="event.stopPropagation();">
@@ -543,31 +543,6 @@ function getCountry($phone) {
                 </table>
             </div>
 
-        <?php elseif ($current_tab == 'analytics'): ?>
-            <div class="header">
-                <h1>Boutique Analytics</h1>
-            </div>
-
-            <div class="content-section">
-                <div class="section-header"><h3>Category Distribution</h3></div>
-                <div class="chart-container">
-                    <?php 
-                    $max = count($products) > 0 ? max($cat_counts) : 1;
-                    foreach ($cat_counts as $cat => $count): 
-                        $percent = ($count / $max) * 100;
-                    ?>
-                    <div class="bar-group">
-                        <div class="bar-label">
-                            <span style="text-transform: capitalize;"><?php echo $cat; ?></span>
-                            <span><?php echo $count; ?> Products</span>
-                        </div>
-                        <div class="bar-outer">
-                            <div class="bar-inner" style="width: <?php echo $percent; ?>%;"></div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
         <?php endif; ?>
     </div>
 
