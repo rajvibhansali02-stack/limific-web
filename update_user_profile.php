@@ -10,23 +10,35 @@ $user_id = $_SESSION['user_id'];
 $action = $_POST['action'] ?? '';
 
 if ($action === 'update_profile') {
-    $name = $conn->real_escape_string($_POST['name']);
-    $phone = $conn->real_escape_string($_POST['phone']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $address = $conn->real_escape_string($_POST['address'] ?? '');
+    $name = $_POST['name'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $address = $_POST['address'] ?? '';
 
-    // Check if email is already taken by another user
-    $check_email = $conn->query("SELECT id FROM users WHERE email = '$email' AND id != $user_id");
+    // Check if email is already taken using Prepared Statements
+    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
+    $stmt->bind_param("si", $email, $user_id);
+    $stmt->execute();
+    $check_email = $stmt->get_result();
+    
     if ($check_email->num_rows > 0) {
+        $stmt->close();
         echo json_encode(['success' => false, 'message' => 'This email is already in use by another account']);
         exit;
     }
+    $stmt->close();
 
-    if ($conn->query("UPDATE users SET name = '$name', phone = '$phone', email = '$email', address = '$address' WHERE id = $user_id")) {
+    // Update profile using Prepared Statements
+    $updateStmt = $conn->prepare("UPDATE users SET name = ?, phone = ?, email = ?, address = ? WHERE id = ?");
+    $updateStmt->bind_param("ssssi", $name, $phone, $email, $address, $user_id);
+
+    if ($updateStmt->execute()) {
         $_SESSION['user_name'] = $name; // Update session
         $_SESSION['user_email'] = $email; // Update session email
+        $updateStmt->close();
         echo json_encode(['success' => true, 'message' => 'Profile updated successfully']);
     } else {
+        $updateStmt->close();
         echo json_encode(['success' => false, 'message' => 'Failed to update profile']);
     }
 } 
@@ -40,14 +52,26 @@ elseif ($action === 'change_password') {
         exit;
     }
 
-    $res = $conn->query("SELECT password FROM users WHERE id = $user_id");
+    // Retrieve password securely using Prepared Statements
+    $stmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
     $user = $res->fetch_assoc();
+    $stmt->close();
 
     if (password_verify($current, $user['password'])) {
         $hashed = password_hash($new, PASSWORD_DEFAULT);
-        if ($conn->query("UPDATE users SET password = '$hashed' WHERE id = $user_id")) {
+        
+        // Update password securely using Prepared Statements
+        $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+        $updateStmt->bind_param("si", $hashed, $user_id);
+        
+        if ($updateStmt->execute()) {
+            $updateStmt->close();
             echo json_encode(['success' => true, 'message' => 'Password changed successfully']);
         } else {
+            $updateStmt->close();
             echo json_encode(['success' => false, 'message' => 'Failed to update password']);
         }
     } else {
