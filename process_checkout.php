@@ -9,27 +9,41 @@ if (!$data || !isset($data['cart']) || empty($data['cart'])) {
     exit;
 }
 
-$success_count = 0;
-$total_items = count($data['cart']);
+// Start database transaction
+$conn->begin_transaction();
 
-foreach ($data['cart'] as $item) {
-    $product_id = intval($item['id']);
-    $product_name = $conn->real_escape_string($item['name']);
-    $quantity = intval($item['qty']);
-    $total_amount = $item['price'] * $quantity;
-    $customer_name = "Web Customer"; // Default since no login session yet
-
-    $sql = "INSERT INTO sales (product_id, product_name, quantity, total_amount, customer_name) 
-            VALUES ($product_id, '$product_name', $quantity, '$total_amount', '$customer_name')";
+try {
+    $customer_name = $_SESSION['user_name'] ?? "Web Customer";
     
-    if ($conn->query($sql)) {
-        $success_count++;
+    // Prepare SQL statement
+    $stmt = $conn->prepare("INSERT INTO sales (product_id, product_name, quantity, total_amount, customer_name) VALUES (?, ?, ?, ?, ?)");
+    
+    if (!$stmt) {
+        throw new Exception("Failed to prepare statement: " . $conn->error);
     }
-}
-
-if ($success_count > 0) {
-    echo json_encode(["status" => "success", "count" => $success_count]);
-} else {
-    echo json_encode(["status" => "error", "message" => "Database error: " . $conn->error]);
+    
+    foreach ($data['cart'] as $item) {
+        $product_id = intval($item['id']);
+        $product_name = $item['name'];
+        $quantity = intval($item['qty']);
+        $total_amount = floatval($item['price']) * $quantity;
+        
+        $stmt->bind_param("isids", $product_id, $product_name, $quantity, $total_amount, $customer_name);
+        
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to execute statement: " . $stmt->error);
+        }
+    }
+    
+    $stmt->close();
+    
+    // Commit transaction - all items saved safely!
+    $conn->commit();
+    
+    echo json_encode(["status" => "success", "count" => count($data['cart'])]);
+} catch (Exception $e) {
+    // Rollback transaction on failure - no partial data saved!
+    $conn->rollback();
+    echo json_encode(["status" => "error", "message" => "Checkout failed: " . $e->getMessage()]);
 }
 ?>
