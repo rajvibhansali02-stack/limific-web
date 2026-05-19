@@ -190,7 +190,7 @@ if (!empty($order_ids)) {
                                     <div class="order-footer">
                                         <div class="payment-method">
                                             <span class="label">Status</span>
-                                            <span class="value"><?php echo $order['payment_status']; ?> (<?php echo $order['payment_method']; ?>)</span>
+                                            <span class="value"><?php echo htmlspecialchars($order['payment_status']); ?> (<?php echo htmlspecialchars($order['payment_method']); ?>)</span>
                                         </div>
                                         <div class="order-total">
                                             <span class="label">Total</span>

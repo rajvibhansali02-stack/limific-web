@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 // Load environment variables from .env file if present
 $envFile = dirname(__DIR__) . '/.env';
 if (file_exists($envFile)) {
@@ -145,6 +148,9 @@ if (!$conn->query($sales_sql)) {
 
 // Ensure address column exists in users table
 $conn->query("ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT AFTER phone");
+
+// Ensure user_id column exists in orders table
+$conn->query("ALTER TABLE orders ADD COLUMN IF NOT EXISTS user_id INT(11) NULL AFTER id");
 
 // Admin Session Helper
 function checkAuth() {

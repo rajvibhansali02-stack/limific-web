@@ -314,6 +314,7 @@ function getCountry($phone) {
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <form action="actions.php" method="POST" style="display:inline;" onclick="event.stopPropagation();">
+                                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                         <input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?php echo $p['id']; ?>">
                                         <button type="submit" class="action-btn" style="color: #f44336;" onclick="return confirm('Delete this product?')">
                                             <i class="fa-solid fa-trash-can"></i>
@@ -371,6 +372,7 @@ function getCountry($phone) {
                             <td>
                                 <div style="display: flex; gap: 10px;">
                                     <form action="actions.php" method="POST" style="display:inline;" onclick="event.stopPropagation();">
+                                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                         <input type="hidden" name="action" value="delete_inquiry">
                                         <input type="hidden" name="id" value="<?php echo $iq['id']; ?>">
                                         <button type="submit" class="action-btn" style="color: rgba(255,255,255,0.3);" onclick="return confirm('Delete this inquiry?')">
@@ -413,6 +415,7 @@ function getCountry($phone) {
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <form action="actions.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                         <input type="hidden" name="action" value="delete_user">
                                         <input type="hidden" name="id" value="<?php echo $u['id']; ?>">
                                         <button type="submit" class="action-btn" style="color: #f44336;" onclick="return confirm('Delete this member account?')">
@@ -526,6 +529,7 @@ function getCountry($phone) {
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <form action="actions.php" method="POST" style="display:inline;" onclick="event.stopPropagation();">
+                                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                         <input type="hidden" name="action" value="delete_order">
                                         <input type="hidden" name="order_id" value="<?php echo $o['order_id']; ?>">
                                         <button type="submit" class="action-btn" style="color: #f44336;" onclick="return confirm('Delete this entire order and its items?')">
@@ -552,6 +556,7 @@ function getCountry($phone) {
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <h2 style="margin-bottom: 30px; font-family: 'Outfit', sans-serif;">Add New Product</h2>
             <form action="actions.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="add">
                 <div class="form-grid">
                     <div class="input-group full-width"><label>Product Name</label><input type="text" name="name" required></div>
@@ -576,6 +581,7 @@ function getCountry($phone) {
             <span class="close-modal" onclick="closeEditModal()">&times;</span>
             <h2 style="margin-bottom: 30px; font-family: 'Outfit', sans-serif;">Edit Product</h2>
             <form action="actions.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="edit">
                 <input type="hidden" name="id" id="edit_id">
                 <div class="form-grid">
@@ -604,6 +610,7 @@ function getCountry($phone) {
             <span class="close-modal" onclick="closeSaleModal()">&times;</span>
             <h2 style="margin-bottom: 20px; font-family: 'Outfit', sans-serif;">Log Offline Sale</h2>
             <form action="actions.php" method="POST" id="saleForm">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="add_sale">
                 
                 <div style="margin-bottom: 20px;">
@@ -861,6 +868,7 @@ function getCountry($phone) {
             <span class="close-modal" onclick="closeUpdateOrderModal()">&times;</span>
             <h2 style="margin-bottom: 25px; font-family: 'Outfit', sans-serif;">Update Order Status</h2>
             <form action="actions.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="update_order">
                 <input type="hidden" name="order_id" id="update_order_id">
                 
@@ -895,6 +903,7 @@ function getCountry($phone) {
             <span class="close-modal" onclick="closeEditUserModal()">&times;</span>
             <h2 style="margin-bottom: 25px; font-family: 'Outfit', sans-serif;">Edit Member Details</h2>
             <form action="actions.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="action" value="edit_user">
                 <input type="hidden" name="id" id="edit_user_id">
                 

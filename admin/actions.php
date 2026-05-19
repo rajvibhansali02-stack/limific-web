@@ -7,6 +7,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Protect all admin actions except public web checkout
     if ($action !== 'web_checkout') {
         checkAuth();
+        
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+            http_response_code(403);
+            die("CSRF verification failed.");
+        }
     }
 
     if ($action == "add") {
